@@ -11,6 +11,12 @@ array_relationships:
         remote_table:
           name: users_relations
           schema: public
+insert_permissions:
+  - role: backoffice
+    permission:
+      check: {}
+      columns:
+        - name
 select_permissions:
   - role: backoffice
     permission:
@@ -22,3 +28,14 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
+update_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - name
+      filter: {}
+      check: null
+delete_permissions:
+  - role: backoffice
+    permission:
+      filter: {}
