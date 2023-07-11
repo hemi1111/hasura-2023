@@ -3,7 +3,7 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import BasicPage from "../../layouts/BasicPage/BasicPage";
 import FakeContent from "../../components/FakeContent";
 import { Button, Typography } from "@mui/material";
-
+import ManagerNavbar from '../../components/ManagerNavbar'
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
     managers {
@@ -47,7 +47,8 @@ const ManagerEngineer = () => {
   if (r1.error) throw r1.error;
 
   return (
-    <BasicPage fullpage title="Manager Section">
+    <div>
+      <ManagerNavbar />
       <Typography variant="h6" sx={{ marginTop: "20px", marginBottom: "5px" }}>
         Manager-Engineer Connection
       </Typography>
@@ -75,7 +76,7 @@ const ManagerEngineer = () => {
       <Button onClick={dothis}>Add</Button>
       <hr />
       <FakeContent />
-    </BasicPage>
+    </div>
   );
 };
 
