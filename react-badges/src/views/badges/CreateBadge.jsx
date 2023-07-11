@@ -1,8 +1,10 @@
 import React from 'react'
-
+import BadgesNavbar from '../../components/BadgesNavbar'
 const CreateBadge = () => {
   return (
-    <div>CreateBadge</div>
+    <div>
+        <BadgesNavbar />
+    </div>
   )
 }
 

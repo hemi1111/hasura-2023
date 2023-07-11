@@ -1,8 +1,11 @@
 import React from 'react'
+import BadgesNavbar from '../../components/BadgesNavbar'
 
 const EditBadge = () => {
   return (
-    <div>EditBadge</div>
+    <div>
+        <BadgesNavbar />
+    </div>
   )
 }
 

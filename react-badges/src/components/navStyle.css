@@ -1,0 +1,7 @@
+.navbar-style{
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-evenly;
+}

@@ -1,8 +1,10 @@
 import React from 'react'
-
+import ManagerNavbar from '../../components/ManagerNavbar'
 const EditManager = () => {
   return (
-    <div>EditManager</div>
+    <div>
+        <ManagerNavbar />
+    </div>
   )
 }
 
