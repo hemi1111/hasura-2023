@@ -9,11 +9,15 @@ import {
 
 import AppEntrypoint, { BackofficeIcon } from "./containers/AppEntrypoint";
 import ManagerEngineer from "./views/backoffice/ManagerEngineer";
-
 import { DrawerMenu } from "./layouts/BasicLayout";
 import EngingeerPage from "./views/engineer/EngineerPage";
 import BadgesPage from "./views/badges/BadgesPage";
-
+import EditManager from "./views/backoffice/EditManager";
+import CreateManager from "./views/backoffice/CreateManager";
+import CreateEngineer from "./views/engineer/CreateEngineer";
+import EditEngineer from "./views/engineer/EditEngineer";
+import CreateBadge from "./views/badges/CreateBadge";
+import EditBadge from "./views/badges/EditBadge";
 const menuItems = [
   {
     link: "managers",
@@ -46,12 +50,36 @@ const AppBackoffice: React.FC = () => (
           element: <ManagerEngineer />
         },
         {
+          path: "managers/edit",
+          element: <EditManager />
+        },
+        {
+          path: "managers/create",
+          element: <CreateManager />
+        },
+        {
           path: "engineers",
           element: <EngingeerPage />
         },
         {
+          path: "engineers/edit",
+          element: <EditEngineer />
+        },
+        {
+          path: "engineers/create",
+          element: <CreateEngineer />
+        },
+        {
           path: "badges",
           element: <BadgesPage />
+        },
+        {
+          path: "badges/edit",
+          element: <EditBadge />
+        },
+        {
+          path: "badges/create",
+          element: <CreateBadge />
         }
       ] as RouteProps[]
     }
