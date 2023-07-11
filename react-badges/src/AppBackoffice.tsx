@@ -11,8 +11,8 @@ import AppEntrypoint, { BackofficeIcon } from "./containers/AppEntrypoint";
 import ManagerEngineer from "./views/backoffice/ManagerEngineer";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
-import EngingeerPage from "./views/engineerView/EngineerPage";
-import BadgesPage from "./views/BadgesView/BadgesPage";
+import EngingeerPage from "./views/engineer/EngineerPage";
+import BadgesPage from "./views/badges/BadgesPage";
 
 const menuItems = [
   {
