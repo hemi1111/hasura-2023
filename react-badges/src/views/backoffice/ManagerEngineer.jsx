@@ -2,7 +2,7 @@ import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import BasicPage from "../../layouts/BasicPage/BasicPage";
 import FakeContent from "../../components/FakeContent";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -47,7 +47,10 @@ const ManagerEngineer = () => {
   if (r1.error) throw r1.error;
 
   return (
-    <BasicPage fullpage title="New Connection" subtitle="Engineer to Manager">
+    <BasicPage fullpage title="Manager Section">
+      <Typography variant="h6" sx={{ marginTop: "20px", marginBottom: "5px" }}>
+        Manager-Engineer Connection
+      </Typography>
       {manager} - {engineer}
       <div>
         <h4>Managers</h4>
