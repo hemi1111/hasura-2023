@@ -2,6 +2,7 @@ import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import BasicPage from "../../layouts/BasicPage/BasicPage";
 import FakeContent from "../../components/FakeContent";
+import { Button } from "@mui/material";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -68,7 +69,7 @@ const ManagerEngineer = () => {
           ))}
         </select>
       </div>
-      <button onClick={dothis}>Add</button>
+      <Button onClick={dothis}>Add</Button>
       <hr />
       <FakeContent />
     </BasicPage>
