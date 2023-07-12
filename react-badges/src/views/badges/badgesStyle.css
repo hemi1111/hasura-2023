@@ -1,5 +1,6 @@
-.badges-container-display{
-    display: inline-grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-gap: 30px;
+.badges-container-display {
+  margin-left: 80px;
+  display: inline-grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 40px;
 }
