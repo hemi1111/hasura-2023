@@ -1,14 +1,12 @@
-import { useQuery } from "@apollo/client";
-import { GET_ENGINEERS } from "../../queries/EngineerQueries";
+import { ADD_ENGINEER } from "../../queries/EngineerQueries";
 import { Box, Button, TextField } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
 
-const EngineerForm = () => {
-  const { data } = useQuery(GET_ENGINEERS);
-  const { pathname } = useLocation();
-  console.log(data);
-  console.log(pathname);
+const CreateEngineer = () => {
+  const navigate = useNavigate();
+  const [addEngineer, { loading, error }] = useMutation(ADD_ENGINEER);
   const {
     register,
     formState: { errors },
@@ -16,10 +14,13 @@ const EngineerForm = () => {
   } = useForm({
     mode: "onChange"
   });
-
   const handleFormSubmit = (formData) => {
-    console.log(formData);
+    addEngineer({ variables: { name: formData.name } });
+    navigate("/engineers");
   };
+
+  if (loading) return "Submitting...";
+  if (error) return `Submission error! ${error.message}`;
 
   return (
     <div
@@ -65,14 +66,12 @@ const EngineerForm = () => {
             error={!!errors?.name}
             helperText={errors?.name?.message}
           />
-          {/* <div style={{ width: "40ch", textAlign: "center" }}> */}
-          <Button variant="contained" type="submit">
+          <Button sx={{ marginLeft: "20ch" }} variant="contained" type="submit">
             Save
           </Button>
-          {/* </div> */}
         </>
       </Box>
     </div>
   );
 };
-export default EngineerForm;
+export default CreateEngineer;
