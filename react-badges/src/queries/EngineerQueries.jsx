@@ -52,3 +52,12 @@ export const DELETE_ENGINEER = gql`
     }
   }
 `;
+
+export const GET_ENGINEER_BY_MANAGER = gql`
+mutation relationsEngineerManager($id: Int!) {
+    get_engineers_by_manager(args: {manager_id: $id}) {
+      name
+    }
+  }
+  
+`;
