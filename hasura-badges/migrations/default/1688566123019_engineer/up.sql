@@ -1,4 +1,3 @@
-
 CREATE TABLE engineer_to_manager_badge_candidature_proposals (
   id SERIAL PRIMARY KEY, 
   manager INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
@@ -221,3 +220,15 @@ AFTER UPDATE ON badge_candidature_request
 FOR EACH ROW
 EXECUTE FUNCTION insert_issuing_request();
 
+CREATE OR REPLACE FUNCTION get_manager_by_engineers(engineer_id INTEGER)
+  RETURNS SETOF public.users AS
+$$
+BEGIN
+  RETURN QUERY
+    SELECT u.*
+    FROM public.users_relations r
+    INNER JOIN public.users u ON r.manager = u.id
+    WHERE r.engineer = engineer_id;
+END;
+$$
+LANGUAGE plpgsql;

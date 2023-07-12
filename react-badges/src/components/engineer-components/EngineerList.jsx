@@ -14,21 +14,13 @@ import { useEffect, useState } from "react";
 
 const EngineerList = () => {
   const [open, setOpen] = useState(-1);
-  const { data } = useQuery(GET_ENGINEERS);
-  const [list, setList] = useState();
-  useEffect(() => {
-    if (data) {
-      setList(data.engineers);
-    }
-  }, [data]);
-
-  const updateList = (id) => {
-    setList(() => list.filter((engineer) => engineer.id !== id));
-  };
+  const { data, loading, error } = useQuery(GET_ENGINEERS);
+  if (loading) return "Loading...";
+  if (error) return `Loading error! ${error.message}`;
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-      {list &&
-        list.map((engineer, index) => {
+      {data &&
+        data.engineers.map((engineer, index) => {
           return (
             <Card
               key={index}
@@ -56,7 +48,6 @@ const EngineerList = () => {
                     id={engineer.id}
                     onClose={() => setOpen(-1)}
                     open={open === index}
-                    onDelete={updateList}
                   />
                 )}
                 <Typography variant="h4">{engineer.name}</Typography>

@@ -18,10 +18,9 @@ export const GET_ENGINEER = gql`
 `;
 export const ADD_ENGINEER = gql`
   mutation addEngineer($name: String!) {
-    insert_users_one(objects: { name: $name, roles: ["engineer"] }) {
-      returning {
-        name
-      }
+    insert_users_one(object: { name: $name, roles: ["engineer"] }) {
+      id
+      name
     }
   }
 `;
