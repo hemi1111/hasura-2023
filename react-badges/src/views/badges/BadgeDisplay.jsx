@@ -20,13 +20,13 @@ const BadgeDisplay = () => {
   console.log(data);
   const [image, setImage] = useState([
     {
-      url: "https://w7.pngwing.com/pngs/825/431/png-transparent-black-wings-logo-star-wars-jedi-knight-jedi-academy-the-new-jedi-order-logo-war-emblem-monochrome-sticker-thumbnail.png"
+      url: "https://i.pinimg.com/736x/02/00/81/02008106afa50b933c8824616d39b3af.jpg"
     },
     {
-      url: "https://toppng.com/uploads/preview/star-wars-logos-icons-vector-star-wars-felirat-keszites-11563023902amptothkqh.png"
+      url: "https://www.pngkey.com/png/detail/94-943600_vinilos-paredes-star-wars-vinilo-casco-dark-vader.png"
     },
     {
-      url: "https://e7.pngegg.com/pngimages/787/901/png-clipart-computer-icons-scalable-graphics-rebel-alliance-logo-rim-star-wars-icon.png"
+      url: "https://lumiere-a.akamaihd.net/v1/images/image_09ccd4d8.jpeg"
     }
   ]);
 
