@@ -1,12 +1,11 @@
-import React from "react";
+import React from 'react'
 import BadgesNavbar from '../../components/BadgesNavbar'
-const BadgesPage = () => {
-  
+const CreateBadge = () => {
   return (
     <div>
         <BadgesNavbar />
     </div>
-  );
-};
+  )
+}
 
-export default BadgesPage;
+export default CreateBadge
