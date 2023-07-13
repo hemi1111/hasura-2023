@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import BadgesNavbar from "../../components/BadgesNavbar";
 import { useForm } from "react-hook-form";
 import {
@@ -16,6 +16,26 @@ import { ADD_BADGES, GET_BADGES } from "../../queries/BadgesQueries";
 import { useNavigate } from "react-router-dom";
 
 const CreateBadge = () => {
+  const [requirements, setRequirements] = useState([]);
+  const addRequirement = () => {
+    const newRequirement = {
+      reqTitle: "",
+      reqDescription: ""
+    };
+    setRequirements([...requirements, newRequirement]);
+  };
+
+  const handleRequirementChange = (index, field, value) => {
+    const updatedRequirements = [...requirements];
+    updatedRequirements[index][field] = value;
+    setRequirements(updatedRequirements);
+  };
+
+  const removeRequirement = (index) => {
+    const updatedRequirements = [...requirements];
+    updatedRequirements.splice(index, 1);
+    setRequirements(updatedRequirements);
+  };
   const { loading, error } = useQuery(GET_BADGES);
   const [addBadges] = useMutation(ADD_BADGES, {
     refetchQueries: [{ query: GET_BADGES }]
@@ -30,23 +50,24 @@ const CreateBadge = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    const { badgeTitle, badgeDescription, reqTitle, reqDescription } = data;
+    const { badgeTitle, badgeDescription } = data;
 
     try {
       addBadges({
         variables: {
           title: badgeTitle,
           description: badgeDescription,
-          req_title: reqTitle,
-          req_description: reqDescription
+          requirements: requirements.map((req) => ({
+            title: req.reqTitle,
+            description: req.reqDescription
+          }))
         }
       });
-
+      navigate("/badges");
       console.log("Badge added successfully!");
     } catch (error) {
       console.error("Error adding badge:", error);
     }
-    navigate("/badges");
   };
 
   if (loading) return "Loading...";
@@ -108,35 +129,42 @@ const CreateBadge = () => {
             variant="outlined"
           />
           <br />
-          <TextField
-            style={{ minWidth: "500px", marginBottom: "15px" }}
-            {...register("reqTitle", {
-              required: "This field is required",
-              minLength: { value: 2, message: "Min length is 2" }
-            })}
-            required
-            error={!!errors.reqTitle}
-            helperText={errors.reqTitle?.message}
-            type="text"
-            label="Requirement Title"
-            name="reqTitle"
-            variant="outlined"
-          />
-          <br />
-          <TextField
-            style={{ minWidth: "500px", marginBottom: "15px" }}
-            {...register("reqDescription", {
-              required: "This field is required",
-              minLength: { value: 2, message: "Min length is 2" }
-            })}
-            required
-            error={!!errors.reqDescription}
-            helperText={errors.reqDescription?.message}
-            type="text"
-            label="Requirement Description"
-            name="reqDescription"
-            variant="outlined"
-          />
+          {requirements.map((req, index) => (
+            <div key={index}>
+              <TextField
+                style={{ minWidth: "500px", marginBottom: "15px" }}
+                value={req.reqTitle}
+                onChange={(e) =>
+                  handleRequirementChange(index, "reqTitle", e.target.value)
+                }
+                required
+                type="text"
+                label={`Requirement Title ${index + 1}`}
+                name={`reqTitle${index}`}
+                variant="outlined"
+              />
+              <br />
+              <TextField
+                style={{ minWidth: "500px", marginBottom: "15px" }}
+                value={req.reqDescription}
+                onChange={(e) =>
+                  handleRequirementChange(
+                    index,
+                    "reqDescription",
+                    e.target.value
+                  )
+                }
+                required
+                type="text"
+                label={`Requirement Description ${index + 1}`}
+                name={`reqDescription${index}`}
+                variant="outlined"
+              />
+              <br />
+              <Button onClick={() => removeRequirement(index)}>Remove</Button>
+            </div>
+          ))}
+          <Button onClick={addRequirement}>Add More Requirements</Button>
           <br />
           <Button type="submit">Add</Button>
         </form>
