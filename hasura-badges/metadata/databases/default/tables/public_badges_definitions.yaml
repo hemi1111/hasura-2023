@@ -25,6 +25,7 @@ insert_permissions:
         modified_by: x-hasura-tenant-id
       columns:
         - description
+        - image
         - title
 select_permissions:
   - role: anonymous
@@ -43,13 +44,14 @@ select_permissions:
   - role: backoffice
     permission:
       columns:
-        - title
-        - created_by
-        - id
-        - modified_by
-        - description
         - created_at
+        - created_by
+        - description
+        - id
+        - image
         - modified_at
+        - modified_by
+        - title
       filter: {}
       limit: 10
       query_root_fields:
@@ -60,6 +62,7 @@ update_permissions:
     permission:
       columns:
         - description
+        - image
         - title
       filter: {}
       check: null
