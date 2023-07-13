@@ -9,18 +9,19 @@ import {
   Avatar,
   Typography,
   CardHeader,
-  CardMedia,
-  autocompleteClasses
+  CardMedia
 } from "@mui/material";
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_BADGES, GET_BADGES } from "../../queries/BadgesQueries";
+import { useNavigate } from "react-router-dom";
 
 const CreateBadge = () => {
-  const { data } = useQuery(GET_BADGES);
+  const { loading, error } = useQuery(GET_BADGES);
   const [addBadges] = useMutation(ADD_BADGES, {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
+  const navigate = useNavigate();
   const {
     register,
     watch,
@@ -45,8 +46,11 @@ const CreateBadge = () => {
     } catch (error) {
       console.error("Error adding badge:", error);
     }
+    navigate("/badges");
   };
 
+  if (loading) return "Loading...";
+  if (error) return "Error";
   return (
     <div id="create-container">
       <BadgesNavbar />
@@ -61,7 +65,7 @@ const CreateBadge = () => {
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            style={{ minWidth: "500px" }}
+            style={{ minWidth: "500px", marginBottom: "15px" }}
             {...register("badgeTitle", {
               required: "This field is required",
               minLength: { value: 2, message: "Min length is 2" }
@@ -76,7 +80,7 @@ const CreateBadge = () => {
           />
           <br />
           <TextField
-            style={{ minWidth: "500px" }}
+            style={{ minWidth: "500px", marginBottom: "15px" }}
             {...register("badgeDescription", {
               required: "This field is required",
               minLength: { value: 2, message: "Min length is 2" }
@@ -91,7 +95,21 @@ const CreateBadge = () => {
           />
           <br />
           <TextField
-            style={{ minWidth: "500px" }}
+            style={{ minWidth: "500px", marginBottom: "15px" }}
+            {...register("badgeImage", {
+              required: "This field is required",
+              minLength: { value: 2, message: "Min length is 2" }
+            })}
+            error={!!errors.reqDescription}
+            helperText={errors.reqDescription?.message}
+            type="text"
+            label="Badge Logo"
+            name="badgeImage"
+            variant="outlined"
+          />
+          <br />
+          <TextField
+            style={{ minWidth: "500px", marginBottom: "15px" }}
             {...register("reqTitle", {
               required: "This field is required",
               minLength: { value: 2, message: "Min length is 2" }
@@ -106,7 +124,7 @@ const CreateBadge = () => {
           />
           <br />
           <TextField
-            style={{ minWidth: "500px" }}
+            style={{ minWidth: "500px", marginBottom: "15px" }}
             {...register("reqDescription", {
               required: "This field is required",
               minLength: { value: 2, message: "Min length is 2" }
@@ -119,23 +137,10 @@ const CreateBadge = () => {
             name="reqDescription"
             variant="outlined"
           />
-          <TextField
-            style={{ minWidth: "500px" }}
-            {...register("badgeImage", {
-              required: "This field is required",
-              minLength: { value: 2, message: "Min length is 2" }
-            })}
-            required
-            error={!!errors.reqDescription}
-            helperText={errors.reqDescription?.message}
-            type="text"
-            label="badgeImage"
-            name="badgeImage"
-            variant="outlined"
-          />
+          <br />
           <Button type="submit">Add</Button>
         </form>
-        <Card sx={{ minWidth: 400, minHeight: 300, margin: "auto" }}>
+        <Card sx={{ minWidth: 400, minHeight: 350, margin: "auto" }}>
           <span>
             <CardHeader title={watch("badgeTitle")} />
           </span>

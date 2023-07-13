@@ -9,9 +9,10 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Button, Avatar, Alert, Snackbar } from "@mui/material";
 import "./badgesStyle.css";
 import { Delete, Edit } from "@mui/icons-material";
+import InfoIcon from "@mui/icons-material/Info";
 
 const BadgeDisplay = () => {
-  const { data } = useQuery(GET_BADGES);
+  const { data, loading, error } = useQuery(GET_BADGES);
   const [deleteBadge] = useMutation(DELETE_BADGE, {
     refetchQueries: [{ query: GET_BADGES }]
   });
@@ -53,15 +54,37 @@ const BadgeDisplay = () => {
     setOpen(false);
   };
 
+  if (loading) return "Loading...";
+  if (error) return "Error";
+
   return (
     <div className="badges-container-display">
       {data &&
         data.badges_definitions.map((badge, index) => {
           return (
             <Card sx={{ maxWidth: 345, margin: "auto" }} key={index}>
-              <span>
-                <CardHeader title={badge.title} />
-                <Button onClick={() => handleOpen(badge)}>Requirements</Button>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  marginTop: "15px"
+                }}
+              >
+                <Typography variant="h5" style={{ marginLeft: "-10px" }}>
+                  {badge.title}
+                </Typography>
+                <p
+                  onClick={() => handleOpen(badge)}
+                  style={{
+                    marginTop: "0",
+                    marginRight: "-10px",
+                    color: "grey",
+                    cursor: "pointer",
+                    fontSize: "14px"
+                  }}
+                >
+                  Requirements
+                </p>
               </span>
               <Avatar sx={{ width: 150, height: 150, margin: "auto" }}>
                 <CardMedia
@@ -91,7 +114,10 @@ const BadgeDisplay = () => {
                         <center>REQUIREMENTS</center>
                         <ol>
                           {badgeRequirements.map((requirement, index) => (
-                            <li key={index}>{requirement.description}</li>
+                            <li key={index}>
+                              {requirement.title} <br />
+                              {requirement.description}
+                            </li>
                           ))}
                         </ol>
                       </Typography>
@@ -107,16 +133,18 @@ const BadgeDisplay = () => {
                     justifyContent: "space-around"
                   }}
                 >
-                  <Button
-                    color="error"
-                    onClick={() => handleDeleteBadge(badge.id)}
-                  >
-                    <Delete /> &nbsp; DELETE
-                  </Button>
-                  <Button>
-                    <Edit />
-                    &nbsp; UPDATE
-                  </Button>
+                  <div style={{ marginTop: "10px" }}>
+                    <Button
+                      color="error"
+                      onClick={() => handleDeleteBadge(badge.id)}
+                    >
+                      <Delete /> &nbsp; DELETE
+                    </Button>
+                    <Button style={{ marginLeft: "50px" }}>
+                      <Edit />
+                      &nbsp; EDIT
+                    </Button>
+                  </div>
                 </span>
               </CardContent>
             </Card>
