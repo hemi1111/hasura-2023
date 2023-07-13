@@ -155,6 +155,8 @@ update_permissions:
   - role: backoffice
     permission:
       columns:
+        - is_deleted
+        - name
         - roles
       filter: {}
       check: null

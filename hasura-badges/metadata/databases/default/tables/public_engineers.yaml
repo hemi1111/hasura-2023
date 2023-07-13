@@ -22,6 +22,7 @@ update_permissions:
   - role: backoffice
     permission:
       columns:
+        - is_deleted
         - name
       filter: {}
       check: null
