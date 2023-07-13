@@ -4,18 +4,21 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { GET_BADGES } from "../../queries/BadgesQueries";
-import { useQuery } from "@apollo/client";
+import { DELETE_BADGE, GET_BADGES } from "../../queries/BadgesQueries";
+import { useQuery, useMutation } from "@apollo/client";
 import { Button, Avatar, Alert, Snackbar } from "@mui/material";
 import "./badgesStyle.css";
 import { Delete, Edit } from "@mui/icons-material";
 
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
+  const [deleteBadge] = useMutation(DELETE_BADGE);
   const [badgeRequirements, setBadgeRequirements] = useState({});
   const [open, setOpen] = useState(false);
   const horizontal = "center";
   const vertical = "top";
+
+  const handleDeleteBadge = () => {};
 
   console.log(data);
   const [image, setImage] = useState([
@@ -45,11 +48,14 @@ const BadgeDisplay = () => {
         data.badges_definitions.map((badge, index) => {
           return (
             <Card sx={{ maxWidth: 345, margin: "auto" }} key={index}>
-              <CardHeader title={badge.title} />
+              <span>
+                <CardHeader title={badge.title} />
+                <Button onClick={() => handleOpen(badge)}>Requirements</Button>
+              </span>
               <Avatar sx={{ width: 150, height: 150, margin: "auto" }}>
                 <CardMedia
                   component="img"
-                  image={image[index].url}
+                  image={image[index]?.url}
                   alt="Badges"
                 />
               </Avatar>
@@ -61,7 +67,6 @@ const BadgeDisplay = () => {
                 {badgeRequirements.length > 0 && (
                   <Snackbar
                     open={open}
-                    autoHideDuration={6000}
                     onClose={handleClose}
                     key={vertical + horizontal}
                     anchorOrigin={{ vertical, horizontal }}
@@ -72,6 +77,7 @@ const BadgeDisplay = () => {
                       onClose={handleClose}
                     >
                       <Typography variant="h6">
+                        <center>REQUIREMENTS</center>
                         <ol>
                           {badgeRequirements.map((requirement, index) => (
                             <li key={index}>{requirement.description}</li>
@@ -82,11 +88,7 @@ const BadgeDisplay = () => {
                   </Snackbar>
                 )}
 
-                <center>
-                  <Button onClick={() => handleOpen(badge)}>
-                    Requirements
-                  </Button>
-                </center>
+                <center></center>
                 <span
                   style={{
                     width: "300px",
@@ -94,12 +96,12 @@ const BadgeDisplay = () => {
                     justifyContent: "space-around"
                   }}
                 >
-                  <Button color="error" variant="outlined">
+                  <Button color="error" onClick={handleDeleteBadge}>
                     <Delete /> &nbsp; DELETE
                   </Button>
-                  <Button variant="outlined">
+                  <Button>
                     <Edit />
-                    &nbsp; EDIT
+                    &nbsp; UPDATE
                   </Button>
                 </span>
               </CardContent>
