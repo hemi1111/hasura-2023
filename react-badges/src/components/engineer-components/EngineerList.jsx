@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import { Delete, Edit, Person } from "@mui/icons-material";
 import DeleteEngineerDialog from "./DeleteEngineerDialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EngineerList = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(-1);
   const { data, loading, error } = useQuery(GET_ENGINEERS);
   if (loading) return "Loading...";
@@ -56,9 +58,11 @@ const EngineerList = () => {
                     <Delete />
                     &nbsp; Delete
                   </Button>
-                  <Button>
+                  <Button
+                    onClick={() => navigate(`/engineer/edit/${engineer.id}`)}
+                  >
                     <Edit />
-                    &nbsp; Update
+                    &nbsp; Edit
                   </Button>
                 </div>
               </CardContent>
