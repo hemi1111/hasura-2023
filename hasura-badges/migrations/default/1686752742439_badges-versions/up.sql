@@ -3,13 +3,14 @@ CREATE TABLE "badges_versions" (
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
   "created_by" INTEGER NOT NULL REFERENCES "users"("id") ON DELETE RESTRICT,
   "title" VARCHAR(255),
+  "image" VARCHAR(255),
   "description" TEXT,
   "requirements" JSONB,
   PRIMARY KEY ("id", "created_at")
 );
 
 CREATE VIEW "badges_versions_last" AS
-SELECT DISTINCT ON ("id") "id", "created_at", "created_by", "title", "description", "requirements"
+SELECT DISTINCT ON ("id") "id", "created_at", "created_by", "title", "image", "description", "requirements"
 FROM "badges_versions"
 ORDER BY "id", "created_at" DESC;
 
@@ -27,6 +28,7 @@ BEGIN
   INSERT INTO "badges_versions"(
     "id", 
     "title", 
+    "image",
     "description", 
     "requirements", 
     "created_at",
@@ -35,6 +37,7 @@ BEGIN
   SELECT 
     "bd"."id", 
     "bd"."title", 
+    "bd"."image", 
     "bd"."description", 
     coalesce(
         json_agg(
@@ -52,7 +55,7 @@ BEGIN
   FROM "badges_definitions" "bd"
   LEFT JOIN "requirements_definitions" "rd" ON "bd"."id" = "rd"."badge_id"
   WHERE "bd"."id" = "badge_def_id"
-  GROUP BY "bd"."id", "bd"."title", "bd"."description"
+  GROUP BY "bd"."id", "bd"."title", "bd"."description", "bd"."image"
   RETURNING *;
 END; $$ LANGUAGE plpgsql;
 
