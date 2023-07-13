@@ -43,9 +43,14 @@ const DeleteEngineerDialog = ({ open, id, name, onClose }) => {
             })}
         </List>
       )}
-      <Button color="error" onClick={handleClick}>
-        Delete
-      </Button>
+      <div style={{ display: "flex" }}>
+        <Button sx={{ width: "50%" }} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button color="error" sx={{ width: "50%" }} onClick={handleClick}>
+          Delete
+        </Button>
+      </div>
     </Dialog>
   );
 };
