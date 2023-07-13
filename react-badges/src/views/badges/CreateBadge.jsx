@@ -50,13 +50,14 @@ const CreateBadge = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    const { badgeTitle, badgeDescription } = data;
+    const { badgeTitle, badgeDescription, badgeImage } = data;
 
     try {
       addBadges({
         variables: {
           title: badgeTitle,
           description: badgeDescription,
+          image: badgeImage,
           requirements: requirements.map((req) => ({
             title: req.reqTitle,
             description: req.reqDescription
