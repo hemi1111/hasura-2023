@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -12,15 +12,26 @@ import { Delete, Edit } from "@mui/icons-material";
 
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
-  const [deleteBadge] = useMutation(DELETE_BADGE);
+  const [deleteBadge] = useMutation(DELETE_BADGE, {
+    refetchQueries: [{ query: GET_BADGES }]
+  });
   const [badgeRequirements, setBadgeRequirements] = useState({});
   const [open, setOpen] = useState(false);
   const horizontal = "center";
   const vertical = "top";
 
-  const handleDeleteBadge = () => {};
+  useEffect(() => {});
 
-  console.log(data);
+  const handleDeleteBadge = (id) => {
+    console.log(id);
+    try {
+      deleteBadge({
+        variables: { id }
+      });
+    } catch (error) {
+      console.error("Error deleting badge:", error);
+    }
+  };
   const [image, setImage] = useState([
     {
       url: "https://i.pinimg.com/736x/02/00/81/02008106afa50b933c8824616d39b3af.jpg"
@@ -96,7 +107,10 @@ const BadgeDisplay = () => {
                     justifyContent: "space-around"
                   }}
                 >
-                  <Button color="error" onClick={handleDeleteBadge}>
+                  <Button
+                    color="error"
+                    onClick={() => handleDeleteBadge(badge.id)}
+                  >
                     <Delete /> &nbsp; DELETE
                   </Button>
                   <Button>
