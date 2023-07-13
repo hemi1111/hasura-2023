@@ -2,19 +2,28 @@ CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
   "roles" JSONB NOT NULL DEFAULT '{}',
+  "is_deleted" BOOLEAN NOT NULL DEFAULT false,
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-  "modified_at" TIMESTAMP NOT NULL DEFAULT now()
+  "modified_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE VIEW "engineers" AS
-SELECT id, name
+CREATE VIEW "valid_users" AS
+SELECT *
 FROM users
-WHERE roles @> '["engineer"]'::jsonb;
+WHERE is_deleted = false;
+
+
+CREATE VIEW "engineers" AS
+SELECT id, name, is_deleted
+FROM users
+WHERE roles @> '["engineer"]'::jsonb
+AND is_deleted = false;
 
 CREATE VIEW "managers" AS
-SELECT id, name
+SELECT id, name, is_deleted
 FROM users
-WHERE roles @> '["manager"]'::jsonb;
+WHERE roles @> '["manager"]'::jsonb
+AND is_deleted = false;
 
 
 CREATE TABLE public.users_relations (
@@ -26,6 +35,12 @@ CREATE TABLE public.users_relations (
   -- "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   PRIMARY KEY (manager, engineer)
 );
+
+CREATE VIEW "valid_user_relations" AS
+SELECT manager, engineer
+FROM public.users_relations ur
+JOIN public.users u ON ur.created_by = u.id
+WHERE u.is_deleted = false;
 
 CREATE VIEW "engineering_teams" AS
 SELECT 

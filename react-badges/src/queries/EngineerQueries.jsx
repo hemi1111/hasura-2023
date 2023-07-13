@@ -17,11 +17,10 @@ export const GET_ENGINEER = gql`
   }
 `;
 export const ADD_ENGINEER = gql`
-  mutation addEngineer {
-    insert_engineers(objects: { name: $name }) {
-      returning {
-        name
-      }
+  mutation addEngineer($name: String!) {
+    insert_users_one(object: { name: $name, roles: ["engineer"] }) {
+      id
+      name
     }
   }
 `;
@@ -36,13 +35,29 @@ export const UPDATE_ENGINEER = gql`
   }
 `;
 
-// const DELETE_ENGINEER = gql`
-//   mutation deleteEngineer {
-//     delete_users_relations(where: { engineer: { _eq: $id } }) {
-//       affected_rows
-//     }
-//     delete_engineers(where: { id: { _eq: &id } }) {
-//       affected_rows
-//     }
-//   }
-// `;
+export const DELETE_ENGINEER = gql`
+  mutation deleteEngineer($id: Int!) {
+    deleteRelationManager: delete_users_relations(
+      where: { manager: { _eq: $id } }
+    ) {
+      affected_rows
+    }
+    deleteRelationEngineer: delete_users_relations(
+      where: { engineer: { _eq: $id } }
+    ) {
+      affected_rows
+    }
+    delete_users(where: { id: { _eq: $id } }) {
+      affected_rows
+    }
+  }
+`;
+
+export const GET_ENGINEER_BY_MANAGER = gql`
+mutation relationsEngineerManager($id: Int!) {
+    get_engineers_by_manager(args: {manager_id: $id}) {
+      name
+    }
+  }
+  
+`;

@@ -1,0 +1,14 @@
+table:
+  name: valid_users
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - id
+        - name
+        - roles
+      filter: {}
+      query_root_fields:
+        - select
+      subscription_root_fields: []
