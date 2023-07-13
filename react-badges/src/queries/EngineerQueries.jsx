@@ -18,10 +18,9 @@ export const GET_ENGINEER = gql`
 `;
 export const ADD_ENGINEER = gql`
   mutation addEngineer($name: String!) {
-    insert_users_one(objects: { name: $name, roles: ["engineer"] }) {
-      returning {
-        name
-      }
+    insert_users_one(object: { name: $name, roles: ["engineer"] }) {
+      id
+      name
     }
   }
 `;
@@ -52,4 +51,13 @@ export const DELETE_ENGINEER = gql`
       affected_rows
     }
   }
+`;
+
+export const GET_ENGINEER_BY_MANAGER = gql`
+mutation relationsEngineerManager($id: Int!) {
+    get_engineers_by_manager(args: {manager_id: $id}) {
+      name
+    }
+  }
+  
 `;

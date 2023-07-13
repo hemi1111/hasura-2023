@@ -1,4 +1,4 @@
-DROP VIEW "engineers";
+DROP VIEW  "engineers";
 DROP VIEW "managers";
 DROP TABLE "requirements_definitions";
 DROP VIEW "engineering_teams";

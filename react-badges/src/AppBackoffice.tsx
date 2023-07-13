@@ -14,10 +14,11 @@ import EngingeerPage from "./views/engineer/EngineerPage";
 import BadgesPage from "./views/badges/BadgesPage";
 import EditManager from "./views/backoffice/EditManager";
 import CreateManager from "./views/backoffice/CreateManager";
-import CreateEngineer from "./views/engineer/CreateEngineer";
 import EditEngineer from "./views/engineer/EditEngineer";
 import CreateBadge from "./views/badges/CreateBadge";
 import EditBadge from "./views/badges/EditBadge";
+import CreateEngineer from "./components/engineer-components/CreateEngineer";
+import EngineerNavbar from "./components/EngineerNavbar";
 const menuItems = [
   {
     link: "managers",
@@ -66,7 +67,7 @@ const AppBackoffice: React.FC = () => (
           element: <EditEngineer />
         },
         {
-          path: "engineers/create",
+          path: "engineer/create",
           element: <CreateEngineer />
         },
         {
