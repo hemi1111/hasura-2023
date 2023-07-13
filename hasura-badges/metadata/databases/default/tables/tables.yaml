@@ -16,3 +16,5 @@
 - "!include public_requirements_definitions.yaml"
 - "!include public_users.yaml"
 - "!include public_users_relations.yaml"
+- "!include public_valid_user_relations.yaml"
+- "!include public_valid_users.yaml"
