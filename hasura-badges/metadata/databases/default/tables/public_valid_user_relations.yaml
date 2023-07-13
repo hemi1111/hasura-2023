@@ -1,0 +1,13 @@
+table:
+  name: valid_user_relations
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - engineer
+        - manager
+      filter: {}
+      query_root_fields:
+        - select
+      subscription_root_fields: []

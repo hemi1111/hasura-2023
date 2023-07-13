@@ -1,11 +1,14 @@
 import React from "react";
-import EngineerNavbar from '../../components/EngineerNavbar'
+import EngineerNavbar from "../../components/EngineerNavbar";
+import EngineerList from "../../components/engineer-components/EngineerList";
+
 const EngineerPage = () => {
-    return (
+  return (
     <div>
-        <EngineerNavbar />
+      <EngineerNavbar />
+      <EngineerList />
     </div>
-    )
-}
+  );
+};
 
 export default EngineerPage;
