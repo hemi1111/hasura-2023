@@ -48,7 +48,6 @@ VALUES
 (2, 'Dark Side Evangelist', 'This badge signifies a comprehensive understanding of the dark side of the Force. The holder demonstrates in-depth knowledge of Sith lore, mastery over dark side-focused Force abilities, and a profound understanding of the dark side philosophy. This individual may not necessarily embody the dark side''s malevolent aspects, instead leveraging this knowledge for a more nuanced understanding of the Force.','https://www.pngkey.com/png/detail/94-943600_vinilos-paredes-star-wars-vinilo-casco-dark-vader.png', 3, 3),
 (3, 'Droid Whisperer', 'This badge is bestowed upon those who have demonstrated a unique knack for understanding, repairing, and manipulating droid technology. The holder showcases not only technical prowess but also an uncanny ability to ''connect'' with droids on an almost emotional level. Possession of this badge signifies the individual''s masterful blend of engineering expertise and empathy towards our mechanical companions.', 'https://lumiere-a.akamaihd.net/v1/images/image_09ccd4d8.jpeg',3, 3);
 
-
 -- Insert data into requirements_definitions
 TRUNCATE requirements_definitions RESTART IDENTITY CASCADE;
 ALTER SEQUENCE requirements_definitions_id_seq RESTART WITH 22;
