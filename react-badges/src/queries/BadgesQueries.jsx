@@ -11,11 +11,25 @@ export const GET_BADGES = gql`
 `;
 
 export const ADD_BADGES = gql`
-  mutation createBadge {
-    insert_badges_definitions(objects: { title: "j", description: "j" }) {
+  mutation createBadge(
+    $title: String!
+    $description: String!
+    $req_title: String!
+    $req_description: String!
+  ) {
+    insert_badges_definitions(
+      objects: {
+        description: $description
+        title: $title
+        badges_definitions_requirements_definitions: {
+          data: { description: $req_description, title: $req_title }
+        }
+      }
+    ) {
       affected_rows
       returning {
-        id
+        description
+        title
       }
     }
   }
