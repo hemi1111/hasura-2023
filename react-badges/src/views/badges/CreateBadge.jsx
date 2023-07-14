@@ -44,19 +44,20 @@ const CreateBadge = () => {
   const navigate = useNavigate();
   const {
     register,
-    watch,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm();
 
   const onSubmit = (data) => {
-    const { badgeTitle, badgeDescription } = data;
+    const { badgeTitle, badgeDescription, badgeImage } = data;
 
     try {
       addBadges({
         variables: {
           title: badgeTitle,
           description: badgeDescription,
+          image: badgeImage,
           requirements: requirements.map((req) => ({
             title: req.reqTitle,
             description: req.reqDescription
@@ -80,11 +81,10 @@ const CreateBadge = () => {
           margin: "auto",
           marginTop: "10vh",
           width: "80%",
-          display: "flex",
-          justifyContent: "space-around"
+          display: "flex"
         }}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <TextField
             style={{ minWidth: "500px", marginBottom: "15px" }}
             {...register("badgeTitle", {
@@ -165,8 +165,6 @@ const CreateBadge = () => {
             </div>
           ))}
           <Button onClick={addRequirement}>Add More Requirements</Button>
-          <br />
-          <Button type="submit">Add</Button>
         </form>
         <Card sx={{ minWidth: 400, minHeight: 350, margin: "auto" }}>
           <span>
@@ -183,6 +181,9 @@ const CreateBadge = () => {
             <Typography variant="body2" color="text.secondary">
               {watch("badgeDescription")}
             </Typography>
+            <div style={{ marginLeft: "130px", marginTop: "100px" }}>
+              <Button onClick={handleSubmit(onSubmit)}>ADD BADGE</Button>
+            </div>
           </CardContent>
         </Card>
       </span>

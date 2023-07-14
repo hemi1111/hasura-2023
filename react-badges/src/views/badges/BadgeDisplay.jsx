@@ -9,7 +9,6 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Button, Avatar, Alert, Snackbar } from "@mui/material";
 import "./badgesStyle.css";
 import { Delete, Edit } from "@mui/icons-material";
-import InfoIcon from "@mui/icons-material/Info";
 
 const BadgeDisplay = () => {
   const { data, loading, error } = useQuery(GET_BADGES);
@@ -21,8 +20,6 @@ const BadgeDisplay = () => {
   const horizontal = "center";
   const vertical = "top";
 
-  useEffect(() => {});
-
   const handleDeleteBadge = (id) => {
     console.log(id);
     try {
@@ -33,17 +30,6 @@ const BadgeDisplay = () => {
       console.error("Error deleting badge:", error);
     }
   };
-  const [image, setImage] = useState([
-    {
-      url: "https://i.pinimg.com/736x/02/00/81/02008106afa50b933c8824616d39b3af.jpg"
-    },
-    {
-      url: "https://www.pngkey.com/png/detail/94-943600_vinilos-paredes-star-wars-vinilo-casco-dark-vader.png"
-    },
-    {
-      url: "https://lumiere-a.akamaihd.net/v1/images/image_09ccd4d8.jpeg"
-    }
-  ]);
 
   const handleOpen = (badge) => {
     setBadgeRequirements(badge.badges_definitions_requirements_definitions);
@@ -87,11 +73,7 @@ const BadgeDisplay = () => {
                 </p>
               </span>
               <Avatar sx={{ width: 150, height: 150, margin: "auto" }}>
-                <CardMedia
-                  component="img"
-                  image={image[index]?.url}
-                  alt="Badges"
-                />
+                <CardMedia component="img" image={badge.image} alt="Badges" />
               </Avatar>
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
