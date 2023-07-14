@@ -1,74 +1,50 @@
 import { useQuery } from "@apollo/client";
 import { GET_ENGINEERS } from "../../queries/EngineerQueries";
 import {
-  Avatar,
   Box,
-  Button,
-  Card,
-  CardContent,
-  Typography
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from "@mui/material";
-import { Delete, Edit, Person } from "@mui/icons-material";
-import DeleteEngineerDialog from "./DeleteEngineerDialog";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Row from "./Row";
 
 const EngineerList = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(-1);
   const { data, loading, error } = useQuery(GET_ENGINEERS);
   if (loading) return "Loading...";
   if (error) return `Loading error! ${error.message}`;
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-      {data &&
-        data.engineers.map((engineer, index) => {
-          return (
-            <Card
-              key={index}
-              sx={{
-                m: 1,
-                textAlign: "center",
-                width: "30ch"
-              }}
-            >
-              <CardContent>
-                <Avatar
-                  sx={{
-                    m: 2,
-                    width: "10ch",
-                    height: "10ch",
-                    margin: "auto",
-                    marginBottom: 1
-                  }}
-                >
-                  <Person sx={{ width: "5ch", height: "5ch" }} />
-                </Avatar>
-                {index === open && (
-                  <DeleteEngineerDialog
-                    name={engineer.name}
-                    id={engineer.id}
-                    onClose={() => setOpen(-1)}
-                    open={open === index}
-                  />
-                )}
-                <Typography variant="h4">{engineer.name}</Typography>
-                <div>
-                  <Button onClick={() => setOpen(index)} color="error">
-                    <Delete />
-                    &nbsp; Delete
-                  </Button>
-                  <Button
-                    onClick={() => navigate(`/engineer/edit/${engineer.id}`)}
-                  >
-                    <Edit />
-                    &nbsp; Edit
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+    <Box sx={{ m: 2 }}>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell width="50px" />
+              <TableCell width="300px" align="left">
+                Name
+              </TableCell>
+              <TableCell align="left">Managers</TableCell>
+              <TableCell align="center">Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.engineers.map((engineer, index) => (
+                <Row
+                  navigate={navigate}
+                  key={index}
+                  index={index}
+                  row={engineer}
+                />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };

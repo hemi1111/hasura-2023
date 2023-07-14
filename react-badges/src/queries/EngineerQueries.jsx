@@ -1,21 +1,31 @@
 import { gql } from "@apollo/client";
 
 export const GET_ENGINEERS = gql`
-  query getManagersAndEngineers {
-    engineers {
-      id
+  query getEngineers {
+    engineers(order_by: { name: asc }) {
       name
+      id
     }
   }
 `;
 export const GET_ENGINEER = gql`
-  query Get ($id: Int!){
+  query Get($id: Int!) {
     engineers(where: { id: { _eq: $id } }) {
       id
       name
     }
   }
 `;
+
+export const GET_MANAGERS_BY_ENGINEER = gql`
+  mutation getManagersByEngineer($id: Int!) {
+    get_manager_by_engineers(args: { engineer_id: $id }) {
+      name
+      id
+    }
+  }
+`;
+
 export const ADD_ENGINEER = gql`
   mutation addEngineer($name: String!) {
     insert_users_one(object: { name: $name, roles: ["engineer"] }) {
