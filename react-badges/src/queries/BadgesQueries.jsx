@@ -10,33 +10,21 @@ export const GET_BADGES = gql`
   }
 `;
 
-export const ADD_BADGES = gql`
-  mutation createBadge(
-    $title: String!
-    $description: String!
-    $req_title: String!
-    $req_description: String!
-  ) {
+export const CREATE_BADGE_MUTATION = gql`
+  mutation createBadge($title: String!, $description: String!) {
     insert_badges_definitions(
-      objects: {
-        description: $description
-        title: $title
-        badges_definitions_requirements_definitions: {
-          data: { description: $req_description, title: $req_title }
-        }
-      }
+      objects: { title: $title, description: $description }
     ) {
       affected_rows
       returning {
-        description
-        title
+        id
       }
     }
   }
 `;
 
 export const CREATE_BADGE_VERSION = gql`
-  mutation create_badge_version($id: Int!) {
+  mutation MyMutation($id: Int!) {
     create_badge_version(args: { badge_def_id: $id }) {
       title
     }

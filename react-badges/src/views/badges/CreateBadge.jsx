@@ -1,10 +1,10 @@
-import { TextField } from "@mui/material";
-import { useEffect } from "react";
+import { InputLabel, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
-  ADD_BADGES,
-  GET_BADGES,
-  CREATE_BADGE_VERSION
+  CREATE_BADGE_MUTATION,
+  CREATE_BADGE_VERSION,
+  GET_BADGES
 } from "../../queries/BadgesQueries";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -17,9 +17,10 @@ const CreateBadge = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const [createBadge, { loading, error, data }] = useMutation(ADD_BADGES, {
-    refetchQueries: [{ query: GET_BADGES }]
-  });
+  const [insert_badges_definitions, { loading, error, data }] = useMutation(
+    CREATE_BADGE_MUTATION,
+    { refetchQueries: [{ query: GET_BADGES }] }
+  );
   const [create_badges_version] = useMutation(CREATE_BADGE_VERSION, {
     refetchQueries: [{ query: GET_BADGES }]
   });
@@ -37,7 +38,7 @@ const CreateBadge = () => {
 
   const onSubmit = (formData) => {
     const { title, description, id } = formData;
-    createBadge({
+    insert_badges_definitions({
       variables: {
         title: title,
         description: description,
