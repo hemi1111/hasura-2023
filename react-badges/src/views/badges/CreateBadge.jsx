@@ -1,98 +1,88 @@
-import React from "react";
+import { TextField } from "@mui/material";
+import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_BADGES, GET_BADGES } from "../../queries/BadgesQueries";
-import { useForm, useFieldArray } from "react-hook-form";
+import {
+  ADD_BADGES,
+  GET_BADGES,
+  CREATE_BADGE_VERSION
+} from "../../queries/BadgesQueries";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const CreateBadge = () => {
-  const navigate = useNavigate();
-  const { register, handleSubmit, control } = useForm();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "requirements"
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
 
-  const [addBadges] = useMutation(ADD_BADGES, {
+  const navigate = useNavigate();
+  const [createBadge, { loading, error, data }] = useMutation(ADD_BADGES, {
     refetchQueries: [{ query: GET_BADGES }]
   });
-  console.log(addBadges);
+  const [create_badges_version] = useMutation(CREATE_BADGE_VERSION, {
+    refetchQueries: [{ query: GET_BADGES }]
+  });
 
-  const onSubmit = (data) => {
-    const { badgeTitle, badgeDescription, requirements } = data;
-    const created_by = 1;
-
-    try {
-      addBadges({
+  useEffect(() => {
+    if (data) {
+      create_badges_version({
         variables: {
-          title: badgeTitle,
-          description: badgeDescription,
-          requirements: requirements.map((req) => ({
-            title: req.title,
-            description: req.description
-          })),
-          created_by: created_by
+          id: data?.insert_badges_definitions?.returning[0]?.id
         }
       });
       navigate("/badges");
-      console.log("Badge added successfully!");
-    } catch (error) {
-      console.error("Error adding badge:", error);
     }
+  }, [data]);
+
+  const onSubmit = (formData) => {
+    const { title, description, id } = formData;
+    createBadge({
+      variables: {
+        title: title,
+        description: description,
+        id: id
+      }
+    });
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+  // console.log("dataaaaaa", data);
+
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="Badge Title"
-          {...register("badgeTitle")}
-        />
-        <br />
-
-        <input
-          type="text"
-          placeholder="Badge Description"
-          {...register("badgeDescription")}
-        />
-        <br />
-
-        <h3>Requirements</h3>
-        {fields.map((field, index) => (
-          <div key={field.id}>
-            <input
-              type="text"
-              placeholder={`Requirement Title ${index + 1}`}
-              {...register(`requirements.${index}.title`)}
-            />
-            <br />
-
-            <input
-              type="text"
-              placeholder={`Requirement Description ${index + 1}`}
-              {...register(`requirements.${index}.description`)}
-            />
-            <br />
-
-            <button type="button" onClick={() => remove(index)}>
-              Remove
-            </button>
-            <br />
-          </div>
-        ))}
-
-        <button
-          type="button"
-          onClick={() => append({ title: "", description: "" })}
-        >
-          Add Requirement
-        </button>
-        <br />
-
-        <button type="submit">Add Badge</button>
+        <div>
+          <TextField
+            label="Title"
+            name="title"
+            {...register("title", {
+              required: true
+            })}
+          />
+          <TextField
+            label="Description"
+            name="description"
+            {...register("description", {
+              required: true
+            })}
+          />
+          <TextField
+            name="id"
+            label="Id"
+            type="number"
+            {...register("id", { required: true })}
+          />
+          <button type="submit">Add</button>
+        </div>
       </form>
-    </div>
+    </>
   );
 };
-
 export default CreateBadge;
