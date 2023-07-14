@@ -2,16 +2,11 @@ import { gql } from "@apollo/client";
 
 export const GET_BADGES = gql`
   query getBadges {
-    badges_definitions {
-      id
-      title
+    badges_versions_last {
       description
+      requirements
       image
-      badges_definitions_requirements_definitions {
-        id
-        title
-        description
-      }
+      title
     }
   }
 `;

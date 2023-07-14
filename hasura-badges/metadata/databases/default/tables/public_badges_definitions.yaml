@@ -25,7 +25,6 @@ insert_permissions:
         modified_by: x-hasura-tenant-id
       columns:
         - description
-        - image
         - title
 select_permissions:
   - role: anonymous
@@ -48,7 +47,6 @@ select_permissions:
         - created_by
         - description
         - id
-        - image
         - modified_at
         - modified_by
         - title
@@ -62,7 +60,6 @@ update_permissions:
     permission:
       columns:
         - description
-        - image
         - title
       filter: {}
       check: null
