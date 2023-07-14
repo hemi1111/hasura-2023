@@ -57,7 +57,6 @@ CREATE TABLE "badges_definitions" (
   "id" SERIAL PRIMARY KEY,
   "title" VARCHAR(255) NOT NULL,
   "description" TEXT NOT NULL,
-  "image" VARCHAR(255),
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
   "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
