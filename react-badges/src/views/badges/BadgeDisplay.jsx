@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -32,7 +31,7 @@ const BadgeDisplay = () => {
   };
 
   const handleOpen = (badge) => {
-    setBadgeRequirements(badge.badges_definitions_requirements_definitions);
+    setBadgeRequirements(badge.requirements);
     setOpen(true);
   };
 
@@ -46,7 +45,7 @@ const BadgeDisplay = () => {
   return (
     <div className="badges-container-display">
       {data &&
-        data.badges_definitions.map((badge, index) => {
+        data.badges_versions_last.map((badge, index) => {
           return (
             <Card sx={{ maxWidth: 345, margin: "auto" }} key={index}>
               <span
