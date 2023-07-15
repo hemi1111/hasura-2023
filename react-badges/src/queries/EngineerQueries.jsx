@@ -2,9 +2,10 @@ import { gql } from "@apollo/client";
 
 export const GET_ENGINEERS = gql`
   query getEngineers {
-    engineers(order_by: { name: asc }) {
-      name
+    engineers_with_managers(order_by: {name: asc}) {
       id
+      name
+      managers
     }
   }
 `;

@@ -1,9 +1,7 @@
 import { ADD_ENGINEER, GET_ENGINEERS } from "../../queries/EngineerQueries";
-import { Box, Button, Dialog, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import EngineerForm from "./EngineerForm";
+import EngineerForm from "../../components/engineer-components/form/EngineerForm";
 
 const CreateEngineer = () => {
   const navigate = useNavigate();
@@ -18,10 +16,6 @@ const CreateEngineer = () => {
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
-  return (
-    <Dialog open={true}>
-      <EngineerForm onSubmit={handleFormSubmit} />
-    </Dialog>
-  );
+  return <EngineerForm onSubmit={handleFormSubmit} />;
 };
 export default CreateEngineer;

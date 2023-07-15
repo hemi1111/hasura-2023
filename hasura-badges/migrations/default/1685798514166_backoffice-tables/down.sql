@@ -1,5 +1,6 @@
-DROP VIEW IF EXISTS "engineering_teams";
+DROP VIEW IF EXISTS "engineers_with_managers";
 DROP VIEW IF EXISTS "valid_user_relations";
+DROP VIEW IF EXISTS "engineering_teams";
 DROP VIEW IF EXISTS "managers";
 DROP VIEW IF EXISTS "engineers";
 DROP VIEW IF EXISTS "valid_users";
