@@ -2,15 +2,11 @@ import { gql } from "@apollo/client";
 
 export const GET_BADGES = gql`
   query getBadges {
-    badges_definitions {
-      id
-      title
+    badges_versions_last {
       description
-      badges_definitions_requirements_definitions {
-        id
-        title
-        description
-      }
+      requirements
+      image
+      title
     }
   }
 `;
@@ -19,18 +15,21 @@ export const ADD_BADGES = gql`
   mutation addBadges(
     $title: String!
     $description: String!
+    $image: String!
     $requirements: [requirements_definitions_insert_input!]!
   ) {
     insert_badges_definitions(
       objects: {
         description: $description
         title: $title
+        image: $image
         badges_definitions_requirements_definitions: { data: $requirements }
       }
     ) {
       returning {
         description
         title
+        image
         badges_definitions_requirements_definitions {
           description
           title
