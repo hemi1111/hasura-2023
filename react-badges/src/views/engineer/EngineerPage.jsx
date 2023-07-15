@@ -1,8 +1,7 @@
 import React from "react";
-import EngineerNavbar from "../../components/EngineerNavbar";
-import EngineerList from "../../components/engineer-components/EngineerList";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import EngineersList from "../../containers/engineer/EngineersList";
 
 const EngineerPage = () => {
   return (
@@ -12,7 +11,7 @@ const EngineerPage = () => {
           <Button>Add New Engineer</Button>
         </Link>
       </div>
-      <EngineerList />
+      <EngineersList />
     </div>
   );
 };

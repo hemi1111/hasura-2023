@@ -5,7 +5,7 @@ import {
   UPDATE_ENGINEER
 } from "../../queries/EngineerQueries";
 import { useMutation, useQuery } from "@apollo/client";
-import EngineerForm from "./EngineerForm";
+import EngineerForm from "../../components/engineer-components/form/EngineerForm";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditEngineer = () => {
@@ -14,6 +14,7 @@ const EditEngineer = () => {
   const [updateEngineer, { loading, error }] = useMutation(UPDATE_ENGINEER, {
     refetchQueries: [{ query: GET_ENGINEERS }]
   });
+
   const { data } = useQuery(GET_ENGINEER, {
     variables: { id: id }
   });
@@ -24,10 +25,6 @@ const EditEngineer = () => {
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
-  return (
-    <Dialog open={true}>
-      <EngineerForm user={data?.engineers} onSubmit={handleFormSubmit} />
-    </Dialog>
-  );
+  return <EngineerForm user={data?.engineers} onSubmit={handleFormSubmit} />;
 };
 export default EditEngineer;

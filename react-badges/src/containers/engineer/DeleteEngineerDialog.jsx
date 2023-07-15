@@ -20,16 +20,13 @@ const DeleteEngineerDialog = ({ open, id, name, onClose }) => {
   });
   const [getEngineers, { data }] = useMutation(GET_ENGINEER_BY_MANAGER);
   const handleClick = () => {
-    deleteEngineer({ variables: { id: id } });
-    onClose();
+    deleteEngineer({ variables: { id: id } }).then(() => onClose());
   };
   useEffect(() => {
     getEngineers({
       variables: { id: id }
     });
   }, []);
-  if (loading) return "Submitting...";
-  if (error) return `Submission error! ${error.message}`;
 
   return (
     <Dialog open={open} onClose={onClose}>
