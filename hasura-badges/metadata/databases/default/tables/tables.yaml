@@ -8,6 +8,7 @@
 - "!include public_engineer_to_manager_badge_candidature_proposals.yaml"
 - "!include public_engineering_teams.yaml"
 - "!include public_engineers.yaml"
+- "!include public_engineers_with_managers.yaml"
 - "!include public_issuing_requests.yaml"
 - "!include public_issuing_requests_view.yaml"
 - "!include public_manager_badge_candidature_proposal_response.yaml"

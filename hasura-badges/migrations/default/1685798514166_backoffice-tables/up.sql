@@ -73,3 +73,18 @@ CREATE TABLE "requirements_definitions" (
   "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
   "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT
 );
+
+CREATE VIEW "engineers_with_managers" AS
+SELECT 
+    e.id AS id,
+    e.name AS name,
+    CASE 
+        WHEN COUNT(m.id) = 0 THEN '[]'::json
+        ELSE json_agg(json_build_object('id', m.id, 'name', m.name))
+    END AS managers
+FROM "users" e
+LEFT JOIN "valid_user_relations" ur ON e.id = ur.engineer
+LEFT JOIN "users" m ON ur.manager = m.id
+WHERE e.roles @> '["engineer"]'::jsonb
+AND e.is_deleted = false
+GROUP BY e.id, e.name;
