@@ -4,21 +4,29 @@ import {
   TableCell,
   Collapse,
   Box,
-  Typography,
   Table,
   TableHead,
   TableBody,
-  Button,
-  TextField
+  Button
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import DeleteBadge from "./DeleteBadge";
 
 function BadgeTable(props) {
-  const { row, data } = props;
+  const { row } = props;
   const [openStates, setOpenStates] = useState({});
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const handleDeleteClick = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteClose = () => {
+    setShowDeleteDialog(false);
+  };
 
   const handleOpenRequirements = (badgeId) => {
     setOpenStates((prevOpenStates) => ({
@@ -47,7 +55,7 @@ function BadgeTable(props) {
           {row.title}
         </TableCell>
         <TableCell align="center">
-          <Button size="small">
+          <Button size="small" onClick={handleDeleteClick}>
             <Delete color="error" fontSize="medium" />
           </Button>
         </TableCell>
@@ -56,6 +64,7 @@ function BadgeTable(props) {
             <Edit fontSize="medium" />
           </Button>
         </TableCell>
+        {showDeleteDialog && <DeleteBadge onClose={handleDeleteClose} />}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
