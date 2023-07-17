@@ -10,7 +10,7 @@ export const GET_BADGES = gql`
   }
 `;
 
-export const CREATE_BADGE_MUTATION = gql`
+export const CREATE_BADGE = gql`
   mutation createBadge(
     $title: String!
     $description: String!
@@ -35,7 +35,7 @@ export const CREATE_BADGE_MUTATION = gql`
 `;
 
 export const CREATE_BADGE_VERSION = gql`
-  mutation MyMutation($id: Int!) {
+  mutation createBadgeVersion($id: Int!) {
     create_badge_version(args: { badge_def_id: $id }) {
       title
     }

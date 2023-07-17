@@ -15,10 +15,9 @@ import {
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
 
-  console.log(data);
   return (
     <div>
-      <Container maxWidth="md" sx={{ margin: "40px auto" }} component={Paper}>
+      <Container sx={{ m: "auto" }} component={Paper}>
         <TableContainer>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
@@ -31,8 +30,8 @@ const BadgeDisplay = () => {
             </TableHead>
             <TableBody>
               {data &&
-                data.badges_versions_last.map((row) => (
-                  <BadgeTable key={row.id} row={row} data={data} />
+                data.badges_versions_last.map((data) => (
+                  <BadgeTable key={data.id} data={data} />
                 ))}
             </TableBody>
           </Table>
