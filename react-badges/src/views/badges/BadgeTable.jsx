@@ -14,8 +14,10 @@ import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteBadge from "./DeleteBadge";
+import { useNavigate } from "react-router-dom";
 
 function BadgeTable(props) {
+  const navigate = useNavigate();
   const { data } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState();
@@ -31,6 +33,9 @@ function BadgeTable(props) {
     }));
   };
 
+  const handleEditClick = (edit_badge_id) => {
+    navigate(`/badges/edit/${edit_badge_id}`);
+  };
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -56,7 +61,7 @@ function BadgeTable(props) {
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small">
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
             <Edit fontSize="medium" />
           </Button>
         </TableCell>

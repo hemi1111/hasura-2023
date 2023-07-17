@@ -53,3 +53,13 @@ export const DELETE_BADGE = gql`
     }
   }
 `;
+
+export const GET_SINGLE_INFO = gql`
+  query getSingleInfo($id: Int!) {
+    badges_versions_last(where: { id: { _eq: $id } }) {
+      description
+      requirements
+      title
+    }
+  }
+`;

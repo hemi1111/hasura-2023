@@ -18,7 +18,7 @@ const CreateBadge = () => {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
-  const { register, handleSubmit, control, watch } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   useEffect(() => {
