@@ -15,6 +15,7 @@ import {
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
 
+  console.log("display", data);
   return (
     <div>
       <Container sx={{ m: "auto" }} component={Paper}>

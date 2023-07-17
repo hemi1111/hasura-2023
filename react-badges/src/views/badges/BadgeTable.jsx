@@ -36,6 +36,8 @@ function BadgeTable(props) {
   const handleEditClick = (edit_badge_id) => {
     navigate(`/badges/edit/${edit_badge_id}`);
   };
+
+  console.log("table", data);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -82,8 +84,10 @@ function BadgeTable(props) {
                 <TableBody>
                   {data.requirements.map((requirement, index) => (
                     <TableRow key={index} style={{ maxWidth: "80%" }}>
-                      <TableCell>{requirement.title}</TableCell>
-                      <TableCell>{requirement.description}</TableCell>
+                      <TableCell>{requirement.title.title}</TableCell>
+                      <TableCell>
+                        {requirement.description.description}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

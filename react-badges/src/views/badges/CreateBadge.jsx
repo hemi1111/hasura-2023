@@ -7,7 +7,7 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import BadgesNavbar from "../../components/BadgesNavbar";
 const CreateBadge = () => {
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
@@ -18,7 +18,15 @@ const CreateBadge = () => {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      requirements: [{ title: "", description: "" }]
+    }
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "requirements"
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,24 +41,18 @@ const CreateBadge = () => {
   }, [data]);
 
   const onSubmit = (formData) => {
-    const {
-      title,
-      description,
-      id,
-      requirement_title,
-      requirement_description
-    } = formData;
+    const { title, description, requirements } = formData;
     insert_badges_definitions({
       variables: {
         title: title,
         description: description,
-        id: id,
-        req_title: requirement_title,
-        req_description: requirement_description
+        requirements: requirements.map((requirement) => ({
+          title: requirement.title,
+          description: requirement.description
+        }))
       }
     });
   };
-
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -59,6 +61,7 @@ const CreateBadge = () => {
     return <p>Error: {error.message}</p>;
   }
 
+  console.log();
   return (
     <div>
       <BadgesNavbar />
@@ -82,20 +85,28 @@ const CreateBadge = () => {
             />
 
             <InputLabel>Requirements</InputLabel>
-            <TextField
-              label="Requirement Title"
-              name={"requirement_title"}
-              {...register("requirement_title", {
-                required: true
-              })}
-            />
-            <TextField
-              label="Requirement Description"
-              name={"requirement_description"}
-              {...register("requirement_description", {
-                required: true
-              })}
-            />
+            {fields.map((field, index) => (
+              <div key={field.id}>
+                <TextField
+                  label="Requirement Title"
+                  name={`requirements.${index}.title`}
+                  {...register(`requirements.${index}.title`, {
+                    required: true
+                  })}
+                />
+                <TextField
+                  label="Requirement Description"
+                  name={`requirements.${index}.description`}
+                  {...register(`requirements.${index}.description`, {
+                    required: true
+                  })}
+                />
+                <IconButton onClick={() => remove(index)}>Remove</IconButton>
+              </div>
+            ))}
+            <IconButton onClick={() => append({ title: "", description: "" })}>
+              Add
+            </IconButton>
           </div>
           <button type="submit">Add</button>
         </form>

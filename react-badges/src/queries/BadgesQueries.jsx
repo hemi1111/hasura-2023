@@ -15,16 +15,13 @@ export const CREATE_BADGE = gql`
   mutation createBadge(
     $title: String!
     $description: String!
-    $req_title: String!
-    $req_description: String!
+    $requirements: [requirements_definitions_insert_input!]!
   ) {
     insert_badges_definitions(
       objects: {
         title: $title
         description: $description
-        badges_definitions_requirements_definitions: {
-          data: { description: $req_description, title: $req_title }
-        }
+        badges_definitions_requirements_definitions: { data: $requirements }
       }
     ) {
       affected_rows
