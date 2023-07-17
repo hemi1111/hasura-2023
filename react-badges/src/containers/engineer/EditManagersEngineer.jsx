@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 const EditManagersEngineer = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [updateEngineer, { loading, error }] = useMutation(UPDATE_ENGINEER, {
+    refetchQueries: [{ query: GET_ENGINEERS }]
+  });
+
+  const { data } = useQuery(GET_ENGINEER, {
+    variables: { id: id }
+  });
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>

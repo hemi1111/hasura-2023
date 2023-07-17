@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button, IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import DeleteEngineerDialog from "../../../containers/engineer/DeleteEngineerDialog";
+import DeleteEngineer from "../../../containers/engineer/DeleteEngineer";
 
 const Row = (props) => {
   const { index, row, navigate } = props;
@@ -34,7 +34,7 @@ const Row = (props) => {
       </TableCell>
       <TableCell align="center">
         {open && (
-          <DeleteEngineerDialog
+          <DeleteEngineer
             name={name}
             id={id}
             onClose={() => setOpen(false)}

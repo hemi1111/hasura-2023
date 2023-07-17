@@ -88,3 +88,23 @@ LEFT JOIN "users" m ON ur.manager = m.id
 WHERE e.roles @> '["engineer"]'::jsonb
 AND e.is_deleted = false
 GROUP BY e.id, e.name;
+
+CREATE OR REPLACE FUNCTION get_managers_without_relation(id INTEGER)
+  RETURNS SETOF users AS
+$$
+BEGIN
+  RETURN QUERY
+  SELECT u.*
+  FROM users u
+  LEFT JOIN (
+    SELECT manager
+    FROM users_relations
+    WHERE engineer = id
+  ) r ON u.id = r.manager
+  WHERE u.roles @> jsonb_build_array('manager') AND r.manager IS NULL;
+
+  RETURN;
+END;
+$$
+LANGUAGE plpgsql;
+
