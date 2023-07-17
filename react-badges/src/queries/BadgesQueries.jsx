@@ -2,10 +2,11 @@ import { gql } from "@apollo/client";
 
 export const GET_BADGES = gql`
   query getBadges {
-    badges_versions_last {
+    badges_versions_last(where: { is_deleted: { _eq: false } }) {
       description
       requirements
       title
+      id
     }
   }
 `;
@@ -36,8 +37,19 @@ export const CREATE_BADGE = gql`
 
 export const CREATE_BADGE_VERSION = gql`
   mutation createBadgeVersion($id: Int!) {
-    create_badge_version(args: { badge_def_id: $id }) {
+    create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
       title
+    }
+  }
+`;
+
+export const DELETE_BADGE = gql`
+  mutation deleteBadge($badge_def_id: Int!) {
+    create_badge_version(
+      args: { badge_def_id: $badge_def_id, is_deleted: true }
+    ) {
+      id
+      is_deleted
     }
   }
 `;

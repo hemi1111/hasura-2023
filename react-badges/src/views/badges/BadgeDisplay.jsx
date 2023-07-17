@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_BADGES } from "../../queries/BadgesQueries";
 import BadgeTable from "./BadgeTable";
 import {
