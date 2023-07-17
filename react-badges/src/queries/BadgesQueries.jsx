@@ -5,47 +5,39 @@ export const GET_BADGES = gql`
     badges_versions_last {
       description
       requirements
-      image
       title
     }
   }
 `;
 
-export const ADD_BADGES = gql`
-  mutation addBadges(
+export const CREATE_BADGE_MUTATION = gql`
+  mutation createBadge(
     $title: String!
     $description: String!
-    $image: String!
-    $requirements: [requirements_definitions_insert_input!]!
+    $req_title: String!
+    $req_description: String!
   ) {
     insert_badges_definitions(
       objects: {
-        description: $description
         title: $title
-        image: $image
-        badges_definitions_requirements_definitions: { data: $requirements }
+        description: $description
+        badges_definitions_requirements_definitions: {
+          data: { description: $req_description, title: $req_title }
+        }
       }
     ) {
+      affected_rows
       returning {
-        description
-        title
-        image
-        badges_definitions_requirements_definitions {
-          description
-          title
-        }
+        id
       }
     }
   }
 `;
 
-export const DELETE_BADGE = gql`
-  mutation deleteBadges($id: Int!) {
-    delete_requirements_definitions(where: { badge_id: { _eq: $id } }) {
-      affected_rows
-    }
-    delete_badges_definitions(where: { id: { _eq: $id } }) {
-      affected_rows
+export const CREATE_BADGE_VERSION = gql`
+  mutation MyMutation($id: Int!) {
+    create_badge_version(args: { badge_def_id: $id }) {
+      title
     }
   }
 `;
