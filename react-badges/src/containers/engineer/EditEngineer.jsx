@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Box, Button, List, ListItem, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ADD_ENGINEER_MANAGER_RELATION,
@@ -12,11 +12,11 @@ import {
 } from "../../queries/EngineerQueries";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import ManagerList from "../../components/engineer-components/form/ManagerList";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import EngineerForm from "../../components/engineer-components/form/EngineerForm";
+import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
 
-const EditManagersEngineer = () => {
+const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const form = useForm({
@@ -75,8 +75,9 @@ const EditManagersEngineer = () => {
     });
   }, []);
 
-  const handleDelete = (engineer, manager) => {
-    deleteRelation({ variables: { engineer, manager } });
+  const handleDelete = (manager) => {
+    // console.log({ engineer: id, manager });
+    deleteRelation({ variables: { engineer: id, manager } });
   };
   const handleUpdate = (id, oldManager, newManager) => {
     updateRelation({ variables: { id, oldManager, newManager } });
@@ -108,12 +109,15 @@ const EditManagersEngineer = () => {
           name={engineerRelations?.name}
           onSubmit={handleNameChange}
         />
-        <ManagerList
+        <EngineerManagers
           onAdd={handleAdd}
           form={form}
           managers={notRelatedManagers}
         />
-        <EngineerRelations managers={engineerRelations?.managers} />
+        <EngineerRelations
+          onDelete={handleDelete}
+          managers={engineerRelations?.managers}
+        />
 
         <div style={{ margin: "auto", marginTop: "2ch" }}>
           <Button
@@ -128,4 +132,4 @@ const EditManagersEngineer = () => {
     </div>
   );
 };
-export default EditManagersEngineer;
+export default EditEngineer;

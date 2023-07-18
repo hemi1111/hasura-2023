@@ -1,7 +1,5 @@
 import {
   Button,
-  List,
-  ListItem,
   Paper,
   Table,
   TableBody,
@@ -11,11 +9,21 @@ import {
   TableRow
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import { useState } from "react";
+import DeleteEngineerRelation from "../dialog/DeleteEngineerRelation";
+import EditEngineerRelation from "../dialog/EditEngineerRelation";
 
-const EngineerRelations = ({ managers }) => {
-  // return (
-  //   <List>
-  //     {managers?.map((relation, index) => {
+const EngineerRelations = ({ managers, onDelete }) => {
+  const [open, setOpen] = useState({ edit: -1, delete: -1 });
+  const handleDelete = (id) => {
+    onDelete(id);
+    setOpen((old) => ({ ...old, delete: -1 }));
+  };
+  const handleEdit = (id) => {
+    console.log(id);
+    setOpen((old) => ({ ...old, edit: -1 }));
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: "40ch" }} size="small">
@@ -35,13 +43,34 @@ const EngineerRelations = ({ managers }) => {
               <TableCell component="th" scope="row">
                 {relation.name}
               </TableCell>
+              {index === open.delete && (
+                <DeleteEngineerRelation
+                  name={relation.name}
+                  open={index === open.delete}
+                  onClose={() => setOpen((old) => ({ ...old, delete: -1 }))}
+                  onClick={() => handleDelete(relation.id)}
+                />
+              )}
+              {index === open.edit && (
+                <EditEngineerRelation
+                  name={relation.name}
+                  open={index === open.edit}
+                  onClose={() => setOpen((old) => ({ ...old, edit: -1 }))}
+                  onClick={() => handleEdit(relation.id)}
+                />
+              )}
               <TableCell>
-                <Button>
+                <Button
+                  onClick={() => setOpen((old) => ({ ...old, edit: index }))}
+                >
                   <Edit />
                 </Button>
               </TableCell>
               <TableCell>
-                <Button color="error">
+                <Button
+                  onClick={() => setOpen((old) => ({ ...old, delete: index }))}
+                  color="error"
+                >
                   <Delete />
                 </Button>
               </TableCell>
@@ -50,19 +79,7 @@ const EngineerRelations = ({ managers }) => {
         </TableBody>
       </Table>
     </TableContainer>
-    // <ListItem dense key={index}>
-    //   {relation.name}
-    // <Button>
-    //   <Edit />
-    // </Button>
-    // <Button color="error">
-    //   <Delete />
-    // </Button>
-    // </ListItem>
   );
-  //     })}
-  //   </List>
-  // );
 };
 
 export default EngineerRelations;

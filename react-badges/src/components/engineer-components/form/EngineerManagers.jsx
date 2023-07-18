@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const ManagerList = ({ form, managers, onAdd }) => {
+const EngineerManagers = ({ form, managers, onAdd }) => {
   const {
     handleSubmit,
     control,
@@ -69,4 +69,4 @@ const ManagerList = ({ form, managers, onAdd }) => {
   );
 };
 
-export default ManagerList;
+export default EngineerManagers;

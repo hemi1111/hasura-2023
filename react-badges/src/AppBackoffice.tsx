@@ -17,7 +17,7 @@ import CreateManager from "./views/backoffice/CreateManager";
 import CreateBadge from "./views/badges/CreateBadge";
 import EditBadge from "./views/badges/EditBadge";
 import CreateEngineer from "./containers/engineer/CreateEngineer";
-import EditManagersEngineer from "./containers/engineer/EditManagersEngineer";
+import EditEngineer from "./containers/engineer/EditEngineer";
 const menuItems = [
   {
     link: "managers",
@@ -63,7 +63,7 @@ const AppBackoffice: React.FC = () => (
         },
         {
           path: "engineer/edit/:id",
-          element: <EditManagersEngineer />
+          element: <EditEngineer />
         },
         {
           path: "engineer/create",
