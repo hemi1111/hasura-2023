@@ -1,7 +1,6 @@
 import { Button, Dialog, DialogTitle, List, ListItem } from "@mui/material";
 
 const DeleteEngineerDialog = ({ open, onClick, name, onClose, engineers }) => {
-  console.log(engineers);
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Are you sure you want to delete {name}?</DialogTitle>

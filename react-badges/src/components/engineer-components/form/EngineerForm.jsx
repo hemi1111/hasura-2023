@@ -1,23 +1,19 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
-const EngineerForm = ({ user, onSubmit }) => {
-  const name = user && user[0]?.name;
+const EngineerForm = ({ name, onSubmit }) => {
   const navigate = useNavigate();
   const {
     register,
     setValue,
     formState: { errors },
     handleSubmit
-  } = useForm({
-    mode: "onChange"
-  });
-
+  } = useForm();
   useEffect(() => {
-    setValue("name", user && user[0]?.name);
-  }, [user]);
+    setValue("name", name);
+  }, [name]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -31,12 +27,14 @@ const EngineerForm = ({ user, onSubmit }) => {
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Typography
-          variant="h3"
-          sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
-        >
-          Add Engineer:
-        </Typography>
+        {!name && (
+          <Typography
+            variant="h3"
+            sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
+          >
+            Add Engineer:
+          </Typography>
+        )}
         <TextField
           focused
           required
@@ -59,19 +57,25 @@ const EngineerForm = ({ user, onSubmit }) => {
           error={!!errors?.name}
           helperText={errors?.name?.message}
         />
-        <div style={{ margin: "auto", marginTop: "2ch" }}>
-          <Button variant="contained" onClick={() => navigate("/engineers")}>
-            Cancel
+        {name ? (
+          <Button sx={{ width: "100%" }} type="submit">
+            Edit
           </Button>
-          <Button
-            color="success"
-            sx={{ marginLeft: "2ch" }}
-            variant="contained"
-            type="submit"
-          >
-            Save
-          </Button>
-        </div>
+        ) : (
+          <div style={{ margin: 1, margin: "auto", marginTop: "2ch" }}>
+            <Button variant="contained" onClick={() => navigate("/engineers")}>
+              Cancel
+            </Button>
+            <Button
+              color="success"
+              sx={{ marginLeft: "2ch" }}
+              variant="contained"
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </Box>
     </div>
   );
