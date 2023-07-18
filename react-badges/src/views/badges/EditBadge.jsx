@@ -5,6 +5,7 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { TextField, Button, InputLabel, IconButton } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_SINGLE_INFO, EDIT_BADGE } from "../../queries/BadgesQueries";
+import { RemoveCircle } from "@mui/icons-material";
 
 const EditBadge = () => {
   const navigate = useNavigate();
@@ -62,8 +63,9 @@ const EditBadge = () => {
     <div>
       <BadgesNavbar />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div style={{ marginTop: "50px", textAlign: "center" }}>
           <TextField
+            sx={{ marginBottom: "10px", minWidth: "600px" }}
             label="Title"
             name="title"
             {...register("title", {
@@ -72,15 +74,14 @@ const EditBadge = () => {
           />
           <br />
           <TextField
-            sx={{ minWidth: "600px" }}
+            sx={{ minWidth: "600px", marginBottom: "20px" }}
             multiline
-            minRows={5}
             label="Description"
             name="description"
             {...register("description")}
           />
           <br />
-          <InputLabel>Requirements</InputLabel>
+          <InputLabel sx={{ marginBottom: "10px" }}>Requirements</InputLabel>
           {fields.map((field, index) => (
             <div key={field.id}>
               <Controller
@@ -89,6 +90,8 @@ const EditBadge = () => {
                 defaultValue={field.title}
                 render={({ field }) => (
                   <TextField
+                    multiline
+                    sx={{ minWidth: "600px", marginBottom: "10px" }}
                     {...field}
                     label={`Requirement Title ${index + 1}`}
                   />
@@ -103,21 +106,29 @@ const EditBadge = () => {
                   <TextField
                     {...field}
                     multiline
-                    sx={{ minWidth: "600px" }}
+                    sx={{ minWidth: "600px", marginBottom: "30px" }}
                     minRows={2}
                     label={`Requirement Description ${index + 1}`}
                   />
                 )}
               />
-              <br />
-              <IconButton onClick={() => remove(index)}>Remove Req</IconButton>
+              <RemoveCircle
+                sx={{
+                  marginRight: "-35px",
+                  marginLeft: "10px",
+                  marginTop: "7px",
+                  cursor: "pointer"
+                }}
+                onClick={() => remove(index)}
+              />
             </div>
           ))}
           <IconButton onClick={() => append({ title: "", description: "" })}>
             Add Req
           </IconButton>
+          <br />
+          <Button type="submit">Confirm</Button>
         </div>
-        <Button type="submit">Confirm</Button>
       </form>
     </div>
   );
