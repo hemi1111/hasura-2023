@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Box, Button, List, ListItem, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ADD_ENGINEER_MANAGER_RELATION,
@@ -11,17 +11,13 @@ import {
   UPDATE_ENGINEER_MANAGER_RELATION
 } from "../../queries/EngineerQueries";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import ManagerList from "../../components/engineer-components/form/ManagerList";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import EngineerForm from "../../components/engineer-components/form/EngineerForm";
+import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
 
-const EditManagersEngineer = () => {
+const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const form = useForm({
-    mode: "onChange"
-  });
 
   const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
     refetchQueries: [{ query: GET_ENGINEERS }]
@@ -75,10 +71,10 @@ const EditManagersEngineer = () => {
     });
   }, []);
 
-  const handleDelete = (engineer, manager) => {
-    deleteRelation({ variables: { engineer, manager } });
+  const handleDelete = (manager) => {
+    deleteRelation({ variables: { engineer: id, manager } });
   };
-  const handleUpdate = (id, oldManager, newManager) => {
+  const handleEdit = ({oldManager, newManager}) => {
     updateRelation({ variables: { id, oldManager, newManager } });
   };
   const handleAdd = ({ manager }) => {
@@ -104,16 +100,17 @@ const EditManagersEngineer = () => {
           Edit managers for {engineerRelations?.name}:
         </Typography>
         <EngineerForm
-          form={form}
           name={engineerRelations?.name}
           onSubmit={handleNameChange}
         />
-        <ManagerList
-          onAdd={handleAdd}
-          form={form}
-          managers={notRelatedManagers}
+        <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
+        <EngineerRelations
+          name={engineerRelations?.name}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          notRelatedManagers={notRelatedManagers}
+          managers={engineerRelations?.managers}
         />
-        <EngineerRelations managers={engineerRelations?.managers} />
 
         <div style={{ margin: "auto", marginTop: "2ch" }}>
           <Button
@@ -128,4 +125,4 @@ const EditManagersEngineer = () => {
     </div>
   );
 };
-export default EditManagersEngineer;
+export default EditEngineer;

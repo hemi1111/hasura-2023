@@ -73,7 +73,22 @@ CREATE TABLE "requirements_definitions" (
   "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
   "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT
 );
-
+CREATE OR REPLACE FUNCTION get_unassigned_engineers(manager_id INTEGER)
+  RETURNS SETOF users AS $$
+BEGIN
+  RETURN QUERY
+  SELECT u.*
+  FROM users u
+  WHERE u.roles @> '["engineer"]'::jsonb
+    AND NOT EXISTS (
+      SELECT 1
+      FROM users_relations ur
+      WHERE ur.engineer = u.id
+        AND ur.manager = manager_id
+    )
+    AND u.id <> manager_id; 
+END;
+$$ LANGUAGE plpgsql;
 CREATE OR REPLACE VIEW "engineers_with_managers" AS
 SELECT 
     e.id AS id,
