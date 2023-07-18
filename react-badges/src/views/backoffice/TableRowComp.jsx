@@ -15,13 +15,29 @@ import IconButton from "@mui/material/IconButton";
 import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useMutation } from "@apollo/client";
+import { GET_ENGINEERS_BY_MANAGER } from "../../queries/ManagerQueries";
+import { Link } from "react-router-dom";
 
 function TableRowComp(props) {
   const { row, deleteManager } = props;
   const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(true);
+  const [managerName, setManagerName] = useState(row.name);
   const { id } = row;
-  // if (loading) return <TableCell>Loading...</TableCell>;
+  const [getEngineerByMngr, { data, loading, error }] = useMutation(
+    GET_ENGINEERS_BY_MANAGER
+  );
+  const handleCollapse = (id) => {
+    getEngineerByMngr({
+      variables: { id: id }
+    });
+    setOpen(!open);
+  };
+  if (loading) return;
+  if (error) return;
+
+  const arr = data ? [...data.get_engineers_by_manager] : null;
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -29,7 +45,7 @@ function TableRowComp(props) {
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={() => handleCollapse(id)}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
@@ -39,12 +55,15 @@ function TableRowComp(props) {
             {row.name}
           </TableCell>
         ) : (
-          <TextField
-            value={row.name}
-            type="text"
-            label="Name"
-            variant="outlined"
-          />
+          <TableCell>
+            <TextField
+              type="text"
+              variant="outlined"
+              onChange={(e) => {
+                setManagerName(e.target.value);
+              }}
+            />
+          </TableCell>
         )}
         <TableCell align="center">
           <Button
@@ -60,45 +79,27 @@ function TableRowComp(props) {
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={() => setEdit(!edit)}>
+          <Button component={Link} to={`/managers/edit/${id}`} size="small">
             <Edit fontSize="inherit" />
             Edit
           </Button>
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                Engineers by Manager
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
                 <TableBody>
-                  {/* {row.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))} */}
+                  <TableRow>
+                    {data &&
+                      arr.map((engineer) => (
+                        <TableCell key={engineer.id}>{engineer.name}</TableCell>
+                      ))}
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
