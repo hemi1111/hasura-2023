@@ -5,21 +5,19 @@ import {
   FormHelperText,
   InputLabel,
   MenuItem,
-  Select,
-  Typography
+  Select
 } from "@mui/material";
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
-const ManagerList = ({ form, managers, onAdd }) => {
+const EngineerManagers = ({ onClose, edit, managers, onAdd }) => {
   const {
     handleSubmit,
     control,
     reset,
     formState: { errors }
-  } = form;
+  } = useForm({ mode: "onChange" });
 
   const handleFormSubmit = (data) => {
-    console.log(data);
     reset();
     onAdd(data);
   };
@@ -43,8 +41,16 @@ const ManagerList = ({ form, managers, onAdd }) => {
               display: "flex"
             }}
           >
-            <InputLabel>Add manager</InputLabel>
-            <Select label="Add manager" {...field} error={!!errors.manager}>
+            {edit ? (
+              <InputLabel>Change manager</InputLabel>
+            ) : (
+              <InputLabel>Add manager</InputLabel>
+            )}
+            <Select
+              label={edit ? "Change manager" : "Add manager"}
+              {...field}
+              error={!!errors.manager}
+            >
               {managers?.map((manager, index) => {
                 return (
                   <MenuItem key={index} value={manager.id}>
@@ -62,11 +68,26 @@ const ManagerList = ({ form, managers, onAdd }) => {
         )}
       />
 
-      <Button sx={{ marginBottom: 2, width: "100%" }} type="submit">
-        ADD
-      </Button>
+      {edit ? (
+        <>
+          <Button sx={{ marginBottom: 2, width: "50%" }} onClick={onClose}>
+            CANCEL
+          </Button>
+          <Button
+            color="success"
+            sx={{ marginBottom: 2, width: "50%" }}
+            type="submit"
+          >
+            EDIT
+          </Button>
+        </>
+      ) : (
+        <Button sx={{ marginBottom: 2, width: "100%" }} type="submit">
+          ADD
+        </Button>
+      )}
     </Box>
   );
 };
 
-export default ManagerList;
+export default EngineerManagers;
