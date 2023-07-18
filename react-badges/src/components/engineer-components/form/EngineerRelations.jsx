@@ -26,7 +26,6 @@ const EngineerRelations = ({
     setOpen((old) => ({ ...old, delete: -1 }));
   };
   const handleEdit = (data) => {
-    console.log(data);
     onEdit(data);
     setOpen((old) => ({ ...old, edit: -1 }));
   };
@@ -55,7 +54,7 @@ const EngineerRelations = ({
                   name={relation.name}
                   open={index === open.delete}
                   onClose={() => setOpen((old) => ({ ...old, delete: -1 }))}
-                  onClick={(e) => handleDelete(e)}
+                  onClick={() => handleDelete(relation.id)}
                 />
               )}
               {index === open.edit && (
