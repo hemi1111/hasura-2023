@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button, IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import DeleteEngineerDialog from "../../../containers/engineer/DeleteEngineerDialog";
+import DeleteEngineer from "../../../containers/engineer/DeleteEngineer";
 
 const Row = (props) => {
   const { index, row, navigate } = props;
@@ -16,6 +16,9 @@ const Row = (props) => {
       <TableCell>{`${index + 1}. `}</TableCell>
       <TableCell align="center" component="th" scope="row">
         {name}
+      </TableCell>
+      <TableCell align="center">{managersList}</TableCell>
+      <TableCell align="center">
         <IconButton
           color="primary"
           onClick={() => navigate(`/engineer/edit/${id}`)}
@@ -23,18 +26,10 @@ const Row = (props) => {
           <Edit fontSize="small" />
         </IconButton>
       </TableCell>
-      <TableCell align="center">
-        {managersList}
-        <IconButton
-          color="primary"
-          onClick={() => navigate(`/engineer-manager/edit/${id}`)}
-        >
-          <Edit fontSize="small" />
-        </IconButton>
-      </TableCell>
+
       <TableCell align="center">
         {open && (
-          <DeleteEngineerDialog
+          <DeleteEngineer
             name={name}
             id={id}
             onClose={() => setOpen(false)}
