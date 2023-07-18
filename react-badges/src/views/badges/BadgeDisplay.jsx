@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_BADGES } from "../../queries/BadgesQueries";
 import BadgeTable from "./BadgeTable";
 import {
@@ -15,10 +15,10 @@ import {
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
 
-  console.log(data);
+  console.log("display", data);
   return (
     <div>
-      <Container maxWidth="md" sx={{ margin: "40px auto" }} component={Paper}>
+      <Container sx={{ m: "auto" }} component={Paper}>
         <TableContainer>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
@@ -31,8 +31,8 @@ const BadgeDisplay = () => {
             </TableHead>
             <TableBody>
               {data &&
-                data.badges_versions_last.map((row) => (
-                  <BadgeTable key={row.id} row={row} data={data} />
+                data.badges_versions_last.map((data) => (
+                  <BadgeTable key={data.id} data={data} />
                 ))}
             </TableBody>
           </Table>

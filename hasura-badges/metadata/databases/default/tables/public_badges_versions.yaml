@@ -32,18 +32,20 @@ insert_permissions:
       check: {}
       columns:
         - description
+        - is_deleted
         - requirements
         - title
 select_permissions:
   - role: backoffice
     permission:
       columns:
-        - title
-        - created_by
-        - id
-        - requirements
-        - description
         - created_at
+        - created_by
+        - description
+        - id
+        - is_deleted
+        - requirements
+        - title
       filter: {}
       limit: 10
       query_root_fields:
@@ -54,6 +56,7 @@ update_permissions:
     permission:
       columns:
         - description
+        - is_deleted
         - requirements
         - title
       filter: {}

@@ -14,18 +14,16 @@ import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteBadge from "./DeleteBadge";
+import { useNavigate } from "react-router-dom";
 
 function BadgeTable(props) {
-  const { row } = props;
+  const navigate = useNavigate();
+  const { data } = props;
   const [openStates, setOpenStates] = useState({});
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [open, setOpen] = useState();
 
   const handleDeleteClick = () => {
-    setShowDeleteDialog(true);
-  };
-
-  const handleDeleteClose = () => {
-    setShowDeleteDialog(false);
+    setOpen(true);
   };
 
   const handleOpenRequirements = (badgeId) => {
@@ -35,6 +33,11 @@ function BadgeTable(props) {
     }));
   };
 
+  const handleEditClick = (edit_badge_id) => {
+    navigate(`/badges/edit/${edit_badge_id}`);
+  };
+
+  console.log("table", data);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -42,9 +45,9 @@ function BadgeTable(props) {
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => handleOpenRequirements(row.id)}
+            onClick={() => handleOpenRequirements(data.id)}
           >
-            {openStates[row.id] ? (
+            {openStates[data.id] ? (
               <KeyboardArrowUpIcon />
             ) : (
               <KeyboardArrowDownIcon />
@@ -52,7 +55,7 @@ function BadgeTable(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.title}
+          {data.title}
         </TableCell>
         <TableCell align="center">
           <Button size="small" onClick={handleDeleteClick}>
@@ -60,28 +63,31 @@ function BadgeTable(props) {
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small">
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
             <Edit fontSize="medium" />
           </Button>
         </TableCell>
-        {showDeleteDialog && <DeleteBadge onClose={handleDeleteClose} />}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={openStates[row.id]} timeout="auto" unmountOnExit>
+          <Collapse in={openStates[data.id]} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Table size="small" aria-label="requirements">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Requirement</TableCell>
-                    <TableCell>Description</TableCell>
+                    <TableCell>{data.description}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Requirements</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.requirements.map((requirement, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{requirement.title}</TableCell>
-                      <TableCell>{requirement.description}</TableCell>
+                  {data.requirements.map((requirement, index) => (
+                    <TableRow key={index} style={{ maxWidth: "80%" }}>
+                      <TableCell>{requirement.title.title}</TableCell>
+                      <TableCell>
+                        {requirement.description.description}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -90,6 +96,7 @@ function BadgeTable(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+      <DeleteBadge open={open} setOpen={setOpen} data={data} />
     </React.Fragment>
   );
 }
