@@ -1,26 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BadgesNavbar from "../../components/BadgesNavbar";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { TextField, Button } from "@mui/material";
-import { useQuery } from "@apollo/client";
-import { GET_SINGLE_INFO } from "../../queries/BadgesQueries";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { TextField, Button, InputLabel, IconButton } from "@mui/material";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_SINGLE_INFO, EDIT_BADGE } from "../../queries/BadgesQueries";
 
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [editBadge] = useMutation(EDIT_BADGE);
   const { data, loading, error } = useQuery(GET_SINGLE_INFO, {
     variables: {
       id
     }
   });
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control, setValue } = useForm();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "requirements"
+  });
+
+  useEffect(() => {
+    if (data && data.badges_versions_last[0]) {
+      const { title, description, requirements } = data.badges_versions_last[0];
+      setValue("title", title);
+      setValue("description", description);
+      requirements.forEach((requirement, index) => {
+        setValue(`requirements.${index}.title`, requirement.title);
+        setValue(`requirements.${index}.description`, requirement.description);
+      });
+    }
+  }, [data, setValue]);
 
   const onSubmit = (formData) => {
-    // Handle form submission here
+    const { title, description, requirements } = formData;
+    editBadge({
+      variables: {
+        id: parseInt(id),
+        title: title,
+        description: description,
+        requirements: requirements.map((requirement) => ({
+          title: requirement.title,
+          description: requirement.description
+        }))
+      }
+    });
+    navigate("/badges");
   };
-
-  console.log(data?.badges_versions_last[0]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -38,8 +66,9 @@ const EditBadge = () => {
           <TextField
             label="Title"
             name="title"
-            defaultValue={data?.badges_versions_last[0].title || ""}
-            {...register("title")}
+            {...register("title", {
+              required: true
+            })}
           />
           <br />
           <TextField
@@ -48,35 +77,47 @@ const EditBadge = () => {
             minRows={5}
             label="Description"
             name="description"
-            defaultValue={data?.badges_versions_last[0].description || ""}
             {...register("description")}
           />
           <br />
-          {data?.badges_versions_last[0].requirements?.map(
-            (requirement, index) => (
-              <div key={requirement.id}>
-                <TextField
-                  label={`Requirement Title ${index + 1}`}
-                  name={`requirements[${index}].title`}
-                  defaultValue={requirement.title}
-                  {...register(`requirements[${index}].title`)}
-                />
-                <br />
-                <TextField
-                  multiline
-                  sx={{ minWidth: "600px" }}
-                  minRows={2}
-                  label={`Requirement Description ${index + 1}`}
-                  name={`requirements[${index}].description`}
-                  defaultValue={requirement.description}
-                  {...register(`requirements[${index}].description`)}
-                />
-                <br />
-              </div>
-            )
-          )}
-          <Button type="submit">Submit</Button>
+          <InputLabel>Requirements</InputLabel>
+          {fields.map((field, index) => (
+            <div key={field.id}>
+              <Controller
+                name={`requirements.${index}.title`}
+                control={control}
+                defaultValue={field.title}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label={`Requirement Title ${index + 1}`}
+                  />
+                )}
+              />
+              <br />
+              <Controller
+                name={`requirements.${index}.description`}
+                control={control}
+                defaultValue={field.description}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    multiline
+                    sx={{ minWidth: "600px" }}
+                    minRows={2}
+                    label={`Requirement Description ${index + 1}`}
+                  />
+                )}
+              />
+              <br />
+              <IconButton onClick={() => remove(index)}>Remove Req</IconButton>
+            </div>
+          ))}
+          <IconButton onClick={() => append({ title: "", description: "" })}>
+            Add Req
+          </IconButton>
         </div>
+        <Button type="submit">Confirm</Button>
       </form>
     </div>
   );
