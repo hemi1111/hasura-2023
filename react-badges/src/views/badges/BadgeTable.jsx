@@ -84,10 +84,8 @@ function BadgeTable(props) {
                 <TableBody>
                   {data.requirements.map((requirement, index) => (
                     <TableRow key={index} style={{ maxWidth: "80%" }}>
-                      <TableCell>{requirement.title.title}</TableCell>
-                      <TableCell>
-                        {requirement.description.description}
-                      </TableCell>
+                      <TableCell>{requirement.title}</TableCell>
+                      <TableCell>{requirement.description}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
