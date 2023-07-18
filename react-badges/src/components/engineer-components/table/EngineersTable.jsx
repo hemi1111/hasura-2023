@@ -18,11 +18,14 @@ const EngineersTable = ({ navigate, data }) => {
           <TableHead>
             <TableRow>
               <TableCell width="10%" />
-              <TableCell width="30%" align="center">
+              <TableCell width="20%" align="center">
                 Name
               </TableCell>
               <TableCell width="50%" align="center">
                 Managers
+              </TableCell>
+              <TableCell width="10%" align="center">
+                Edit
               </TableCell>
               <TableCell width="10%" align="center">
                 Delete
