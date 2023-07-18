@@ -5,12 +5,13 @@ select_permissions:
   - role: backoffice
     permission:
       columns:
-        - title
-        - created_by
-        - id
-        - requirements
-        - description
         - created_at
+        - created_by
+        - description
+        - id
+        - is_deleted
+        - requirements
+        - title
       filter: {}
       query_root_fields:
         - select

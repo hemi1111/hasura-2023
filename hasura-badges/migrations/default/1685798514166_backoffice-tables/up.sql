@@ -57,7 +57,6 @@ CREATE TABLE "badges_definitions" (
   "id" SERIAL PRIMARY KEY,
   "title" VARCHAR(255) NOT NULL,
   "description" TEXT NOT NULL,
-  "image" VARCHAR(255),
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
   "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
@@ -67,14 +66,13 @@ CREATE TABLE "badges_definitions" (
 CREATE TABLE "requirements_definitions" (
   "id" SERIAL PRIMARY KEY,
   "badge_id" INTEGER REFERENCES "badges_definitions"("id") ON DELETE RESTRICT,
-  "title" VARCHAR(255) NOT NULL,
-  "description" TEXT NOT NULL,
+  "title" JSONB,
+  "description" JSONB,
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
   "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
   "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT
 );
-
 CREATE OR REPLACE FUNCTION get_unassigned_engineers(manager_id INTEGER)
   RETURNS SETOF users AS $$
 BEGIN
@@ -91,4 +89,38 @@ BEGIN
     AND u.id <> manager_id; 
 END;
 $$ LANGUAGE plpgsql;
+CREATE OR REPLACE VIEW "engineers_with_managers" AS
+SELECT 
+    e.id AS id,
+    e.name AS name,
+    (
+      SELECT COALESCE(json_agg(json_build_object('id', m.id, 'name', m.name)), '[]'::json)
+      FROM "valid_user_relations" ur
+      JOIN "valid_users" m ON ur.manager = m.id AND m.is_deleted = false
+      WHERE ur.engineer = e.id
+    ) AS managers
+FROM "users" e
+WHERE e.roles @> '["engineer"]'::jsonb
+    AND e.is_deleted = false;
 
+
+CREATE OR REPLACE FUNCTION get_managers_without_relation(id INTEGER)
+  RETURNS SETOF users AS
+$$
+#variable_conflict use_variable
+BEGIN
+  RETURN QUERY
+  SELECT u.*
+  FROM users u
+  LEFT JOIN (
+    SELECT manager
+    FROM users_relations
+    WHERE engineer = id
+  ) r ON u.id = r.manager
+  WHERE u.id != id
+  AND u.is_deleted = false
+  AND u.roles @> jsonb_build_array('manager') AND r.manager IS NULL;
+  RETURN;
+END;
+$$
+LANGUAGE plpgsql;

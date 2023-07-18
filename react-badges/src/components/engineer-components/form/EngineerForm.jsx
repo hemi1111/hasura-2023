@@ -1,28 +1,19 @@
-import { ADD_ENGINEER, GET_ENGINEERS } from "../../queries/EngineerQueries";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
 
-const CreateEngineer = () => {
+const EngineerForm = ({ name, onSubmit }) => {
   const navigate = useNavigate();
-  const [addEngineer, { loading, error }] = useMutation(ADD_ENGINEER, {
-    refetchQueries: [{ query: GET_ENGINEERS }]
-  });
   const {
     register,
+    setValue,
     formState: { errors },
     handleSubmit
-  } = useForm({
-    mode: "onChange"
-  });
-  const handleFormSubmit = (formData) => {
-    addEngineer({ variables: { name: formData.name } });
-    navigate("/engineers");
-  };
-
-  if (loading) return "Submitting...";
-  if (error) return `Submission error! ${error.message}`;
+  } = useForm();
+  useEffect(() => {
+    setValue("name", name);
+  }, [name]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -34,15 +25,18 @@ const CreateEngineer = () => {
           flexDirection: "column",
           width: "40ch"
         }}
-        onSubmit={handleSubmit(handleFormSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <Typography
-          variant="h3"
-          sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
-        >
-          Add Engineer:
-        </Typography>
+        {!name && (
+          <Typography
+            variant="h3"
+            sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
+          >
+            Add Engineer:
+          </Typography>
+        )}
         <TextField
+          focused
           required
           label="Name"
           {...register("name", {
@@ -63,21 +57,27 @@ const CreateEngineer = () => {
           error={!!errors?.name}
           helperText={errors?.name?.message}
         />
-        <div style={{ margin: "auto", marginTop: "2ch" }}>
-          <Button variant="contained" onClick={() => navigate("/engineers")}>
-            Cancel
+        {name ? (
+          <Button sx={{ width: "100%" }} type="submit">
+            Edit
           </Button>
-          <Button
-            color="success"
-            sx={{ marginLeft: "2ch" }}
-            variant="contained"
-            type="submit"
-          >
-            Save
-          </Button>
-        </div>
+        ) : (
+          <div style={{ margin: 1, margin: "auto", marginTop: "2ch" }}>
+            <Button variant="contained" onClick={() => navigate("/engineers")}>
+              Cancel
+            </Button>
+            <Button
+              color="success"
+              sx={{ marginLeft: "2ch" }}
+              variant="contained"
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </Box>
     </div>
   );
 };
-export default CreateEngineer;
+export default EngineerForm;

@@ -2,51 +2,61 @@ import { gql } from "@apollo/client";
 
 export const GET_BADGES = gql`
   query getBadges {
-    badges_definitions {
-      id
-      title
+    badges_versions_last(where: { is_deleted: { _eq: false } }) {
       description
-      badges_definitions_requirements_definitions {
-        id
-        title
-        description
-      }
+      requirements
+      title
+      id
     }
   }
 `;
 
-export const ADD_BADGES = gql`
-  mutation addBadges(
+export const CREATE_BADGE = gql`
+  mutation createBadge(
     $title: String!
     $description: String!
     $requirements: [requirements_definitions_insert_input!]!
   ) {
     insert_badges_definitions(
       objects: {
-        description: $description
         title: $title
+        description: $description
         badges_definitions_requirements_definitions: { data: $requirements }
       }
     ) {
+      affected_rows
       returning {
-        description
-        title
-        badges_definitions_requirements_definitions {
-          description
-          title
-        }
+        id
       }
     }
   }
 `;
 
-export const DELETE_BADGE = gql`
-  mutation deleteBadges($id: Int!) {
-    delete_requirements_definitions(where: { badge_id: { _eq: $id } }) {
-      affected_rows
+export const CREATE_BADGE_VERSION = gql`
+  mutation createBadgeVersion($id: Int!) {
+    create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
+      title
     }
-    delete_badges_definitions(where: { id: { _eq: $id } }) {
-      affected_rows
+  }
+`;
+
+export const DELETE_BADGE = gql`
+  mutation deleteBadge($badge_def_id: Int!) {
+    create_badge_version(
+      args: { badge_def_id: $badge_def_id, is_deleted: true }
+    ) {
+      id
+      is_deleted
+    }
+  }
+`;
+
+export const GET_SINGLE_INFO = gql`
+  query getSingleInfo($id: Int!) {
+    badges_versions_last(where: { id: { _eq: $id } }) {
+      description
+      requirements
+      title
     }
   }
 `;

@@ -1,12 +1,17 @@
 import React from "react";
-import EngineerNavbar from "../../components/EngineerNavbar";
-import EngineerList from "../../components/engineer-components/EngineerList";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import EngineersList from "../../containers/engineer/EngineersList";
 
 const EngineerPage = () => {
   return (
     <div>
-      <EngineerNavbar />
-      <EngineerList />
+      <div className="navbar-style">
+        <Link to="/engineer/create">
+          <Button>Add New Engineer</Button>
+        </Link>
+      </div>
+      <EngineersList />
     </div>
   );
 };

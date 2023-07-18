@@ -1,0 +1,11 @@
+table:
+  name: engineers_with_managers
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - id
+        - managers
+        - name
+      filter: {}
