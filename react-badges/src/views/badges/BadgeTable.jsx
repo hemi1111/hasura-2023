@@ -26,6 +26,10 @@ function BadgeTable(props) {
     setOpen(true);
   };
 
+  const handleVersions = (version_badge_id) => {
+    navigate(`/badges/versions/${version_badge_id}`);
+  };
+
   const handleOpenRequirements = (badgeId) => {
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
@@ -76,6 +80,11 @@ function BadgeTable(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell>{data.description}</TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleVersions(data.id)}>
+                        Show All Versions
+                      </Button>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Requirements</TableCell>

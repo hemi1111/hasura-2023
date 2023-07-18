@@ -18,6 +18,7 @@ import CreateBadge from "./views/badges/CreateBadge";
 import EditBadge from "./views/badges/EditBadge";
 import CreateEngineer from "./containers/engineer/CreateEngineer";
 import EditManagersEngineer from "./containers/engineer/EditManagersEngineer";
+import BadgesVersions from "./views/badges/BadgesVersions";
 const menuItems = [
   {
     link: "managers",
@@ -80,6 +81,10 @@ const AppBackoffice: React.FC = () => (
         {
           path: "badges/create",
           element: <CreateBadge />
+        },
+        {
+          path: "badges/versions/:id",
+          element: <BadgesVersions />
         }
       ] as RouteProps[]
     }
