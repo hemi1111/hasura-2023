@@ -54,10 +54,19 @@ export const DELETE_ENGINEER = gql`
 `;
 
 export const GET_ENGINEER_BY_MANAGER = gql`
-mutation relationsEngineerManager($id: Int!) {
-    get_engineers_by_manager(args: {manager_id: $id}) {
+  mutation relationsEngineerManager($id: Int!) {
+    get_engineers_by_manager(args: { manager_id: $id }) {
       name
     }
   }
-  
+`;
+export const UPDATE_MANAGER = gql`
+  mutation UpdateManager($id: Int!, $name: String!) {
+    update_managers(where: { id: { _eq: $id } }, _set: { name: $name }) {
+      returning {
+        id
+        name
+      }
+    }
+  }
 `;

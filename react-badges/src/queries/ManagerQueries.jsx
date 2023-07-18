@@ -1,26 +1,20 @@
 import { gql } from "@apollo/client";
 export const DELETE_MANAGER = gql`
   mutation deleteMngr($id: Int!) {
-    deleteRelationAsManager: delete_users_relations(
-      where: { manager: { _eq: $id } }
+    update_valid_users(
+      where: { id: { _eq: $id } }
+      _set: { is_deleted: true }
     ) {
-      affected_rows
-    }
-    deleteRelationAsEngineer: delete_users_relations(
-      where: { engineer: { _eq: $id } }
-    ) {
-      affected_rows
-    }
-    delete_users(where: { id: { _eq: $id } }) {
       returning {
         name
+        id
       }
     }
   }
 `;
 export const GET_ENGINEERS_BY_MANAGER = gql`
-  mutation getEngineerByMngr {
-    get_engineers_by_manager(args: { manager_id: 5 }, order_by: { id: asc }) {
+  mutation getEngineerByMngr($id: Int!) {
+    get_engineers_by_manager(args: { manager_id: $id }, order_by: { id: asc }) {
       name
       id
     }
@@ -50,8 +44,50 @@ export const GET_MANAGERS = gql`
     }
   }
 `;
-export default {
-  GET_MANAGERS,
-  DELETE_MANAGER,
-  ADD_RELATION
-};
+export const GET_MANAGER = gql`
+  query getManager($id: Int!) {
+    managers(where: { id: { _eq: $id } }) {
+      name
+      id
+    }
+  }
+`;
+export const DELETE_RELATION = gql`
+  mutation deleteRel($manager_id: Int!, $engineer_id: Int!) {
+    delete_users_relations(
+      where: { manager: { _eq: $manager_id }, engineer: { _eq: $engineer_id } }
+    ) {
+      returning {
+        manager
+        engineer
+      }
+    }
+  }
+`;
+export const UPDATE_MANAGER = gql`
+  mutation updateManager($id: Int!, $name: String!) {
+    update_managers(where: { id: { _eq: $id } }, _set: { name: $name }) {
+      returning {
+        name
+      }
+    }
+  }
+`;
+export const GET_UNASSIGNED_ENGINEERS = gql`
+  mutation getUnassignedEngr($manager: Int!) {
+    get_unassigned_engineers(args: { manager_id: $manager }) {
+      name
+      id
+    }
+  }
+`;
+export const CREATE_MANAGER = gql`
+  mutation CreateManager($name: String!) {
+    insert_users_one(object: { name: $name, roles: ["manager"] }) {
+      id
+      created_at
+      modified_at
+      name
+    }
+  }
+`;

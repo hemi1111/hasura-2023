@@ -51,7 +51,7 @@ const AppBackoffice: React.FC = () => (
           element: <ManagerEngineer />
         },
         {
-          path: "managers/edit",
+          path: "managers/edit/:id",
           element: <EditManager />
         },
         {
