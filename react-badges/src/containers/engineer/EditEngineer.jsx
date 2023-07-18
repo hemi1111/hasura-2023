@@ -74,7 +74,7 @@ const EditEngineer = () => {
   const handleDelete = (manager) => {
     deleteRelation({ variables: { engineer: id, manager } });
   };
-  const handleEdit = ({oldManager, newManager}) => {
+  const handleEdit = ({ oldManager, newManager }) => {
     updateRelation({ variables: { id, oldManager, newManager } });
   };
   const handleAdd = ({ manager }) => {
