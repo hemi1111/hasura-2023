@@ -1,17 +1,29 @@
-import { Button, Dialog, DialogTitle, List, ListItem } from "@mui/material";
+import { Button, Dialog, DialogTitle } from "@mui/material";
+import EngineerManagers from "../form/EngineerManagers";
 
-const EditEngineerRelation = ({ open, onClick, name, onClose }) => {
+const EditEngineerRelation = ({
+  open,
+  onEdit,
+  engineer,
+  manager,
+  onClose,
+  notRelatedManagers
+}) => {
+  const oldManager = manager.id;
+  const handleEdit = ({ manager }) => {
+    onEdit({ oldManager, newManager: manager });
+  };
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Edit {name} ?</DialogTitle>
-      <div style={{ display: "flex" }}>
-        <Button sx={{ width: "50%" }} onClick={onClose}>
-          Cancel
-        </Button>
-        <Button color="success" sx={{ width: "50%" }} onClick={onClick}>
-          Confirm
-        </Button>
-      </div>
+      <DialogTitle>
+        Edit {engineer} - {manager.name} relation:
+      </DialogTitle>
+      <EngineerManagers
+        onClose={onClose}
+        edit={true}
+        managers={notRelatedManagers}
+        onAdd={handleEdit}
+      />
     </Dialog>
   );
 };

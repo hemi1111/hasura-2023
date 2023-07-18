@@ -13,14 +13,21 @@ import { useState } from "react";
 import DeleteEngineerRelation from "../dialog/DeleteEngineerRelation";
 import EditEngineerRelation from "../dialog/EditEngineerRelation";
 
-const EngineerRelations = ({ managers, onDelete }) => {
+const EngineerRelations = ({
+  name,
+  managers,
+  onDelete,
+  onEdit,
+  notRelatedManagers
+}) => {
   const [open, setOpen] = useState({ edit: -1, delete: -1 });
   const handleDelete = (id) => {
     onDelete(id);
     setOpen((old) => ({ ...old, delete: -1 }));
   };
-  const handleEdit = (id) => {
-    console.log(id);
+  const handleEdit = (data) => {
+    console.log(data);
+    onEdit(data);
     setOpen((old) => ({ ...old, edit: -1 }));
   };
 
@@ -48,15 +55,17 @@ const EngineerRelations = ({ managers, onDelete }) => {
                   name={relation.name}
                   open={index === open.delete}
                   onClose={() => setOpen((old) => ({ ...old, delete: -1 }))}
-                  onClick={() => handleDelete(relation.id)}
+                  onClick={(e) => handleDelete(e)}
                 />
               )}
               {index === open.edit && (
                 <EditEngineerRelation
-                  name={relation.name}
+                  engineer={name}
+                  manager={relation}
+                  notRelatedManagers={notRelatedManagers}
                   open={index === open.edit}
                   onClose={() => setOpen((old) => ({ ...old, edit: -1 }))}
-                  onClick={() => handleEdit(relation.id)}
+                  onEdit={handleEdit}
                 />
               )}
               <TableCell>

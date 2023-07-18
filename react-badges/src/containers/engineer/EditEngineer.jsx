@@ -11,7 +11,6 @@ import {
   UPDATE_ENGINEER_MANAGER_RELATION
 } from "../../queries/EngineerQueries";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import EngineerForm from "../../components/engineer-components/form/EngineerForm";
 import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
@@ -19,9 +18,6 @@ import EngineerManagers from "../../components/engineer-components/form/Engineer
 const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const form = useForm({
-    mode: "onChange"
-  });
 
   const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
     refetchQueries: [{ query: GET_ENGINEERS }]
@@ -76,10 +72,9 @@ const EditEngineer = () => {
   }, []);
 
   const handleDelete = (manager) => {
-    // console.log({ engineer: id, manager });
     deleteRelation({ variables: { engineer: id, manager } });
   };
-  const handleUpdate = (id, oldManager, newManager) => {
+  const handleEdit = ({oldManager, newManager}) => {
     updateRelation({ variables: { id, oldManager, newManager } });
   };
   const handleAdd = ({ manager }) => {
@@ -105,17 +100,15 @@ const EditEngineer = () => {
           Edit managers for {engineerRelations?.name}:
         </Typography>
         <EngineerForm
-          form={form}
           name={engineerRelations?.name}
           onSubmit={handleNameChange}
         />
-        <EngineerManagers
-          onAdd={handleAdd}
-          form={form}
-          managers={notRelatedManagers}
-        />
+        <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
         <EngineerRelations
+          name={engineerRelations?.name}
           onDelete={handleDelete}
+          onEdit={handleEdit}
+          notRelatedManagers={notRelatedManagers}
           managers={engineerRelations?.managers}
         />
 
