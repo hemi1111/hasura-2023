@@ -7,12 +7,16 @@ import {
   Table,
   TableHead,
   TableBody,
-  Button
+  Button,
+  Container,
+  Paper,
+  TableContainer
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import { useQuery } from "@apollo/client";
+import BadgesNavbar from "../../components/BadgesNavbar";
 import { GET_BADGE_VERSIONS } from "../../queries/BadgesQueries";
 const BadgesVersions = () => {
   const [openStates, setOpenStates] = useState({});
@@ -28,51 +32,28 @@ const BadgesVersions = () => {
 
   return (
     <div>
-      <React.Fragment>
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-          <TableCell>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => handleOpenRequirements(1)}
-            >
-              {openStates[1] ? (
-                <KeyboardArrowUpIcon />
-              ) : (
-                <KeyboardArrowDownIcon />
-              )}
-            </IconButton>
-          </TableCell>
-          <TableCell component="th" scope="row">
-            Versioni{" "}
-          </TableCell>
-          <TableCell align="center">Verison</TableCell>
-          <TableCell align="center">Created At</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={openStates[1]} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Table size="small" aria-label="requirements">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Versions</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Requirements</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>TAble caell</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      </React.Fragment>
+      <BadgesNavbar />
+      <Container sx={{ m: "auto" }} component={Paper}>
+        <TableContainer>
+          <Table sx={{ minWidth: 650 }} size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Badge</TableCell>
+                <TableCell align="center">Version</TableCell>
+                <TableCell align="center">Created At</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>Badge Name</TableCell>
+                <TableCell>Version</TableCell>
+                <TableCell>Timestamp</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
     </div>
   );
 };

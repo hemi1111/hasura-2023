@@ -81,7 +81,7 @@ function BadgeTable(props) {
                   <TableRow>
                     <TableCell>{data.description}</TableCell>
                     <TableCell>
-                      <Button onClick={() => handleVersions(data.id)}>
+                      <Button onClick={() => handleVersions(data.title)}>
                         Show All Versions
                       </Button>
                     </TableCell>
