@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ADD_ENGINEER_MANAGER_RELATION,
   DELETE_ENGINEER_MANAGER_RELATION,
-  GET_ENGINEERS,
   GET_ENGINEER_MANAGERS_RELATION,
   GET_MANAGER_WITHOUT_RELATION,
   UPDATE_ENGINEER,
@@ -19,10 +18,6 @@ const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
-    refetchQueries: [{ query: GET_ENGINEERS }]
-  });
-
   const relations = useQuery(GET_ENGINEER_MANAGERS_RELATION, {
     variables: { id }
   });
@@ -31,10 +26,15 @@ const EditEngineer = () => {
     GET_MANAGER_WITHOUT_RELATION
   );
 
+  const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
+    refetchQueries: [
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
+    ]
+  });
+
   const [addRelation] = useMutation(ADD_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
@@ -42,10 +42,10 @@ const EditEngineer = () => {
       });
     }
   });
+
   const [deleteRelation] = useMutation(DELETE_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
@@ -55,8 +55,7 @@ const EditEngineer = () => {
   });
   const [updateRelation] = useMutation(UPDATE_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
