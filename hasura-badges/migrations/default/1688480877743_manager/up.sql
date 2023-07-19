@@ -45,7 +45,8 @@ BEGIN
     SELECT u.*
     FROM public.users_relations r
     INNER JOIN public.users u ON r.engineer = u.id
-    WHERE r.manager = manager_id;
+    WHERE r.manager = manager_id
+    AND u.is_deleted = false;
 END;
 $$
 LANGUAGE plpgsql;
