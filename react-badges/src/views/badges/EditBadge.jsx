@@ -2,10 +2,16 @@ import React, { useEffect } from "react";
 import BadgesNavbar from "../../components/BadgesNavbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { TextField, Button, InputLabel, IconButton } from "@mui/material";
+import {
+  TextField,
+  Button,
+  InputLabel,
+  IconButton,
+  Typography
+} from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_SINGLE_INFO, EDIT_BADGE } from "../../queries/BadgesQueries";
-import { RemoveCircle } from "@mui/icons-material";
+import { RemoveCircle, AddBox } from "@mui/icons-material";
 
 const EditBadge = () => {
   const navigate = useNavigate();
@@ -33,22 +39,29 @@ const EditBadge = () => {
         setValue(`requirements.${index}.description`, requirement.description);
       });
     }
-  }, [data, setValue]);
+  }, [data]);
 
   const onSubmit = (formData) => {
     const { title, description, requirements } = formData;
-    editBadge({
-      variables: {
-        id: parseInt(id),
-        title: title,
-        description: description,
-        requirements: requirements.map((requirement) => ({
-          title: requirement.title,
-          description: requirement.description
-        }))
-      }
-    });
-    navigate("/badges");
+
+    try {
+      editBadge({
+        variables: {
+          id: parseInt(id),
+          title: title,
+          description: description,
+          badge_id: parseInt(id),
+          requirements: requirements.map((requirement) => ({
+            title: requirement.title,
+            description: requirement.description
+          }))
+        }
+      });
+      console.log("Badge updated successfully", formData);
+      navigate("/badges");
+    } catch (error) {
+      console.log("Couldn't get updated");
+    }
   };
 
   if (loading) {
@@ -58,6 +71,7 @@ const EditBadge = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+  console.log(fields);
 
   return (
     <div>
@@ -81,7 +95,12 @@ const EditBadge = () => {
             {...register("description")}
           />
           <br />
-          <InputLabel sx={{ marginBottom: "10px" }}>Requirements</InputLabel>
+
+          {fields.length === 0 ? null : (
+            <InputLabel sx={{ fontSize: "1.2em", marginBottom: "10px" }}>
+              Requirements
+            </InputLabel>
+          )}
           {fields.map((field, index) => (
             <div key={field.id}>
               <Controller
@@ -123,9 +142,36 @@ const EditBadge = () => {
               />
             </div>
           ))}
-          <IconButton onClick={() => append({ title: "", description: "" })}>
-            Add Req
-          </IconButton>
+          {fields.length === 0 ? (
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: "bold",
+                margin: "auto",
+                width: "fit-content",
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                append({ title: "", description: "" });
+                remove(fields.length - 1);
+              }}
+            >
+              Show Requirements
+            </Typography>
+          ) : (
+            <Typography
+              variant="h4"
+              sx={{
+                margin: "auto",
+                marginTop: "-10px",
+                width: "fit-content",
+                cursor: "pointer"
+              }}
+              onClick={() => append({ title: "", description: "" })}
+            >
+              Add Requirement <AddBox sx={{ marginBottom: "-5px" }} />
+            </Typography>
+          )}
           <br />
           <Button type="submit">Confirm</Button>
         </div>

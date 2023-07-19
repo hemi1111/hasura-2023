@@ -1,34 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   TableRow,
   TableCell,
-  Collapse,
-  Box,
   Table,
   TableHead,
   TableBody,
-  Button,
   Container,
   Paper,
   TableContainer
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import IconButton from "@mui/material/IconButton";
 import { useQuery } from "@apollo/client";
 import BadgesNavbar from "../../components/BadgesNavbar";
 import { GET_BADGE_VERSIONS } from "../../queries/BadgesQueries";
+import BadgesVersionsRow from "./BadgesVersionsRow";
+import { useParams } from "react-router-dom";
 const BadgesVersions = () => {
-  const [openStates, setOpenStates] = useState({});
+  const { id } = useParams();
+  const { data } = useQuery(GET_BADGE_VERSIONS, {
+    variables: {
+      id
+    }
+  });
 
-  const { data } = useQuery(GET_BADGE_VERSIONS);
-
-  const handleOpenRequirements = (badgeId) => {
-    setOpenStates((prevOpenStates) => ({
-      ...prevOpenStates,
-      [badgeId]: !prevOpenStates[badgeId]
-    }));
-  };
+  if (!data) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -45,11 +41,9 @@ const BadgesVersions = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>Badge Name</TableCell>
-                <TableCell>Version</TableCell>
-                <TableCell>Timestamp</TableCell>
-              </TableRow>
+              {data.badges_versions.map((data, index) => (
+                <BadgesVersionsRow key={data.id} data={data} index={index} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

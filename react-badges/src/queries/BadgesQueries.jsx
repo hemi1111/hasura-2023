@@ -58,6 +58,13 @@ export const GET_SINGLE_INFO = gql`
       requirements
       title
     }
+    badges_definitions {
+      badges_definitions_requirements_definitions(
+        where: { badge_id: { _eq: $id } }
+      ) {
+        id
+      }
+    }
   }
 `;
 
@@ -67,6 +74,7 @@ export const GET_BADGE_VERSIONS = gql`
       description
       requirements
       title
+      created_at
     }
   }
 `;

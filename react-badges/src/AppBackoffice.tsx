@@ -83,7 +83,7 @@ const AppBackoffice: React.FC = () => (
           element: <CreateBadge />
         },
         {
-          path: "badges/versions/:name",
+          path: "badges/versions/:name/:id",
           element: <BadgesVersions />
         }
       ] as RouteProps[]
