@@ -12,3 +12,11 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
+update_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - is_deleted
+        - name
+      filter: {}
+      check: {}
