@@ -74,7 +74,7 @@ const EditEngineer = () => {
   const handleDelete = (manager) => {
     deleteRelation({ variables: { engineer: id, manager } });
   };
-  const handleEdit = ({oldManager, newManager}) => {
+  const handleEdit = ({ oldManager, newManager }) => {
     updateRelation({ variables: { id, oldManager, newManager } });
   };
   const handleAdd = ({ manager }) => {
@@ -88,22 +88,29 @@ const EditEngineer = () => {
   const notRelatedManagers = data?.get_managers_without_relation;
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <Box
-        sx={{
-          m: 1,
+    <Box
+      sx={{
+        m: 1,
+        display: "box"
+      }}
+    >
+      <Typography variant="h4" sx={{ m: 2 }}>
+        Edit managers for {engineerRelations?.name}:
+      </Typography>
+      <div
+        style={{
           display: "flex",
-          flexDirection: "column"
+          flexWrap: "wrap"
         }}
       >
-        <Typography variant="h4" sx={{ m: 2 }}>
-          Edit managers for {engineerRelations?.name}:
-        </Typography>
         <EngineerForm
           name={engineerRelations?.name}
           onSubmit={handleNameChange}
         />
         <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
+      </div>
+
+      <div style={{ width: "auto" }}>
         <EngineerRelations
           name={engineerRelations?.name}
           onDelete={handleDelete}
@@ -111,18 +118,21 @@ const EditEngineer = () => {
           notRelatedManagers={notRelatedManagers}
           managers={engineerRelations?.managers}
         />
-
-        <div style={{ margin: "auto", marginTop: "2ch" }}>
-          <Button
-            color="success"
-            variant="contained"
-            onClick={() => navigate("/engineers")}
-          >
-            Done
-          </Button>
-        </div>
-      </Box>
-    </div>
+      </div>
+      <Button
+        sx={{
+          m: 2,
+          width: "20ch",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+        color="success"
+        variant="outlined"
+        onClick={() => navigate("/engineers")}
+      >
+        Done
+      </Button>
+    </Box>
   );
 };
 export default EditEngineer;

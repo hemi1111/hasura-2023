@@ -16,68 +16,61 @@ const EngineerForm = ({ name, onSubmit }) => {
   }, [name]);
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <Box
-        component="form"
-        sx={{
-          m: 1,
-          display: "flex",
-          flexDirection: "column",
-          width: "40ch"
-        }}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {!name && (
-          <Typography
-            variant="h3"
-            sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
-          >
-            Add Engineer:
-          </Typography>
-        )}
-        <TextField
-          focused
-          required
-          label="Name"
-          {...register("name", {
-            pattern: {
-              value: /^[A-Za-z\s]+$/,
-              message: "Name should contain only characters!"
-            },
-            required: { value: true, message: "Field is required!" },
-            minLength: {
-              value: 2,
-              message: "Name should contain more than 2 characters!"
-            },
-            maxLength: {
-              value: 20,
-              message: "Name should contain less than 20 characters!"
-            }
-          })}
-          error={!!errors?.name}
-          helperText={errors?.name?.message}
-        />
-        {name ? (
-          <Button sx={{ width: "100%" }} type="submit">
-            Edit
+    <Box
+      component="form"
+      sx={{
+        m: 1,
+        display: "flex",
+        flexDirection: "column",
+        width: "40ch"
+      }}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      {!name && (
+        <Typography
+          variant="h3"
+          sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
+        >
+          Add Engineer:
+        </Typography>
+      )}
+      <TextField
+        required
+        autoFocus={!name}
+        label="Name"
+        {...register("name", {
+          pattern: {
+            value: /^[A-Za-z\s]+$/,
+            message: "Name should contain only characters!"
+          },
+          required: { value: true, message: "Field is required!" },
+          minLength: {
+            value: 2,
+            message: "Name should contain more than 2 characters!"
+          },
+          maxLength: {
+            value: 20,
+            message: "Name should contain less than 20 characters!"
+          }
+        })}
+        error={!!errors?.name}
+        helperText={errors?.name?.message}
+      />
+      {name ? (
+        <Button sx={{ width: "100%" }} type="submit">
+          Edit
+        </Button>
+      ) : (
+        <div style={{ width: "100%" }}>
+          <Button sx={{ width: "50%" }} onClick={() => navigate("/engineers")}>
+            Cancel
           </Button>
-        ) : (
-          <div style={{ margin: 1, margin: "auto", marginTop: "2ch" }}>
-            <Button variant="contained" onClick={() => navigate("/engineers")}>
-              Cancel
-            </Button>
-            <Button
-              color="success"
-              sx={{ marginLeft: "2ch" }}
-              variant="contained"
-              type="submit"
-            >
-              Save
-            </Button>
-          </div>
-        )}
-      </Box>
-    </div>
+          <Button color="success" sx={{ width: "50%" }} type="submit">
+            Save
+          </Button>
+        </div>
+      )}
+    </Box>
   );
 };
 export default EngineerForm;
