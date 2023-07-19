@@ -2,27 +2,38 @@ import React, { useEffect } from "react";
 import BadgesNavbar from "../../components/BadgesNavbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import {
-  TextField,
-  Button,
-  InputLabel,
-  IconButton,
-  Typography
-} from "@mui/material";
+import { TextField, Button, InputLabel, Typography } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_SINGLE_INFO, EDIT_BADGE } from "../../queries/BadgesQueries";
+import {
+  GET_SINGLE_INFO,
+  EDIT_BADGE,
+  GET_BADGES
+} from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
 
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [editBadge] = useMutation(EDIT_BADGE);
-  const { data, loading, error } = useQuery(GET_SINGLE_INFO, {
+  const [editBadge] = useMutation(EDIT_BADGE, {
+    refetchQueries: [{ query: GET_BADGES }]
+  });
+  const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
     variables: {
       id
     }
   });
-  const { register, handleSubmit, control, setValue } = useForm();
+
+  useEffect(() => {
+    refetch();
+  }, [data]);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors }
+  } = useForm();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -42,16 +53,15 @@ const EditBadge = () => {
   }, [data]);
 
   const onSubmit = (formData) => {
-    const { title, description, requirements } = formData;
+    const { title, description } = formData;
 
     try {
       editBadge({
         variables: {
-          id: parseInt(id),
+          id,
           title: title,
           description: description,
-          badge_id: parseInt(id),
-          requirements: requirements.map((requirement) => ({
+          requirements: fields.map((requirement) => ({
             title: requirement.title,
             description: requirement.description
           }))
@@ -83,8 +93,16 @@ const EditBadge = () => {
             label="Title"
             name="title"
             {...register("title", {
-              required: true
+              required: "This field is required",
+              minLength: { value: 2, message: "Min length is 2" },
+              maxLength: { value: 30, message: "Max length is 30" },
+              pattern: {
+                value: /^[A-Za-z ]*$/,
+                message: "Title must contain only letters"
+              }
             })}
+            error={!!errors.title}
+            helperText={errors.title?.message}
           />
           <br />
           <TextField
@@ -92,7 +110,11 @@ const EditBadge = () => {
             multiline
             label="Description"
             name="description"
-            {...register("description")}
+            {...register("description", {
+              required: "This field is required"
+            })}
+            error={!!errors.description}
+            helperText={errors.description?.message}
           />
           <br />
 
