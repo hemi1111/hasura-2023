@@ -16,19 +16,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteBadge from "./DeleteBadge";
 import { useNavigate } from "react-router-dom";
 
-function BadgeTable(props) {
+function BadgesVersionsRow(props) {
   const navigate = useNavigate();
-  const { data } = props;
+  const { data, index } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState();
-
-  const handleDeleteClick = () => {
-    setOpen(true);
-  };
-
-  const handleVersions = (version_badge_id, version_id) => {
-    navigate(`/badges/versions/${version_badge_id}/${version_id}`);
-  };
 
   const handleOpenRequirements = (badgeId) => {
     setOpenStates((prevOpenStates) => ({
@@ -37,11 +29,7 @@ function BadgeTable(props) {
     }));
   };
 
-  const handleEditClick = (edit_badge_id) => {
-    navigate(`/badges/edit/${edit_badge_id}`);
-  };
-
-  console.log("table", data);
+  console.log(data);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -61,16 +49,8 @@ function BadgeTable(props) {
         <TableCell component="th" scope="row">
           {data.title}
         </TableCell>
-        <TableCell align="center">
-          <Button size="small" onClick={handleDeleteClick}>
-            <Delete color="error" fontSize="medium" />
-          </Button>
-        </TableCell>
-        <TableCell align="center">
-          <Button size="small" onClick={() => handleEditClick(data.id)}>
-            <Edit fontSize="medium" />
-          </Button>
-        </TableCell>
+        <TableCell align="center">{index + 1}</TableCell>
+        <TableCell align="center">{data.created_at}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -78,20 +58,7 @@ function BadgeTable(props) {
             <Box sx={{ margin: 1 }}>
               <Table size="small" aria-label="requirements">
                 <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontSize: "1.1em" }}>
-                      {data.description}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        sx={{ marginLeft: "20%" }}
-                        onClick={() => handleVersions(data.title, data.id)}
-                      >
-                        Show All Versions
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                  <TableCell colSpan={2}>{data.description}</TableCell>
                   <TableRow>
                     <TableCell sx={{ fontSize: "1.2em" }}>
                       Requirements
@@ -121,4 +88,4 @@ function BadgeTable(props) {
   );
 }
 
-export default BadgeTable;
+export default BadgesVersionsRow;
