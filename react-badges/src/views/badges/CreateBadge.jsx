@@ -1,5 +1,5 @@
-import { InputLabel, TextField, IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { TextField, Button } from "@mui/material";
+import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import {
   CREATE_BADGE,
@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import BadgesNavbar from "../../components/BadgesNavbar";
+import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
     CREATE_BADGE,
@@ -65,10 +66,11 @@ const CreateBadge = () => {
   return (
     <div>
       <BadgesNavbar />
-      <div style={{ margin: "auto" }}>
+      <div style={{ marginTop: "50px", textAlign: "center" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <TextField
+              sx={{ marginBottom: "10px" }}
               label="Title"
               name="title"
               {...register("title", {
@@ -77,38 +79,52 @@ const CreateBadge = () => {
             />
             <br />
             <TextField
+              sx={{ marginBottom: "20px" }}
               label="Description"
               name="description"
               {...register("description", {
                 required: true
               })}
             />
-
-            <InputLabel>Requirements</InputLabel>
+            <p>Requirements</p>
+            <AddBox
+              sx={{ cursor: "pointer", marginBottom: "10px" }}
+              onClick={() => append({ title: "", description: "" })}
+            />
             {fields.map((field, index) => (
               <div key={field.id}>
                 <TextField
-                  label="Requirement Title"
+                  sx={{ marginBottom: "10px", minWidth: "400px" }}
+                  multiline
+                  label={`Requirement Title ${index + 1}`}
                   name={`requirements.${index}.title`}
                   {...register(`requirements.${index}.title`, {
                     required: true
                   })}
                 />
+                <br />
                 <TextField
-                  label="Requirement Description"
+                  sx={{ marginBottom: "25px", minWidth: "400px" }}
+                  multiline
+                  label={`Requirement Description ${index + 1}`}
                   name={`requirements.${index}.description`}
                   {...register(`requirements.${index}.description`, {
                     required: true
                   })}
                 />
-                <IconButton onClick={() => remove(index)}>Remove</IconButton>
+                <br />
+                <RemoveCircle
+                  sx={{
+                    cursor: "pointer",
+                    marginTop: "-50px",
+                    marginLeft: "5px"
+                  }}
+                  onClick={() => remove(index)}
+                />
               </div>
             ))}
-            <IconButton onClick={() => append({ title: "", description: "" })}>
-              Add
-            </IconButton>
           </div>
-          <button type="submit">Add</button>
+          <Button type="submit">Create Badge</Button>
         </form>
       </div>
     </div>

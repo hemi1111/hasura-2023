@@ -89,6 +89,7 @@ VALUES
 TRUNCATE badges_versions RESTART IDENTITY CASCADE;
 SELECT * FROM create_badge_version('{"x-hasura-tenant-id":"1"}', 1, false);
 SELECT * FROM create_badge_version('{"x-hasura-tenant-id":"1"}', 2, false);
+SELECT * FROM create_badge_version('{"x-hasura-tenant-id":"1"}', 3, false);
 SELECT * FROM _create_badge_version(1, 1, (SELECT now() AT TIME ZONE 'UTC' + '1ms'::interval), false);
 
 -- -- Insert data into manager_to_engineer_badge_candidature_proposals

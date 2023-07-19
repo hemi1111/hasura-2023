@@ -58,6 +58,13 @@ export const GET_SINGLE_INFO = gql`
       requirements
       title
     }
+    badges_definitions {
+      badges_definitions_requirements_definitions(
+        where: { badge_id: { _eq: $id } }
+      ) {
+        id
+      }
+    }
   }
 `;
 
@@ -67,6 +74,7 @@ export const GET_BADGE_VERSIONS = gql`
       description
       requirements
       title
+      created_at
     }
   }
 `;
@@ -74,10 +82,9 @@ export const GET_BADGE_VERSIONS = gql`
 export const EDIT_BADGE = gql`
   mutation editBadge(
     $id: Int!
-    $description: String!
     $title: String!
-    $req_title: String!
-    $req_description: String!
+    $description: String!
+    $requirements: [requirements_definitions_set_input!]!
   ) {
     update_badges_definitions(
       where: { id: { _eq: $id } }
@@ -87,11 +94,11 @@ export const EDIT_BADGE = gql`
     }
     update_requirements_definitions(
       where: { badge_id: { _eq: $id } }
-      _set: { description: $req_description, title: $req_title }
+      _set: $requirements
     ) {
       affected_rows
     }
-    create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
+    create_badge_version(objects: { badge_def_id: $id, is_deleted: false }) {
       id
     }
   }
