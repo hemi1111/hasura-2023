@@ -85,6 +85,8 @@ export const EDIT_BADGE = gql`
     $title: String!
     $description: String!
     $requirements: [requirements_definitions_updates!]!
+    $added_title: String!
+    $added_description: String!
   ) {
     update_badges_definitions(
       where: { id: { _eq: $id } }
@@ -100,6 +102,23 @@ export const EDIT_BADGE = gql`
     }
     create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
       id
+    }
+    insert_requirements_definitions(
+      objects: {
+        badge_id: $id
+        description: $added_description
+        title: $added_title
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export const DELETE_REQUIREMENT = gql`
+  mutation deleteReq($delete_id: Int!) {
+    delete_requirements_definitions(where: { id: { _eq: $delete_id } }) {
+      affected_rows
     }
   }
 `;
