@@ -20,6 +20,15 @@ const CreateEngineer = () => {
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
-  return <EngineerForm form={form} onSubmit={handleFormSubmit} />;
+  return (
+    <div
+      style={{
+        marginLeft: "auto",
+        marginRight: "auto"
+      }}
+    >
+      <EngineerForm form={form} onSubmit={handleFormSubmit} />
+    </div>
+  );
 };
 export default CreateEngineer;

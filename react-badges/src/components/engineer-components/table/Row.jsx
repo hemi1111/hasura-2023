@@ -14,11 +14,11 @@ const Row = (props) => {
   return (
     <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
       <TableCell>{`${index + 1}. `}</TableCell>
-      <TableCell align="center" component="th" scope="row">
+      <TableCell component="th" scope="row">
         {name}
       </TableCell>
-      <TableCell align="center">{managersList}</TableCell>
-      <TableCell align="center">
+      <TableCell>{managersList}</TableCell>
+      <TableCell>
         <IconButton
           color="primary"
           onClick={() => navigate(`/engineer/edit/${id}`)}
@@ -27,7 +27,7 @@ const Row = (props) => {
         </IconButton>
       </TableCell>
 
-      <TableCell align="center">
+      <TableCell>
         {open && (
           <DeleteEngineer
             name={name}

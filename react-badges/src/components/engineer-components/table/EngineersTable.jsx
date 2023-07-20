@@ -14,22 +14,14 @@ const EngineersTable = ({ navigate, data }) => {
   return (
     <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
       <TableContainer sx={{ m: 1 }} component={Paper}>
-        <Table aria-label="collapsible table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell width="10%" />
-              <TableCell width="20%" align="center">
-                Name
-              </TableCell>
-              <TableCell width="50%" align="center">
-                Managers
-              </TableCell>
-              <TableCell width="10%" align="center">
-                Edit
-              </TableCell>
-              <TableCell width="10%" align="center">
-                Delete
-              </TableCell>
+              <TableCell width="5px" />
+              <TableCell>Name</TableCell>
+              <TableCell>Managers</TableCell>
+              <TableCell width="5px">Edit</TableCell>
+              <TableCell width="5px">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

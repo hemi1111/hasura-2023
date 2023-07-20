@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ADD_ENGINEER_MANAGER_RELATION,
   DELETE_ENGINEER_MANAGER_RELATION,
-  GET_ENGINEERS,
   GET_ENGINEER_MANAGERS_RELATION,
   GET_MANAGER_WITHOUT_RELATION,
   UPDATE_ENGINEER,
@@ -19,10 +18,6 @@ const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
-    refetchQueries: [{ query: GET_ENGINEERS }]
-  });
-
   const relations = useQuery(GET_ENGINEER_MANAGERS_RELATION, {
     variables: { id }
   });
@@ -31,10 +26,15 @@ const EditEngineer = () => {
     GET_MANAGER_WITHOUT_RELATION
   );
 
+  const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
+    refetchQueries: [
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
+    ]
+  });
+
   const [addRelation] = useMutation(ADD_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
@@ -42,10 +42,10 @@ const EditEngineer = () => {
       });
     }
   });
+
   const [deleteRelation] = useMutation(DELETE_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
@@ -55,8 +55,7 @@ const EditEngineer = () => {
   });
   const [updateRelation] = useMutation(UPDATE_ENGINEER_MANAGER_RELATION, {
     refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION },
-      { query: GET_ENGINEERS }
+      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
     ],
     onCompleted: () => {
       noRelationManagers({
@@ -74,7 +73,7 @@ const EditEngineer = () => {
   const handleDelete = (manager) => {
     deleteRelation({ variables: { engineer: id, manager } });
   };
-  const handleEdit = ({oldManager, newManager}) => {
+  const handleEdit = ({ oldManager, newManager }) => {
     updateRelation({ variables: { id, oldManager, newManager } });
   };
   const handleAdd = ({ manager }) => {
@@ -88,22 +87,29 @@ const EditEngineer = () => {
   const notRelatedManagers = data?.get_managers_without_relation;
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <Box
-        sx={{
-          m: 1,
+    <Box
+      sx={{
+        m: 1,
+        display: "box"
+      }}
+    >
+      <Typography variant="h4" sx={{ m: 2 }}>
+        Edit managers for {engineerRelations?.name}:
+      </Typography>
+      <div
+        style={{
           display: "flex",
-          flexDirection: "column"
+          flexWrap: "wrap"
         }}
       >
-        <Typography variant="h4" sx={{ m: 2 }}>
-          Edit managers for {engineerRelations?.name}:
-        </Typography>
         <EngineerForm
           name={engineerRelations?.name}
           onSubmit={handleNameChange}
         />
         <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
+      </div>
+
+      <div style={{ width: "auto" }}>
         <EngineerRelations
           name={engineerRelations?.name}
           onDelete={handleDelete}
@@ -111,18 +117,21 @@ const EditEngineer = () => {
           notRelatedManagers={notRelatedManagers}
           managers={engineerRelations?.managers}
         />
-
-        <div style={{ margin: "auto", marginTop: "2ch" }}>
-          <Button
-            color="success"
-            variant="contained"
-            onClick={() => navigate("/engineers")}
-          >
-            Done
-          </Button>
-        </div>
-      </Box>
-    </div>
+      </div>
+      <Button
+        sx={{
+          m: 2,
+          width: "20ch",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+        color="success"
+        variant="outlined"
+        onClick={() => navigate("/engineers")}
+      >
+        Done
+      </Button>
+    </Box>
   );
 };
 export default EditEngineer;

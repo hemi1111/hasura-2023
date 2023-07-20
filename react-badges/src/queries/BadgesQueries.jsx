@@ -58,5 +58,48 @@ export const GET_SINGLE_INFO = gql`
       requirements
       title
     }
+    badges_definitions {
+      badges_definitions_requirements_definitions(
+        where: { badge_id: { _eq: $id } }
+      ) {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_BADGE_VERSIONS = gql`
+  query badgeVersions($id: Int!) {
+    badges_versions(where: { is_deleted: { _eq: false }, id: { _eq: $id } }) {
+      description
+      requirements
+      title
+      created_at
+    }
+  }
+`;
+
+export const EDIT_BADGE = gql`
+  mutation editBadge(
+    $id: Int!
+    $title: String!
+    $description: String!
+    $requirements: [requirements_definitions_set_input!]!
+  ) {
+    update_badges_definitions(
+      where: { id: { _eq: $id } }
+      _set: { description: $description, title: $title }
+    ) {
+      affected_rows
+    }
+    update_requirements_definitions(
+      where: { badge_id: { _eq: $id } }
+      _set: $requirements
+    ) {
+      affected_rows
+    }
+    create_badge_version(objects: { badge_def_id: $id, is_deleted: false }) {
+      id
+    }
   }
 `;
