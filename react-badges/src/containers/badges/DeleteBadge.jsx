@@ -20,7 +20,6 @@ const DeleteBadge = ({ open, setOpen, data }) => {
     setOpen(false);
   };
 
-  console.log(data.id);
   return (
     <div>
       <Dialog open={open} onClose={onClose}>

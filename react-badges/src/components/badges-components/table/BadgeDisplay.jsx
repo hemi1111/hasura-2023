@@ -39,8 +39,8 @@ const BadgeDisplay = () => {
             </TableHead>
             <TableBody>
               {data &&
-                data.badges_versions_last.map((data) => (
-                  <BadgeTable key={data.id} data={data} />
+                data.badges_versions_last.map((data, index) => (
+                  <BadgeTable key={index} data={data} />
                 ))}
             </TableBody>
           </Table>

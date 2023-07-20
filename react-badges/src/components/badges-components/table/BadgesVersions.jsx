@@ -16,6 +16,7 @@ import { useQuery } from "@apollo/client";
 import { GET_BADGE_VERSIONS } from "../../../queries/BadgesQueries";
 import BadgesVersionsRow from "./BadgesVersionsRow";
 import { useParams } from "react-router-dom";
+
 const BadgesVersions = () => {
   const { id } = useParams();
   const { data } = useQuery(GET_BADGE_VERSIONS, {
@@ -39,7 +40,7 @@ const BadgesVersions = () => {
         </Button>
       </Link>
       <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
-        <TableContainer>
+        <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
               <TableRow>
@@ -51,7 +52,7 @@ const BadgesVersions = () => {
             </TableHead>
             <TableBody>
               {data.badges_versions.map((data, index) => (
-                <BadgesVersionsRow key={data.id} data={data} index={index} />
+                <BadgesVersionsRow key={index} data={data} index={index} />
               ))}
             </TableBody>
           </Table>
