@@ -7,10 +7,12 @@ import {
   TableBody,
   Container,
   Paper,
-  TableContainer
+  Button,
+  TableContainer,
+  Box
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import BadgesNavbar from "../../BadgesNavbar";
 import { GET_BADGE_VERSIONS } from "../../../queries/BadgesQueries";
 import BadgesVersionsRow from "./BadgesVersionsRow";
 import { useParams } from "react-router-dom";
@@ -28,8 +30,15 @@ const BadgesVersions = () => {
 
   return (
     <div>
-      <BadgesNavbar />
-      <Container sx={{ m: "auto" }} component={Paper}>
+      <Link to="/badges">
+        <Button
+          variant="outlined"
+          sx={{ marginTop: "20px", marginLeft: "40%" }}
+        >
+          GO TO BADGES
+        </Button>
+      </Link>
+      <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
         <TableContainer>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
@@ -47,7 +56,7 @@ const BadgesVersions = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Container>
+      </Box>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import BadgesNavbar from "../../components/BadgesNavbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { TextField, Button, InputLabel, Typography } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
@@ -10,12 +9,11 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
-import { getVariableValues } from "graphql";
 
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [editBadge, { data: editData }] = useMutation(EDIT_BADGE, {
+  const [editBadge] = useMutation(EDIT_BADGE, {
     refetchQueries: [{ query: GET_BADGES }]
   });
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
@@ -69,7 +67,10 @@ const EditBadge = () => {
           description: getValues(`requirements.${index}.description`)
         }
       }));
-      console.log(requirements);
+      const newReq = { ...requirements };
+      // newReq.requirements[4].id = 22;
+      console.log(newReq);
+
       editBadge({
         variables: {
           id,
@@ -96,7 +97,14 @@ const EditBadge = () => {
 
   return (
     <div>
-      <BadgesNavbar />
+      <Link to="/badges">
+        <Button
+          variant="outlined"
+          sx={{ marginTop: "20px", marginLeft: "45%" }}
+        >
+          GO TO BADGES
+        </Button>
+      </Link>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div style={{ marginTop: "50px", textAlign: "center" }}>
           <TextField

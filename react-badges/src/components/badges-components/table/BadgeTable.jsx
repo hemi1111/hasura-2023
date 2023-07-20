@@ -79,13 +79,13 @@ function BadgeTable(props) {
               <Table size="small" aria-label="requirements">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontSize: "1.1em" }}>
+                    <TableCell sx={{ fontSize: "1.1em", maxWidth: "70%" }}>
                       {data.description}
                     </TableCell>
                     <TableCell>
                       <Button
                         variant="outlined"
-                        sx={{ marginLeft: "20%" }}
+                        sx={{ position: "sticky", float: "right" }}
                         onClick={() => handleVersions(data.title, data.id)}
                       >
                         Show All Versions
