@@ -11,8 +11,8 @@ import {
 } from "../../queries/EngineerQueries";
 import { useEffect } from "react";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
-import EngineerForm from "../../components/engineer-components/form/EngineerForm";
 import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
+import UserForm from "../../components/UserForm";
 
 const EditEngineer = () => {
   const navigate = useNavigate();
@@ -102,10 +102,7 @@ const EditEngineer = () => {
           flexWrap: "wrap"
         }}
       >
-        <EngineerForm
-          name={engineerRelations?.name}
-          onSubmit={handleNameChange}
-        />
+        <UserForm name={engineerRelations?.name} onSubmit={handleNameChange} />
         <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
       </div>
 

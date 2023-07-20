@@ -2,8 +2,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
-const EngineerForm = ({ name, onSubmit }) => {
+const UserForm = ({ name, onSubmit, manager }) => {
   const navigate = useNavigate();
   const {
     register,
@@ -31,7 +30,7 @@ const EngineerForm = ({ name, onSubmit }) => {
           variant="h3"
           sx={{ m: 2, marginLeft: "auto", marginRight: "auto" }}
         >
-          Add Engineer:
+          Add {manager ? "Manager" : "Engineer"}:
         </Typography>
       )}
       <TextField
@@ -62,7 +61,10 @@ const EngineerForm = ({ name, onSubmit }) => {
         </Button>
       ) : (
         <div style={{ width: "100%" }}>
-          <Button sx={{ width: "50%" }} onClick={() => navigate("/engineers")}>
+          <Button
+            sx={{ width: "50%" }}
+            onClick={() => navigate(manager ? "/managers" : "/engineers")}
+          >
             Cancel
           </Button>
           <Button color="success" sx={{ width: "50%" }} type="submit">
@@ -73,4 +75,4 @@ const EngineerForm = ({ name, onSubmit }) => {
     </Box>
   );
 };
-export default EngineerForm;
+export default UserForm;

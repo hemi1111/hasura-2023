@@ -119,15 +119,17 @@ const EditManager = () => {
               <TableBody>
                 {dataEngr &&
                   dataEngr.get_engineers_by_manager.map((engineer) => (
-                    <TableRow>
+                    <TableRow key={engineer.id}>
                       <TableCell>{engineer.name}</TableCell>
-                      <Button
-                        onClick={() => {
-                          handleDelete(engineer.id);
-                        }}
-                      >
-                        DElete
-                      </Button>
+                      <TableCell>
+                        <Button
+                          onClick={() => {
+                            handleDelete(engineer.id);
+                          }}
+                        >
+                          DElete
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
