@@ -90,7 +90,10 @@ const EditEngineer = () => {
     <Box
       sx={{
         m: 1,
-        display: "box"
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
       <Typography variant="h4" sx={{ m: 2 }}>
@@ -105,8 +108,12 @@ const EditEngineer = () => {
         <UserForm name={engineerRelations?.name} onSubmit={handleNameChange} />
         <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
       </div>
-
-      <div style={{ width: "auto" }}>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "82ch"
+        }}
+      >
         <EngineerRelations
           name={engineerRelations?.name}
           onDelete={handleDelete}
@@ -115,14 +122,9 @@ const EditEngineer = () => {
           managers={engineerRelations?.managers}
         />
       </div>
+
       <Button
-        sx={{
-          m: 2,
-          width: "20ch",
-          marginLeft: "auto",
-          marginRight: "auto"
-        }}
-        color="success"
+        sx={{ padding: 1.5, m: 1, width: "40ch" }}
         variant="outlined"
         onClick={() => navigate("/engineers")}
       >
