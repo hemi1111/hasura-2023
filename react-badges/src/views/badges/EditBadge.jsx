@@ -55,9 +55,8 @@ const EditBadge = () => {
     }
   }, [data]);
 
-  const onSubmit = async (formData) => {
+  const onSubmit = (formData) => {
     const { title, description } = formData;
-
     try {
       const requirements = fields.map((requirement, index) => ({
         where: {
@@ -67,11 +66,11 @@ const EditBadge = () => {
         },
         _set: {
           title: getValues(`requirements.${index}.title`),
-          description: getValues(`requirement.${index}.description`)
+          description: getValues(`requirements.${index}.description`)
         }
       }));
       console.log(requirements);
-      await editBadge({
+      editBadge({
         variables: {
           id,
           title: title,
@@ -80,7 +79,7 @@ const EditBadge = () => {
         }
       });
 
-      console.log("Badge updated successfully", editData);
+      console.log("Badge updated successfully", formData);
       navigate("/badges");
     } catch (error) {
       console.log("Couldn't get updated", error);
@@ -186,7 +185,7 @@ const EditBadge = () => {
                 cursor: "pointer"
               }}
               onClick={() => {
-                append({ title: "", description: "" });
+                append({});
                 remove(fields.length - 1);
               }}
             >
@@ -201,7 +200,7 @@ const EditBadge = () => {
                 width: "fit-content",
                 cursor: "pointer"
               }}
-              onClick={() => append({ title: "", description: "" })}
+              onClick={() => append({})}
             >
               Add Requirement <AddBox sx={{ marginBottom: "-5px" }} />
             </Typography>
