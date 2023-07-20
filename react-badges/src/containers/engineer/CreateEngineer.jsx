@@ -1,7 +1,7 @@
 import { ADD_ENGINEER, GET_ENGINEERS } from "../../queries/EngineerQueries";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import EngineerForm from "../../components/engineer-components/form/EngineerForm";
+import UserForm from "../../components/UserForm";
 import { useForm } from "react-hook-form";
 
 const CreateEngineer = () => {
@@ -27,7 +27,7 @@ const CreateEngineer = () => {
         marginRight: "auto"
       }}
     >
-      <EngineerForm form={form} onSubmit={handleFormSubmit} />
+      <UserForm form={form} onSubmit={handleFormSubmit} />
     </div>
   );
 };
