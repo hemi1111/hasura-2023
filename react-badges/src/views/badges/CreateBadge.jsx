@@ -62,7 +62,6 @@ const CreateBadge = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  console.log();
   return (
     <div>
       <BadgesNavbar />
@@ -80,6 +79,7 @@ const CreateBadge = () => {
             <br />
             <TextField
               sx={{ marginBottom: "20px" }}
+              multiline
               label="Description"
               name="description"
               {...register("description", {

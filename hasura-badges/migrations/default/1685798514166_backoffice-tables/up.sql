@@ -86,9 +86,11 @@ BEGIN
       WHERE ur.engineer = u.id
         AND ur.manager = manager_id
     )
-    AND u.id <> manager_id; 
+    AND u.id <> manager_id
+    AND NOT u.is_deleted; 
 END;
 $$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE VIEW "engineers_with_managers" AS
 SELECT 
     e.id AS id,

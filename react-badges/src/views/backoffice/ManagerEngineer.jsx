@@ -22,18 +22,14 @@ const ManagerEngineer = () => {
     GET_ENGINEERS_BY_MANAGER
   );
 
-  const { loading, data, error } = useQuery(GET_MANAGERS, {
-    refetchQueries: [
-      {
-        query: GET_MANAGERS
-      }
-    ]
-  });
+  const { loading, data, error, refetch } = useQuery(GET_MANAGERS);
   const [getUnassignedEngr, { data: dataEngr, loading: loadingEngr }] =
     useMutation(GET_UNASSIGNED_ENGINEERS);
 
   const [addRelation, r2] = useMutation(ADD_RELATION);
-  console.log(manager ? manager : "Akoma");
+  useEffect(() => {
+    refetch();
+  }, []);
   const dothis = () => {
     if (checkedItems.length > 0)
       for (let i = 0; i < checkedItems.length; i++) {

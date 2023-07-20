@@ -5,15 +5,12 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { CREATE_MANAGER, GET_MANAGERS } from "../../queries/ManagerQueries";
 import { useNavigate } from "react-router-dom";
+import UserForm from "../../components/UserForm";
 
 const CreateManager = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset
-  } = useForm();
+  const form = useForm();
+
   const [createManager, { loading, error, data }] = useMutation(
     CREATE_MANAGER,
     {
@@ -27,7 +24,6 @@ const CreateManager = () => {
   const styleForm = {
     display: "flex",
     justifyContent: "center",
-    // height: "80%",
     alignItems: "center",
     width: "clamp(450px,30px,430px)",
     margin: "0 auto",
@@ -37,21 +33,14 @@ const CreateManager = () => {
     flexDirection: "column",
     gap: "1rem"
   };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   createManager({
-  //     variables: { name }
-  //   });
-  //   setName("");
-  //   console.log(data);
-  // };
-  const onSubmit = (data) => {
+
+  const handleFormSubmit = (data) => {
     console.log(data);
     const { name } = data;
     createManager({
       variables: { name }
     });
-    reset();
+
     navigate("/managers");
   };
 
@@ -61,33 +50,7 @@ const CreateManager = () => {
     <>
       <ManagerNavbar />
       <div style={{ height: "100%", display: "grid", placeItems: "center" }}>
-        <form onSubmit={handleSubmit(onSubmit)} style={styleForm}>
-          <Typography>Create Manager</Typography>
-          <TextField
-            sx={{ width: "100%" }}
-            label="Name"
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Field required"
-              },
-              minLength: {
-                value: 2,
-                message: "Mininmum characters is 2"
-              },
-              pattern: {
-                value: /^[A-Z][a-z0-9_-]/,
-                message: "Should start with upper case"
-              }
-            })}
-            error={!!errors.name}
-            helperText={errors.name && errors.name.message}
-          />
-
-          <Button type="submit" variant="outlined" sx={{ width: "50%" }}>
-            Submit
-          </Button>
-        </form>
+        <UserForm form={form} onSubmit={handleFormSubmit} manager={true} />
       </div>
     </>
   );
