@@ -10,8 +10,8 @@ import {
   TableContainer
 } from "@mui/material";
 import { useQuery } from "@apollo/client";
-import BadgesNavbar from "../../components/BadgesNavbar";
-import { GET_BADGE_VERSIONS } from "../../queries/BadgesQueries";
+import BadgesNavbar from "../../BadgesNavbar";
+import { GET_BADGE_VERSIONS } from "../../../queries/BadgesQueries";
 import BadgesVersionsRow from "./BadgesVersionsRow";
 import { useParams } from "react-router-dom";
 const BadgesVersions = () => {

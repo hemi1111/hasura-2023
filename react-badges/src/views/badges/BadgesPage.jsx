@@ -1,8 +1,7 @@
 import React from "react";
-import BadgesNavbar from '../../components/BadgesNavbar'
-import BadgeDisplay from "./BadgeDisplay";
+import BadgesNavbar from "../../components/BadgesNavbar";
+import BadgeDisplay from "../../components/badges-components/table/BadgeDisplay";
 const BadgesPage = () => {
-
   return (
     <div>
       <BadgesNavbar />

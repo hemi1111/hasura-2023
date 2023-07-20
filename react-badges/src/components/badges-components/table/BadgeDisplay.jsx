@@ -1,0 +1,44 @@
+import React from "react";
+import { useQuery } from "@apollo/client";
+import { GET_BADGES } from "../../../queries/BadgesQueries";
+import BadgeTable from "./BadgeTable";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Container
+} from "@mui/material";
+const BadgeDisplay = () => {
+  const { data } = useQuery(GET_BADGES);
+
+  console.log("display", data);
+  return (
+    <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
+      <TableContainer sx={{ m: 1 }}>
+        <Table sx={{ minWidth: 650 }} size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Badges</TableCell>
+              <TableCell align="center">Delete</TableCell>
+              <TableCell align="center">Edit</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.badges_versions_last.map((data) => (
+                <BadgeTable key={data.id} data={data} />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+};
+
+export default BadgeDisplay;

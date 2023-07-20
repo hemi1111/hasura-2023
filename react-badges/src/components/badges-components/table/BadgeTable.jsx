@@ -13,14 +13,22 @@ import IconButton from "@mui/material/IconButton";
 import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteBadge from "./DeleteBadge";
+import DeleteBadge from "../../../containers/badges/DeleteBadge";
 import { useNavigate } from "react-router-dom";
 
-function BadgesVersionsRow(props) {
+function BadgeTable(props) {
   const navigate = useNavigate();
-  const { data, index } = props;
+  const { data } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState();
+
+  const handleDeleteClick = () => {
+    setOpen(true);
+  };
+
+  const handleVersions = (version_badge_id, version_id) => {
+    navigate(`/badges/versions/${version_badge_id}/${version_id}`);
+  };
 
   const handleOpenRequirements = (badgeId) => {
     setOpenStates((prevOpenStates) => ({
@@ -29,7 +37,11 @@ function BadgesVersionsRow(props) {
     }));
   };
 
-  console.log(data);
+  const handleEditClick = (edit_badge_id) => {
+    navigate(`/badges/edit/${edit_badge_id}`);
+  };
+
+  console.log("table", data);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -49,8 +61,16 @@ function BadgesVersionsRow(props) {
         <TableCell component="th" scope="row">
           {data.title}
         </TableCell>
-        <TableCell align="center">{index + 1}</TableCell>
-        <TableCell align="center">{data.created_at}</TableCell>
+        <TableCell align="center">
+          <Button size="small" onClick={handleDeleteClick}>
+            <Delete color="error" fontSize="medium" />
+          </Button>
+        </TableCell>
+        <TableCell align="center">
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
+            <Edit fontSize="medium" />
+          </Button>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -58,7 +78,20 @@ function BadgesVersionsRow(props) {
             <Box sx={{ margin: 1 }}>
               <Table size="small" aria-label="requirements">
                 <TableHead>
-                  <TableCell colSpan={2}>{data.description}</TableCell>
+                  <TableRow>
+                    <TableCell sx={{ fontSize: "1.1em" }}>
+                      {data.description}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        sx={{ marginLeft: "20%" }}
+                        onClick={() => handleVersions(data.title, data.id)}
+                      >
+                        Show All Versions
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontSize: "1.2em" }}>
                       Requirements
@@ -88,4 +121,4 @@ function BadgesVersionsRow(props) {
   );
 }
 
-export default BadgesVersionsRow;
+export default BadgeTable;
