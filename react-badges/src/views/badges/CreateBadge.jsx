@@ -43,7 +43,6 @@ const CreateBadge = () => {
 
   const onSubmit = (formData) => {
     const { title, description, requirements } = formData;
-    console.log("create", formData);
     insert_badges_definitions({
       variables: {
         title: title,

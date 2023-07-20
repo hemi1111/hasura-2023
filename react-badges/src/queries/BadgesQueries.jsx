@@ -94,6 +94,9 @@ export const EDIT_BADGE = gql`
     }
     update_requirements_definitions_many(updates: $requirements) {
       affected_rows
+      returning {
+        id
+      }
     }
     create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
       id

@@ -10,11 +10,12 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
+import { getVariableValues } from "graphql";
 
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [editBadge] = useMutation(EDIT_BADGE, {
+  const [editBadge, { data: editData }] = useMutation(EDIT_BADGE, {
     refetchQueries: [{ query: GET_BADGES }]
   });
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
@@ -32,6 +33,7 @@ const EditBadge = () => {
     handleSubmit,
     control,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm();
 
@@ -48,29 +50,40 @@ const EditBadge = () => {
       requirements.forEach((requirement, index) => {
         setValue(`requirements.${index}.title`, requirement.title);
         setValue(`requirements.${index}.description`, requirement.description);
+        setValue(`requirements.${index}.id`, requirement.id);
       });
     }
   }, [data]);
 
-  const onSubmit = (formData) => {
+  const onSubmit = async (formData) => {
     const { title, description } = formData;
 
     try {
-      editBadge({
+      const requirements = fields.map((requirement, index) => ({
+        where: {
+          id: {
+            _eq: getValues(`requirements.${index}.id`)
+          }
+        },
+        _set: {
+          title: getValues(`requirements.${index}.title`),
+          description: getValues(`requirement.${index}.description`)
+        }
+      }));
+      console.log(requirements);
+      await editBadge({
         variables: {
           id,
           title: title,
           description: description,
-          requirements: fields.map((requirement) => ({
-            title: requirement.title,
-            description: requirement.description
-          }))
+          requirements: requirements
         }
       });
-      console.log("Badge updated successfully", formData);
+
+      console.log("Badge updated successfully", editData);
       navigate("/badges");
     } catch (error) {
-      console.log("Couldn't get updated");
+      console.log("Couldn't get updated", error);
     }
   };
 
@@ -81,7 +94,6 @@ const EditBadge = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-  console.log(fields);
 
   return (
     <div>
