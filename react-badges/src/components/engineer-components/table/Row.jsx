@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import DeleteEngineer from "../../../containers/engineer/DeleteEngineer";
 
@@ -36,9 +36,9 @@ const Row = (props) => {
             open={open}
           />
         )}
-        <Button onClick={() => setOpen(true)} color="error">
+        <IconButton onClick={() => setOpen(true)} color="error">
           <Delete />
-        </Button>
+        </IconButton>
       </TableCell>
     </TableRow>
   );

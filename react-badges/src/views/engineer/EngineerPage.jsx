@@ -5,14 +5,17 @@ import EngineersList from "../../containers/engineer/EngineersList";
 
 const EngineerPage = () => {
   return (
-    <div>
-      <div className="navbar-style">
-        <Link to="/engineer/create">
-          <Button>Add New Engineer</Button>
-        </Link>
-      </div>
+    <>
+      <Link to="/engineer/create">
+        <Button
+          variant="outlined"
+          sx={{ padding: 1.5, m: 2, float: "right", marginBottom: 0 }}
+        >
+          Add New Engineer
+        </Button>
+      </Link>
       <EngineersList />
-    </div>
+    </>
   );
 };
 
