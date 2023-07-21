@@ -225,30 +225,11 @@ const EditBadge = () => {
                 width: "fit-content",
                 cursor: "pointer"
               }}
-              onClick={() => setShowAddRequirement(true)}
+              onClick={() => append({ title: "", description: "" })}
             >
               Add Requirement <AddBox sx={{ marginBottom: "-5px" }} />
             </Typography>
           )}
-          <TextField
-            sx={{ minWidth: "600px", marginBottom: "20px" }}
-            multiline
-            label="Requirement Title"
-            name="added_title"
-            {...register("added_title")}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-          />
-          <br />
-          <TextField
-            sx={{ minWidth: "600px", marginBottom: "20px" }}
-            multiline
-            label="Requirement Description"
-            name="added_description"
-            {...register("added_description")}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-          />
           <br />
           <Button type="submit">Confirm</Button>
         </div>

@@ -38,6 +38,7 @@ const BadgeDisplay = () => {
               </TableRow>
             </TableHead>
             <TableBody>
+              
               {data &&
                 data.badges_versions_last.map((data, index) => (
                   <BadgeTable key={index} data={data} />

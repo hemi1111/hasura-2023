@@ -43,85 +43,83 @@ function BadgeTable(props) {
 
   return (
     <>
-      <React.Fragment>
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-          <TableCell>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => handleOpenRequirements(data.id)}
-            >
-              {openStates[data.id] ? (
-                <KeyboardArrowUpIcon />
-              ) : (
-                <KeyboardArrowDownIcon />
-              )}
-            </IconButton>
-          </TableCell>
-          <TableCell component="th" scope="row">
-            {data.title}
-          </TableCell>
-          <TableCell align="center">
-            <Button size="small" onClick={handleDeleteClick}>
-              <Delete color="error" fontSize="medium" />
-            </Button>
-          </TableCell>
-          <TableCell align="center">
-            <Button size="small" onClick={() => handleEditClick(data.id)}>
-              <Edit fontSize="medium" />
-            </Button>
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={openStates[data.id]} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Table size="small" aria-label="requirements">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          fontSize: "1.1em",
-                          maxWidth: "70%"
-                        }}
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => handleOpenRequirements(data.id)}
+          >
+            {openStates[data.id] ? (
+              <KeyboardArrowUpIcon />
+            ) : (
+              <KeyboardArrowDownIcon />
+            )}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {data.title}
+        </TableCell>
+        <TableCell align="center">
+          <Button size="small" onClick={handleDeleteClick}>
+            <Delete color="error" fontSize="medium" />
+          </Button>
+        </TableCell>
+        <TableCell align="center">
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
+            <Edit fontSize="medium" />
+          </Button>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={openStates[data.id]} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Table size="small" aria-label="requirements">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        fontSize: "1.1em",
+                        maxWidth: "70%"
+                      }}
+                    >
+                      {data.description}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        sx={{ position: "sticky", float: "right" }}
+                        onClick={() => handleVersions(data.title, data.id)}
                       >
-                        {data.description}
-                      </TableCell>
+                        Show All Versions
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ fontSize: "1.2em" }}>
+                      Requirements
+                    </TableCell>
+                    <TableCell sx={{ fontSize: "1.2em" }}>
+                      Description
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.requirements.map((requirement, index) => (
+                    <TableRow key={index} style={{ maxWidth: "80%" }}>
                       <TableCell>
-                        <Button
-                          variant="outlined"
-                          sx={{ position: "sticky", float: "right" }}
-                          onClick={() => handleVersions(data.title, data.id)}
-                        >
-                          Show All Versions
-                        </Button>
+                        {index + 1}.{requirement.title}
                       </TableCell>
+                      <TableCell>{requirement.description}</TableCell>
                     </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ fontSize: "1.2em" }}>
-                        Requirements
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1.2em" }}>
-                        Description
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.requirements.map((requirement, index) => (
-                      <TableRow key={index} style={{ maxWidth: "80%" }}>
-                        <TableCell>
-                          {index + 1}.{requirement.title}
-                        </TableCell>
-                        <TableCell>{requirement.description}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      </React.Fragment>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
       <DeleteBadge open={open} setOpen={setOpen} data={data} />
     </>
   );
