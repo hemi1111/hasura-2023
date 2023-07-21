@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { TextField, Button, InputLabel, Typography } from "@mui/material";
@@ -6,20 +6,14 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SINGLE_INFO,
   EDIT_BADGE,
-  GET_BADGES,
-  DELETE_REQUIREMENT
+  GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
 
 const EditBadge = () => {
-  const [showAddRequirement, setShowAddRequirement] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const [editBadge] = useMutation(EDIT_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }]
-  });
-
-  const [deleteReq] = useMutation(DELETE_REQUIREMENT, {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
@@ -69,28 +63,18 @@ const EditBadge = () => {
   }, [data]);
 
   const onSubmit = (formData) => {
-    const { title, description, added_title, added_description } = formData;
-    try {
-      const requirements = fields.map((requirement, index) => ({
-        where: {
-          id: {
-            _eq: getValues(`requirements.${index}.id`)
-          }
-        },
-        _set: {
-          title: getValues(`requirements.${index}.title`),
-          description: getValues(`requirements.${index}.description`)
-        }
-      }));
+    const { title, description, requirements } = formData;
 
+    try {
       editBadge({
         variables: {
-          id,
+          id: id,
           title: title,
           description: description,
-          requirements: requirements,
-          added_title: added_title,
-          added_description: added_description
+          requirements: requirements.map((requirement) => ({
+            title: requirement.title,
+            description: requirement.description
+          }))
         }
       });
 
@@ -194,7 +178,6 @@ const EditBadge = () => {
                   cursor: "pointer"
                 }}
                 onClick={() => {
-                  handleReqDelete(getValues(`requirements.${index}.id`));
                   remove(index);
                 }}
               />
