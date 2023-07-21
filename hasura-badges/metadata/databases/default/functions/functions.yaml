@@ -7,3 +7,4 @@
 - "!include public_get_managers_without_relation.yaml"
 - "!include public_get_pending_proposals_for_engineer.yaml"
 - "!include public_get_unassigned_engineers.yaml"
+- "!include public_update_requirements.yaml"
