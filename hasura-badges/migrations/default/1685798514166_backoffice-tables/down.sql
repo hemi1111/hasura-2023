@@ -1,3 +1,4 @@
+DROP FUNCTION IF EXISTS "update_requirements"(JSON, JSONB, INTEGER);
 DROP FUNCTION IF EXISTS "get_unassigned_engineers";
 DROP FUNCTION IF EXISTS "get_managers_without_relation"(INTEGER);
 DROP VIEW IF EXISTS "engineering_teams";

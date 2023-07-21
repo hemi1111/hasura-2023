@@ -14,7 +14,10 @@ export const DELETE_MANAGER = gql`
 `;
 export const GET_ENGINEERS_BY_MANAGER = gql`
   mutation getEngineerByMngr($id: Int!) {
-    get_engineers_by_manager(args: { manager_id: $id }, order_by: { id: asc }) {
+    get_engineers_by_manager(
+      args: { manager_id: $id }
+      order_by: { name: asc }
+    ) {
       name
       id
     }

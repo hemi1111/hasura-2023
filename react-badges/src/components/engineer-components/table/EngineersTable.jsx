@@ -14,14 +14,14 @@ const EngineersTable = ({ navigate, data }) => {
   return (
     <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
       <TableContainer sx={{ m: 1 }} component={Paper}>
-        <Table stickyHeader>
+        <Table>
           <TableHead>
             <TableRow>
-              <TableCell width="5px" />
+              <TableCell />
               <TableCell>Name</TableCell>
               <TableCell>Managers</TableCell>
-              <TableCell width="5px">Edit</TableCell>
-              <TableCell width="5px">Delete</TableCell>
+              <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

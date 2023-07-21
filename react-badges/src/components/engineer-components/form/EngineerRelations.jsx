@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
-import DeleteEngineerRelation from "../dialog/DeleteEngineerRelation";
 import EditEngineerRelation from "../dialog/EditEngineerRelation";
+import DeleteDialog from "../dialog/DeleteDialog";
 
 const EngineerRelations = ({
+  manager,
   name,
   managers,
   onDelete,
@@ -36,8 +37,8 @@ const EngineerRelations = ({
         <TableHead>
           <TableRow>
             <TableCell>Manager</TableCell>
-            <TableCell>Update</TableCell>
-            <TableCell>Delete</TableCell>
+            {!manager && <TableCell align="center">Update</TableCell>}
+            <TableCell align="center">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,7 +51,7 @@ const EngineerRelations = ({
                 {relation.name}
               </TableCell>
               {index === open.delete && (
-                <DeleteEngineerRelation
+                <DeleteDialog
                   name={relation.name}
                   open={index === open.delete}
                   onClose={() => setOpen((old) => ({ ...old, delete: -1 }))}
@@ -67,14 +68,16 @@ const EngineerRelations = ({
                   onEdit={handleEdit}
                 />
               )}
-              <TableCell>
-                <Button
-                  onClick={() => setOpen((old) => ({ ...old, edit: index }))}
-                >
-                  <Edit />
-                </Button>
-              </TableCell>
-              <TableCell>
+              {!manager && (
+                <TableCell align="center">
+                  <Button
+                    onClick={() => setOpen((old) => ({ ...old, edit: index }))}
+                  >
+                    <Edit />
+                  </Button>
+                </TableCell>
+              )}
+              <TableCell align="center">
                 <Button
                   onClick={() => setOpen((old) => ({ ...old, delete: index }))}
                   color="error"

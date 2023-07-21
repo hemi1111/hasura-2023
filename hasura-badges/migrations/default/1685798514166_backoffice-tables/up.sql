@@ -86,9 +86,11 @@ BEGIN
       WHERE ur.engineer = u.id
         AND ur.manager = manager_id
     )
-    AND u.id <> manager_id; 
+    AND u.id <> manager_id
+    AND NOT u.is_deleted; 
 END;
 $$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE VIEW "engineers_with_managers" AS
 SELECT 
     e.id AS id,
@@ -124,3 +126,42 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION update_requirements(hasura_session JSON, requirements JSONB, u_id INTEGER)
+RETURNS SETOF requirements_definitions AS
+$$
+DECLARE
+    rec JSONB;
+    tenant_id integer := (hasura_session ->> 'x-hasura-tenant-id')::integer;
+BEGIN
+DELETE FROM requirements_definitions
+    WHERE badge_id = u_id
+    AND NOT EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements(requirements) AS r
+        WHERE (r->>'id')::INTEGER = requirements_definitions.id
+    );
+
+    FOR rec IN SELECT * FROM jsonb_array_elements(requirements)
+    LOOP
+
+        IF rec->>'id' IS NULL THEN
+            INSERT INTO requirements_definitions (badge_id, title, description, created_by, modified_by)
+            VALUES (u_id, rec->>'title', rec->>'description', tenant_id, tenant_id);
+        ELSE
+            UPDATE requirements_definitions
+            SET
+                title = rec->>'title',
+                description = rec->>'description',
+                modified_at = now(),
+                modified_by = tenant_id
+            WHERE id = (rec->>'id')::INTEGER AND badge_id = u_id;
+        END IF;
+    END LOOP;
+
+    RETURN QUERY SELECT * FROM requirements_definitions;
+
+END;
+$$ LANGUAGE plpgsql;
+
