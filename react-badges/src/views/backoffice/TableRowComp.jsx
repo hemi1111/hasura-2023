@@ -18,6 +18,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useMutation } from "@apollo/client";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/ManagerQueries";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 
 function TableRowComp(props) {
   const { row, deleteManager } = props;
@@ -34,7 +35,7 @@ function TableRowComp(props) {
     });
     setOpen(!open);
   };
-  if (loading) return;
+  // if (loading) return;
   if (error) return;
 
   const arr = data ? [...data.get_engineers_by_manager] : null;
@@ -95,10 +96,16 @@ function TableRowComp(props) {
               <Table size="small" aria-label="purchases">
                 <TableBody>
                   <TableRow>
-                    {data &&
+                    {loading ? (
+                      <td style={{ display: "grid", placeItems: "center" }}>
+                        <LoadingSpinner />
+                      </td>
+                    ) : (
+                      data &&
                       arr.map((engineer) => (
                         <TableCell key={engineer.id}>{engineer.name}</TableCell>
-                      ))}
+                      ))
+                    )}
                   </TableRow>
                 </TableBody>
               </Table>

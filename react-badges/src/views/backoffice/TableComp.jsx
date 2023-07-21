@@ -14,16 +14,13 @@ import { DELETE_MANAGER, GET_MANAGERS } from "../../queries/ManagerQueries";
 import { useMutation } from "@apollo/client";
 
 const TableComp = ({ r1 }) => {
-  const [deleteManager, { loading, data, error }] = useMutation(
-    DELETE_MANAGER,
-    {
-      refetchQueries: [
-        {
-          query: GET_MANAGERS
-        }
-      ]
-    }
-  );
+  const [deleteManager] = useMutation(DELETE_MANAGER, {
+    refetchQueries: [
+      {
+        query: GET_MANAGERS
+      }
+    ]
+  });
   return (
     <Container maxWidth="md" sx={{ margin: "40px auto" }} component={Paper}>
       <TableContainer>
@@ -37,7 +34,7 @@ const TableComp = ({ r1 }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {r1.managers.map((row) => (
+            {r1?.managers.map((row) => (
               <TableRowComp
                 key={row.id}
                 row={row}
