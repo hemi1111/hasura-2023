@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import ManagerNavbar from "../../components/ManagerNavbar";
-import { TextField, Button, Typography, Grid } from "@mui/material";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { CREATE_MANAGER, GET_MANAGERS } from "../../queries/ManagerQueries";
 import { useNavigate } from "react-router-dom";
