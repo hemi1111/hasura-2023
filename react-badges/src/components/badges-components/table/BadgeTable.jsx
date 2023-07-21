@@ -10,20 +10,33 @@ import {
   Button
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import { useMutation } from "@apollo/client";
 import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteBadge from "../../../containers/badges/DeleteBadge";
 import { useNavigate } from "react-router-dom";
-
+import DeleteDialog from "../../engineer-components/dialog/DeleteDialog";
+import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
   const { data } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState(false);
+  const [deleteBadge] = useMutation(DELETE_BADGE, {
+    refetchQueries: [{ query: GET_BADGES }]
+  });
 
   const handleDeleteClick = () => {
     setOpen(true);
+  };
+
+  const handleDeleteBadge = (badge_id) => {
+    deleteBadge({
+      variables: {
+        badge_def_id: badge_id
+      }
+    });
+    setOpen(false);
   };
 
   const handleVersions = (version_badge_id, version_id) => {
@@ -80,8 +93,10 @@ function BadgeTable(props) {
                   <TableRow>
                     <TableCell
                       sx={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
                         fontSize: "1.1em",
-                        maxWidth: "70%"
+                        maxWidth: "60%"
                       }}
                     >
                       {data.description}
@@ -120,7 +135,12 @@ function BadgeTable(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-      <DeleteBadge open={open} setOpen={setOpen} data={data} />
+      <DeleteDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        name={data.title}
+        onClick={() => handleDeleteBadge(data.id)}
+      />
     </>
   );
 }

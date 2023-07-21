@@ -84,41 +84,19 @@ export const EDIT_BADGE = gql`
     $id: Int!
     $title: String!
     $description: String!
-    $requirements: [requirements_definitions_updates!]!
-    $added_title: String!
-    $added_description: String!
+    $requirements: jsonb!
   ) {
+    update_requirements(args: { requirements: $requirements, u_id: $id }) {
+      badge_id
+    }
     update_badges_definitions(
       where: { id: { _eq: $id } }
       _set: { description: $description, title: $title }
     ) {
       affected_rows
     }
-    update_requirements_definitions_many(updates: $requirements) {
-      affected_rows
-      returning {
-        id
-      }
-    }
     create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
       id
-    }
-    insert_requirements_definitions(
-      objects: {
-        badge_id: $id
-        description: $added_description
-        title: $added_title
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-export const DELETE_REQUIREMENT = gql`
-  mutation deleteReq($delete_id: Int!) {
-    delete_requirements_definitions(where: { id: { _eq: $delete_id } }) {
-      affected_rows
     }
   }
 `;

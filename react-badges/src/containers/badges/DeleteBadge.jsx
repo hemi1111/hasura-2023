@@ -11,14 +11,7 @@ const DeleteBadge = ({ open, setOpen, data }) => {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
-  const handleDeleteBadge = (badge_id) => {
-    deleteBadge({
-      variables: {
-        badge_def_id: badge_id
-      }
-    });
-    setOpen(false);
-  };
+  
 
   return (
     <div>
