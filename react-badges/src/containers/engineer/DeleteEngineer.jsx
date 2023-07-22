@@ -4,7 +4,7 @@ import {
   GET_ENGINEER_BY_MANAGER
 } from "../../queries/EngineerQueries";
 import { useMutation } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DeleteEngineerDialog from "../../components/engineer-components/dialog/DeleteEngineerDialog";
 
 const DeleteEngineer = ({ open, id, name, onClose }) => {
@@ -13,7 +13,11 @@ const DeleteEngineer = ({ open, id, name, onClose }) => {
   });
   const [getEngineers, { data }] = useMutation(GET_ENGINEER_BY_MANAGER);
   const handleClick = () => {
-    deleteEngineer({ variables: { id: id } }).then(() => onClose());
+    deleteEngineer({ variables: { id: id } })
+      .then(() => {
+        onClose(1);
+      })
+      .catch(() => onClose(-1));
   };
   useEffect(() => {
     getEngineers({
