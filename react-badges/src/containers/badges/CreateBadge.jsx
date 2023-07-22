@@ -6,9 +6,8 @@ import {
   CREATE_BADGE_VERSION,
   GET_BADGES
 } from "../../queries/BadgesQueries";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
-import BadgesNavbar from "../../components/BadgesNavbar";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
@@ -64,7 +63,14 @@ const CreateBadge = () => {
 
   return (
     <div>
-      <BadgesNavbar />
+      <Link to="/badges">
+        <Button
+          variant="outlined"
+          sx={{ marginTop: "20px", marginLeft: "45%" }}
+        >
+          GO TO BADGES
+        </Button>
+      </Link>
       <div style={{ marginTop: "50px", textAlign: "center" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>

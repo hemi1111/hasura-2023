@@ -84,19 +84,16 @@ export const EDIT_BADGE = gql`
     $id: Int!
     $title: String!
     $description: String!
-    $requirements: [requirements_definitions_updates!]!
+    $requirements: jsonb!
   ) {
+    update_requirements(args: { requirements: $requirements, u_id: $id }) {
+      badge_id
+    }
     update_badges_definitions(
       where: { id: { _eq: $id } }
       _set: { description: $description, title: $title }
     ) {
       affected_rows
-    }
-    update_requirements_definitions_many(updates: $requirements) {
-      affected_rows
-      returning {
-        id
-      }
     }
     create_badge_version(args: { badge_def_id: $id, is_deleted: false }) {
       id

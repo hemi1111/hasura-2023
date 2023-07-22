@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
-const EngineerManagers = ({ onClose, edit, managers, onAdd }) => {
+const EngineerManagers = ({ onClose, edit, managers, onAdd, manager }) => {
   const {
     handleSubmit,
     control,
@@ -29,7 +29,7 @@ const EngineerManagers = ({ onClose, edit, managers, onAdd }) => {
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <Controller
-        name="manager"
+        name={manager ? "engineer" : "manager"}
         control={control}
         defaultValue=""
         rules={{
@@ -42,9 +42,9 @@ const EngineerManagers = ({ onClose, edit, managers, onAdd }) => {
             }}
           >
             {edit ? (
-              <InputLabel>Change manager</InputLabel>
+              <InputLabel>Change {manager ? "engineer" : "manager"}</InputLabel>
             ) : (
-              <InputLabel>Add manager</InputLabel>
+              <InputLabel>Add {manager ? "engineer" : "manager"}</InputLabel>
             )}
             <Select
               label={edit ? "Change manager" : "Add manager"}

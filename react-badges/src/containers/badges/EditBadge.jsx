@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import BadgesNavbar from "../../components/BadgesNavbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { TextField, Button, InputLabel, Typography } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
@@ -10,14 +9,14 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
-import { getVariableValues } from "graphql";
 
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [editBadge, { data: editData }] = useMutation(EDIT_BADGE, {
+  const [editBadge] = useMutation(EDIT_BADGE, {
     refetchQueries: [{ query: GET_BADGES }]
   });
+
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
     variables: {
       id
@@ -42,6 +41,14 @@ const EditBadge = () => {
     name: "requirements"
   });
 
+  const handleReqDelete = (req_id) => {
+    deleteReq({
+      variables: {
+        delete_id: req_id
+      }
+    });
+  };
+
   useEffect(() => {
     if (data && data.badges_versions_last[0]) {
       const { title, description, requirements } = data.badges_versions_last[0];
@@ -56,26 +63,18 @@ const EditBadge = () => {
   }, [data]);
 
   const onSubmit = (formData) => {
-    const { title, description } = formData;
+    const { title, description, requirements } = formData;
+
     try {
-      const requirements = fields.map((requirement, index) => ({
-        where: {
-          id: {
-            _eq: getValues(`requirements.${index}.id`)
-          }
-        },
-        _set: {
-          title: getValues(`requirements.${index}.title`),
-          description: getValues(`requirements.${index}.description`)
-        }
-      }));
-      console.log(requirements);
       editBadge({
         variables: {
-          id,
+          id: id,
           title: title,
           description: description,
-          requirements: requirements
+          requirements: requirements.map((requirement) => ({
+            title: requirement.title,
+            description: requirement.description
+          }))
         }
       });
 
@@ -96,7 +95,14 @@ const EditBadge = () => {
 
   return (
     <div>
-      <BadgesNavbar />
+      <Link to="/badges">
+        <Button
+          variant="outlined"
+          sx={{ marginTop: "20px", marginLeft: "45%" }}
+        >
+          GO TO BADGES
+        </Button>
+      </Link>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div style={{ marginTop: "50px", textAlign: "center" }}>
           <TextField
@@ -171,7 +177,9 @@ const EditBadge = () => {
                   marginTop: "7px",
                   cursor: "pointer"
                 }}
-                onClick={() => remove(index)}
+                onClick={() => {
+                  remove(index);
+                }}
               />
             </div>
           ))}
@@ -200,7 +208,7 @@ const EditBadge = () => {
                 width: "fit-content",
                 cursor: "pointer"
               }}
-              onClick={() => append({})}
+              onClick={() => append({ title: "", description: "" })}
             >
               Add Requirement <AddBox sx={{ marginBottom: "-5px" }} />
             </Typography>

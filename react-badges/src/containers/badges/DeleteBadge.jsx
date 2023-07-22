@@ -11,16 +11,8 @@ const DeleteBadge = ({ open, setOpen, data }) => {
     refetchQueries: [{ query: GET_BADGES }]
   });
 
-  const handleDeleteBadge = (badge_id) => {
-    deleteBadge({
-      variables: {
-        badge_def_id: badge_id
-      }
-    });
-    setOpen(false);
-  };
+  
 
-  console.log(data.id);
   return (
     <div>
       <Dialog open={open} onClose={onClose}>
