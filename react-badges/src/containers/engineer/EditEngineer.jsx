@@ -9,15 +9,16 @@ import {
   UPDATE_ENGINEER,
   UPDATE_ENGINEER_MANAGER_RELATION
 } from "../../queries/EngineerQueries";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
 import UserForm from "../../components/UserForm";
+import EditAlerts from "../../components/engineer-components/alerts/EditAlerts";
 
 const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [showAlert, setShowAlert] = useState(0);
   const relations = useQuery(GET_ENGINEER_MANAGERS_RELATION, {
     variables: { id }
   });
@@ -71,16 +72,40 @@ const EditEngineer = () => {
   }, []);
 
   const handleDelete = (manager) => {
-    deleteRelation({ variables: { engineer: id, manager } });
+    deleteRelation({ variables: { engineer: id, manager } })
+      .then(({ data }) => {
+        data?.delete_users_relations?.affected_rows === 1
+          ? setShowAlert(1)
+          : setShowAlert(-1);
+      })
+      .catch(() => setShowAlert(-1));
   };
   const handleEdit = ({ oldManager, newManager }) => {
-    updateRelation({ variables: { id, oldManager, newManager } });
+    updateRelation({ variables: { id, oldManager, newManager } })
+      .then(({ data }) => {
+        data?.update_users_relations?.affected_rows === 1
+          ? setShowAlert(2)
+          : setShowAlert(-2);
+      })
+      .catch(() => setShowAlert(-2));
   };
   const handleAdd = ({ manager }) => {
-    addRelation({ variables: { engineer: id, manager } });
+    addRelation({ variables: { engineer: id, manager } })
+      .then(({ data }) => {
+        data?.insert_users_relations_one?.engineer
+          ? setShowAlert(3)
+          : setShowAlert(-3);
+      })
+      .catch(() => setShowAlert(-3));
   };
   const handleNameChange = (data) => {
-    updateEngineer({ variables: { id: id, name: data.name } });
+    updateEngineer({ variables: { id: id, name: data.name } })
+      .then(({ data }) => {
+        data?.update_engineers?.returning[0]
+          ? setShowAlert(4)
+          : setShowAlert(-4);
+      })
+      .catch(() => setShowAlert(-4));
   };
 
   const engineerRelations = relations?.data?.engineers_with_managers[0];
@@ -128,8 +153,11 @@ const EditEngineer = () => {
         variant="outlined"
         onClick={() => navigate("/engineers")}
       >
-        Done
+        GO BACK
       </Button>
+      {showAlert !== 0 && (
+        <EditAlerts setShowAlert={setShowAlert} select={showAlert} />
+      )}
     </Box>
   );
 };

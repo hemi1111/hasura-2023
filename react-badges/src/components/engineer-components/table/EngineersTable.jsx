@@ -9,7 +9,7 @@ import {
   TableRow
 } from "@mui/material";
 import Row from "./Row";
-import Success from "../../alerts/Success";
+import CustomAlert from "../../alerts/CustomAlert";
 import { useState } from "react";
 
 const EngineersTable = ({ navigate, data }) => {
@@ -43,7 +43,20 @@ const EngineersTable = ({ navigate, data }) => {
           </Table>
         </TableContainer>
       </Box>
-      {showAlert === 1 && <Success alertType={showAlert} />}
+      {showAlert === 1 && (
+        <CustomAlert
+          onClose={setShowAlert}
+          severity="success"
+          message={"Engineer deleted successfully!"}
+        />
+      )}
+      {showAlert === -1 && (
+        <CustomAlert
+          onClose={setShowAlert}
+          severity="error"
+          message={"Error deleting engineer!"}
+        />
+      )}
     </>
   );
 };

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Alert, Snackbar, Stack } from "@mui/material";
 
-const Success = () => {
+const CustomAlert = ({ message, severity, onClose }) => {
   const [open, setOpen] = useState(true);
 
   const handleClose = (event, reason) => {
+    onClose && onClose(0);
     if (reason === "clickaway") {
       return;
     }
@@ -14,18 +15,23 @@ const Success = () => {
 
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
         <Alert
           elevation={6}
           variant="filled"
           onClose={handleClose}
-          severity="success"
+          severity={severity}
           sx={{ width: "100%" }}
         >
-          Success!
+          {message}
         </Alert>
       </Snackbar>
     </Stack>
   );
 };
-export default Success;
+export default CustomAlert;

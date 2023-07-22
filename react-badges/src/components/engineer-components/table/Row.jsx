@@ -4,7 +4,7 @@ import TableRow from "@mui/material/TableRow";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import DeleteEngineer from "../../../containers/engineer/DeleteEngineer";
-import Success from "../../alerts/Success";
+import Success from "../../alerts/CustomAlert";
 
 const Row = (props) => {
   const { index, row, navigate, setShowAlert, showAlert } = props;
@@ -44,7 +44,6 @@ const Row = (props) => {
           <IconButton
             onClick={(e) => {
               setOpen(true);
-              console.log(e);
               setShowAlert(e);
             }}
             color="error"
