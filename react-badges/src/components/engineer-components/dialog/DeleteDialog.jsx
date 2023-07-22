@@ -1,13 +1,13 @@
 import { Button, Dialog, DialogTitle, List, ListItem } from "@mui/material";
 
-const DeleteEngineerDialog = ({ open, onClick, name, onClose, engineers }) => {
+const DeleteDialog = ({ open, onClick, name, onClose, list }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Are you sure you want to delete {name}?</DialogTitle>
-      {engineers?.length > 0 && (
+      {list?.length > 0 && (
         <List sx={{ marginLeft: "1ch" }}>
           {name} is also manager to:
-          {engineers?.map((item, index) => {
+          {list?.map((item, index) => {
             return <ListItem key={index}>{item.name}</ListItem>;
           })}
         </List>
@@ -23,4 +23,4 @@ const DeleteEngineerDialog = ({ open, onClick, name, onClose, engineers }) => {
     </Dialog>
   );
 };
-export default DeleteEngineerDialog;
+export default DeleteDialog;
