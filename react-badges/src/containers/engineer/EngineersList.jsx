@@ -9,6 +9,7 @@ import CustomAlert from "../../components/alerts/CustomAlert";
 const EngineersList = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  window.history.replaceState({}, document.title);
   const showAlert = location.state?.showAlert;
   const { data, loading, error, refetch } = useQuery(GET_ENGINEERS);
   useEffect(() => {

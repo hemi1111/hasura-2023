@@ -19,7 +19,7 @@ const EngineerRelations = ({
   managers,
   onDelete,
   onEdit,
-  notRelatedManagers
+  unassignedManagers
 }) => {
   const [open, setOpen] = useState({ edit: -1, delete: -1 });
   const handleDelete = (id) => {
@@ -62,7 +62,7 @@ const EngineerRelations = ({
                 <EditEngineerRelation
                   engineer={name}
                   manager={relation}
-                  notRelatedManagers={notRelatedManagers}
+                  unassignedManagers={unassignedManagers}
                   open={index === open.edit}
                   onClose={() => setOpen((old) => ({ ...old, edit: -1 }))}
                   onEdit={handleEdit}

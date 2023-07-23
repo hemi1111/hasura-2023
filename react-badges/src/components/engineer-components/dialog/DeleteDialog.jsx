@@ -1,14 +1,36 @@
-import { Button, Dialog, DialogTitle, List, ListItem } from "@mui/material";
+import { Person } from "@mui/icons-material";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader
+} from "@mui/material";
 
 const DeleteDialog = ({ open, onClick, name, onClose, list }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Are you sure you want to delete {name}?</DialogTitle>
+      {!(list?.length > 0) && (
+        <DialogTitle>Are you sure you want to delete {name}?</DialogTitle>
+      )}
       {list?.length > 0 && (
-        <List sx={{ marginLeft: "1ch" }}>
-          {name} is also manager to:
+        <List
+          sx={{ width: "40ch", bgcolor: "background.paper" }}
+          component="nav"
+          subheader={<ListSubheader>{name} is also manager to:</ListSubheader>}
+        >
           {list?.map((item, index) => {
-            return <ListItem key={index}>{item.name}</ListItem>;
+            return (
+              <ListItem key={index}>
+                <ListItemIcon>
+                  <Person />
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItem>
+            );
           })}
         </List>
       )}

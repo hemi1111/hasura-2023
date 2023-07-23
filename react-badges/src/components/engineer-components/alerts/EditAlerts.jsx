@@ -1,65 +1,41 @@
+import React, { useState, useEffect } from "react";
 import CustomAlert from "../../alerts/CustomAlert";
 
 const EditAlerts = ({ select, setShowAlert }) => {
+  const [alert, setAlert] = useState({ m: "Unknown alert!", s: "info" });
+
+  useEffect(() => {
+    switch (select) {
+      case 1:
+        setAlert({ m: "Manager deleted successfully!", s: "success" });
+        break;
+      case -1:
+        setAlert({ m: "Error deleting manager!", s: "error" });
+        break;
+      case 2:
+        setAlert({ m: "Relation updated successfully!", s: "success" });
+        break;
+      case -2:
+        setAlert({ m: "Error updating relation!", s: "error" });
+        break;
+      case 3:
+        setAlert({ m: "Manager added successfully!", s: "success" });
+        break;
+      case -3:
+        setAlert({ m: "Error adding manager!", s: "error" });
+        break;
+      case 4:
+        setAlert({ m: "Name changed successfully!", s: "success" });
+        break;
+      case -4:
+        setAlert({ m: "Error changing name!", s: "error" });
+        break;
+      default:
+    }
+  }, []);
+
   return (
-    <>
-      {select === 1 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="success"
-          message={"Manager deleted successfully!"}
-        />
-      )}
-      {select === -1 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="error"
-          message={"Error deleting manager!"}
-        />
-      )}
-      {select === 2 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="success"
-          message={"Relation updated succesfully!"}
-        />
-      )}
-      {select === -2 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="error"
-          message={"Error updating relation!"}
-        />
-      )}
-      {select === 3 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="success"
-          message={"Manager added successfully!"}
-        />
-      )}
-      {select === -3 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="error"
-          message={"Error adding manager!"}
-        />
-      )}
-      {select === 4 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="success"
-          message={"Name changed succesfully!"}
-        />
-      )}
-      {select === -4 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="error"
-          message={"Error changing name!"}
-        />
-      )}
-    </>
+    <CustomAlert onClose={setShowAlert} severity={alert.s} message={alert.m} />
   );
 };
 
