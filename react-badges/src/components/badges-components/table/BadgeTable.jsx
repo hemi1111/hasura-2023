@@ -19,11 +19,13 @@ import DeleteDialog from "../../dialogs/DeleteDialog";
 import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
-  const { data } = props;
+  const { data, setShowAlert } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState(false);
   const [deleteBadge] = useMutation(DELETE_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [{ query: GET_BADGES }],
+    onCompleted: () => setShowAlert(1),
+    onError: () => setShowAlert(-1)
   });
 
   const handleDeleteClick = () => {
@@ -74,13 +76,13 @@ function BadgeTable(props) {
           {data.title}
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={handleDeleteClick}>
-            <Delete color="error" fontSize="medium" />
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
+            <Edit />
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={() => handleEditClick(data.id)}>
-            <Edit fontSize="medium" />
+          <Button size="small" onClick={handleDeleteClick}>
+            <Delete color="error" />
           </Button>
         </TableCell>
       </TableRow>

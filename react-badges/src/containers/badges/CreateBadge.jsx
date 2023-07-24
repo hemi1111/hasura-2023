@@ -76,7 +76,7 @@ const CreateBadge = () => {
           <div>
             <TextField
               multiline={true}
-              sx={{ marginBottom: "10px" }}
+              sx={{ marginBottom: "10px", minWidth: "400px" }}
               label="Title"
               name="title"
               {...register("title", {
@@ -85,7 +85,7 @@ const CreateBadge = () => {
             />
             <br />
             <TextField
-              sx={{ marginBottom: "20px" }}
+              sx={{ marginBottom: "20px", minWidth: "400px" }}
               multiline={true}
               label="Description"
               name="description"

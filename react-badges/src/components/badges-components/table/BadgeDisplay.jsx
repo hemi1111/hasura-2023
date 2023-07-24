@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { GET_BADGES } from "../../../queries/BadgesQueries";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
 import BadgeTable from "./BadgeTable";
 import {
   Table,
@@ -11,10 +12,21 @@ import {
   TableHead,
   TableRow,
   Button,
-  Box
+  Box,
+  Paper
 } from "@mui/material";
+import CustomAlert from "../../alerts/CustomAlert";
 const BadgeDisplay = () => {
-  const { data } = useQuery(GET_BADGES);
+  const [showAlert, setShowAlert] = useState(0);
+  const { data, loading, error } = useQuery(GET_BADGES);
+
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <div>
@@ -27,25 +39,43 @@ const BadgeDisplay = () => {
         </Button>
       </Link>
       <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
-        <TableContainer sx={{ m: 1 }}>
-          <Table sx={{ minWidth: 650 }} size="small">
+        <TableContainer sx={{ m: 1 }} component={Paper}>
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
                 <TableCell />
                 <TableCell>Badges</TableCell>
-                <TableCell align="center">Delete</TableCell>
                 <TableCell align="center">Edit</TableCell>
+                <TableCell align="center">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data &&
                 data.badges_versions_last.map((data, index) => (
-                  <BadgeTable key={index} data={data} />
+                  <BadgeTable
+                    setShowAlert={setShowAlert}
+                    key={index}
+                    data={data}
+                  />
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
+      {showAlert === -1 && (
+        <CustomAlert
+          onClose={setShowAlert}
+          severity="error"
+          message={"Error deleting badge!"}
+        />
+      )}
+      {showAlert === 1 && (
+        <CustomAlert
+          onClose={setShowAlert}
+          severity="success"
+          message={"Badge deleted successfully!"}
+        />
+      )}
     </div>
   );
 };

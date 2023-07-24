@@ -54,7 +54,7 @@ const EditBadge = () => {
   }, [data]);
 
   const onSubmit = (formData) => {
-    const { title, description, requirements } = formData;
+    const { title, description, requirements } = formData; 
 
     try {
       editBadge({
