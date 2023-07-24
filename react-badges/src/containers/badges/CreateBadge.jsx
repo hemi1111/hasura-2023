@@ -7,7 +7,7 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { useNavigate, Link } from "react-router-dom";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
@@ -75,6 +75,7 @@ const CreateBadge = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <TextField
+              multiline={true}
               sx={{ marginBottom: "10px" }}
               label="Title"
               name="title"
@@ -85,7 +86,7 @@ const CreateBadge = () => {
             <br />
             <TextField
               sx={{ marginBottom: "20px" }}
-              multiline
+              multiline={true}
               label="Description"
               name="description"
               {...register("description", {
@@ -99,24 +100,32 @@ const CreateBadge = () => {
             />
             {fields.map((field, index) => (
               <div key={field.id}>
-                <TextField
-                  sx={{ marginBottom: "10px", minWidth: "400px" }}
-                  multiline
-                  label={`Requirement Title ${index + 1}`}
+                <Controller
                   name={`requirements.${index}.title`}
-                  {...register(`requirements.${index}.title`, {
-                    required: true
-                  })}
+                  control={control}
+                  defaultValue={field.title}
+                  render={({ field }) => (
+                    <TextField
+                      multiline={true}
+                      sx={{ marginBottom: "10px", minWidth: "400px" }}
+                      label={`Requirement Title ${index + 1}`}
+                      {...field}
+                    />
+                  )}
                 />
                 <br />
-                <TextField
-                  sx={{ marginBottom: "25px", minWidth: "400px" }}
-                  multiline
-                  label={`Requirement Description ${index + 1}`}
+                <Controller
                   name={`requirements.${index}.description`}
-                  {...register(`requirements.${index}.description`, {
-                    required: true
-                  })}
+                  control={control}
+                  defaultValue={field.description}
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ marginBottom: "25px", minWidth: "400px" }}
+                      multiline={true}
+                      label={`Requirement Description ${index + 1}`}
+                      {...field}
+                    />
+                  )}
                 />
                 <br />
                 <RemoveCircle
