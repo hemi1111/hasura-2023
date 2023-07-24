@@ -72,7 +72,7 @@ function TableRowComp(props) {
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={() => setOpenDialog(true )}>
+          <Button size="small" onClick={() => setOpenDialog(true)}>
             <Delete fontSize="small" color="error" />
           </Button>
           <DeleteDialog
