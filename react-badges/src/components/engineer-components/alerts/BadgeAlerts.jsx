@@ -12,16 +12,16 @@ const BadgeAlerts = ({ select, setShowAlert }) => {
       case -1:
         setAlert({ m: "Error deleting badge!", s: "error" });
         break;
-      case 3:
-        setAlert({ m: "Badge added successfully!", s: "success" });
+      case 2:
+        setAlert({ m: "Badge created successfully!", s: "success" });
         break;
-      case -3:
+      case -2:
         setAlert({ m: "Error adding badge!", s: "error" });
         break;
-      case 4:
+      case 3:
         setAlert({ m: "Badge updated successfully!", s: "success" });
         break;
-      case -4:
+      case -3:
         setAlert({ m: "Error updating badge!", s: "error" });
         break;
       default:

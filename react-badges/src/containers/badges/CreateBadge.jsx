@@ -15,7 +15,9 @@ const CreateBadge = () => {
     { refetchQueries: [{ query: GET_BADGES }] }
   );
   const [create_badges_version] = useMutation(CREATE_BADGE_VERSION, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [{ query: GET_BADGES }],
+    onCompleted: () => navigate("/badges", { state: { showAlert: 2 } }),
+    onError: () => navigate("/badges", { state: { showAlert: -2 } })
   });
 
   const { register, handleSubmit, control } = useForm({
@@ -36,7 +38,6 @@ const CreateBadge = () => {
           id: data?.insert_badges_definitions?.returning[0]?.id
         }
       });
-      navigate("/badges");
     }
   }, [data]);
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { GET_BADGES } from "../../../queries/BadgesQueries";
 import LoadingSpinner from "../../spinner/LoadingSpinner";
 import BadgeTable from "./BadgeTable";
@@ -15,9 +15,11 @@ import {
   Box,
   Paper
 } from "@mui/material";
-import CustomAlert from "../../alerts/CustomAlert";
+import BadgeAlerts from "../../engineer-components/alerts/BadgeAlerts";
 const BadgeDisplay = () => {
-  const [showAlert, setShowAlert] = useState(0);
+  const location = useLocation();
+  window.history.replaceState({}, document.title);
+  const [showAlert, setShowAlert] = useState(location.state?.showAlert || 0);
   const { data, loading, error } = useQuery(GET_BADGES);
 
   if (loading)
@@ -62,19 +64,9 @@ const BadgeDisplay = () => {
           </Table>
         </TableContainer>
       </Box>
-      {showAlert === -1 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="error"
-          message={"Error deleting badge!"}
-        />
-      )}
-      {showAlert === 1 && (
-        <CustomAlert
-          onClose={setShowAlert}
-          severity="success"
-          message={"Badge deleted successfully!"}
-        />
+
+      {showAlert !== 0 && (
+        <BadgeAlerts select={showAlert} setShowAlert={setShowAlert} />
       )}
     </div>
   );
