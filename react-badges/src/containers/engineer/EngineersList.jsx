@@ -6,15 +6,17 @@ import EngineersTable from "../../components/engineer-components/table/Engineers
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import CustomAlert from "../../components/alerts/CustomAlert";
 
-const EngineersList = () => {
+const EngineersList = ({ filter }) => {
   const navigate = useNavigate();
   const location = useLocation();
   window.history.replaceState({}, document.title);
   const showAlert = location.state?.showAlert;
-  const { data, loading, error, refetch } = useQuery(GET_ENGINEERS);
+  const { data, loading, error, refetch } = useQuery(GET_ENGINEERS, {
+    variables: { _ilike: `%${filter}%` }
+  });
   useEffect(() => {
     refetch();
-  }, []);
+  }, [filter]);
   if (loading)
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -24,7 +26,7 @@ const EngineersList = () => {
   if (error) return `Loading error! ${error.message}`;
   return (
     <>
-      <EngineersTable data={data} navigate={navigate} />
+      <EngineersTable filter={filter} data={data} navigate={navigate} />
       {showAlert === -1 && (
         <CustomAlert
           onClose={() => {
