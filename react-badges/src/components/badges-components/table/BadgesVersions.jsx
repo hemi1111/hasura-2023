@@ -19,11 +19,15 @@ import { useParams } from "react-router-dom";
 
 const BadgesVersions = () => {
   const { id } = useParams();
-  const { data } = useQuery(GET_BADGE_VERSIONS, {
+  const { data, refetch } = useQuery(GET_BADGE_VERSIONS, {
     variables: {
       id
     }
   });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (!data) {
     return <p>Loading...</p>;

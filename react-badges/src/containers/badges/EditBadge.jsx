@@ -15,7 +15,7 @@ const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [editBadge] = useMutation(EDIT_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }, { query: GET_BADGE_VERSIONS }]
+    refetchQueries: [{ query: GET_BADGES }]
   });
 
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
@@ -25,8 +25,8 @@ const EditBadge = () => {
   });
 
   useEffect(() => {
-    refetch(GET_BADGE_VERSIONS);
-  }, [data]);
+    refetch();
+  }, []);
 
   const {
     register,

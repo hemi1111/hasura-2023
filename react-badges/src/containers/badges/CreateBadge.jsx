@@ -75,6 +75,7 @@ const CreateBadge = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <TextField
+              multiline={true}
               sx={{ marginBottom: "10px" }}
               label="Title"
               name="title"
@@ -85,7 +86,7 @@ const CreateBadge = () => {
             <br />
             <TextField
               sx={{ marginBottom: "20px" }}
-              multiline
+              multiline={true}
               label="Description"
               name="description"
               {...register("description", {
@@ -100,8 +101,8 @@ const CreateBadge = () => {
             {fields.map((field, index) => (
               <div key={field.id}>
                 <TextField
+                  multiline={true}
                   sx={{ marginBottom: "10px", minWidth: "400px" }}
-                  multiline
                   label={`Requirement Title ${index + 1}`}
                   name={`requirements.${index}.title`}
                   {...register(`requirements.${index}.title`, {
@@ -111,7 +112,7 @@ const CreateBadge = () => {
                 <br />
                 <TextField
                   sx={{ marginBottom: "25px", minWidth: "400px" }}
-                  multiline
+                  multiline={true}
                   label={`Requirement Description ${index + 1}`}
                   name={`requirements.${index}.description`}
                   {...register(`requirements.${index}.description`, {
