@@ -39,7 +39,7 @@ const UserForm = ({ name, onSubmit, manager }) => {
         label="Name"
         {...register("name", {
           pattern: {
-            value: /^[A-Za-z\s]+$/,
+            value: /^[A-Za-z\s-]+$/,
             message: "Name should contain only characters!"
           },
           required: { value: true, message: "Field is required!" },

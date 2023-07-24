@@ -20,18 +20,6 @@ const CreateManager = () => {
       ]
     }
   );
-  const styleForm = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "clamp(450px,30px,430px)",
-    margin: "0 auto",
-    border: "1px solid #ccc",
-    borderRadius: "0.35rem",
-    padding: "1.5rem",
-    flexDirection: "column",
-    gap: "1rem"
-  };
 
   const handleFormSubmit = (data) => {
     console.log(data);
@@ -39,16 +27,24 @@ const CreateManager = () => {
     createManager({
       variables: { name }
     });
-
-    navigate("/managers");
+    const createNotify = {
+      isOpen: true,
+      type: "success",
+      message: "Created successfuly"
+    };
+    navigate("/managers", { state: { createNotify } });
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) throw error;
   return (
     <>
-      <ManagerNavbar />
-      <div style={{ height: "100%", display: "grid", placeItems: "center" }}>
+      <div
+        style={{
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+      >
         <UserForm form={form} onSubmit={handleFormSubmit} manager={true} />
       </div>
     </>

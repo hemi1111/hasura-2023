@@ -9,6 +9,7 @@ export const DELETE_MANAGER = gql`
         name
         id
       }
+      affected_rows
     }
   }
 `;
@@ -64,6 +65,7 @@ export const DELETE_RELATION = gql`
         manager
         engineer
       }
+      affected_rows
     }
   }
 `;

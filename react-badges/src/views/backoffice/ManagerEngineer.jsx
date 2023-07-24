@@ -15,11 +15,18 @@ const ManagerEngineer = () => {
 
   return (
     <>
-      <Link to="/managers/create">
-        <Button variant="outlined" sx={{ padding: 1.5, m: 2, float: "right" }}>
-          Add New Manager
-        </Button>
-      </Link>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px 0"
+        }}
+      >
+        <Link to="/managers/create">
+          <Button variant="outlined">Add New Manager</Button>
+        </Link>
+      </div>
       <TableComp r1={data} />
     </>
   );
