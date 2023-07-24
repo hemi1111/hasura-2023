@@ -6,7 +6,8 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SINGLE_INFO,
   EDIT_BADGE,
-  GET_BADGES
+  GET_BADGES,
+  GET_BADGE_VERSIONS
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
 
@@ -14,7 +15,7 @@ const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [editBadge] = useMutation(EDIT_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [{ query: GET_BADGES }, { query: GET_BADGE_VERSIONS }]
   });
 
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
@@ -24,7 +25,7 @@ const EditBadge = () => {
   });
 
   useEffect(() => {
-    refetch();
+    refetch(GET_BADGE_VERSIONS);
   }, [data]);
 
   const {
@@ -32,7 +33,6 @@ const EditBadge = () => {
     handleSubmit,
     control,
     setValue,
-    getValues,
     formState: { errors }
   } = useForm();
 
@@ -40,14 +40,6 @@ const EditBadge = () => {
     control,
     name: "requirements"
   });
-
-  const handleReqDelete = (req_id) => {
-    deleteReq({
-      variables: {
-        delete_id: req_id
-      }
-    });
-  };
 
   useEffect(() => {
     if (data && data.badges_versions_last[0]) {
