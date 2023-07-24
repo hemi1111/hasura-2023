@@ -6,21 +6,15 @@ import {
   Box,
   Table,
   TableHead,
-  TableBody,
-  Button
+  TableBody
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteBadge from "./DeleteBadge";
-import { useNavigate } from "react-router-dom";
 
 function BadgesVersionsRow(props) {
-  const navigate = useNavigate();
   const { data, index } = props;
   const [openStates, setOpenStates] = useState({});
-  const [open, setOpen] = useState();
 
   const handleOpenRequirements = (badgeId) => {
     setOpenStates((prevOpenStates) => ({
@@ -29,7 +23,6 @@ function BadgesVersionsRow(props) {
     }));
   };
 
-  console.log(data);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -83,7 +76,6 @@ function BadgesVersionsRow(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-      <DeleteBadge open={open} setOpen={setOpen} data={data} />
     </React.Fragment>
   );
 }

@@ -9,82 +9,67 @@ import {
   UPDATE_ENGINEER,
   UPDATE_ENGINEER_MANAGER_RELATION
 } from "../../queries/EngineerQueries";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
 import UserForm from "../../components/UserForm";
+import EditAlerts from "../../components/engineer-components/alerts/EditAlerts";
 
 const EditEngineer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [showAlert, setShowAlert] = useState(0);
 
-  const relations = useQuery(GET_ENGINEER_MANAGERS_RELATION, {
-    variables: { id }
-  });
-
-  const [noRelationManagers, { data }] = useMutation(
-    GET_MANAGER_WITHOUT_RELATION
+  const { data: relations, refetch } = useQuery(
+    GET_ENGINEER_MANAGERS_RELATION,
+    { variables: { id } }
   );
 
-  const [updateEngineer] = useMutation(UPDATE_ENGINEER, {
-    refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
-    ]
+  const [getUnassignedManagers, { data }] = useMutation(
+    GET_MANAGER_WITHOUT_RELATION,
+    { variables: { id } }
+  );
+
+  const [updateEngineerName] = useMutation(UPDATE_ENGINEER, {
+    onCompleted: () => {
+      refetch();
+      setShowAlert(4);
+    },
+    onError: () => setShowAlert(-4)
   });
 
   const [addRelation] = useMutation(ADD_ENGINEER_MANAGER_RELATION, {
-    refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
-    ],
     onCompleted: () => {
-      noRelationManagers({
-        variables: { id }
-      });
-    }
+      refetch();
+      getUnassignedManagers();
+      setShowAlert(3);
+    },
+    onError: () => setShowAlert(-3)
   });
 
   const [deleteRelation] = useMutation(DELETE_ENGINEER_MANAGER_RELATION, {
-    refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
-    ],
     onCompleted: () => {
-      noRelationManagers({
-        variables: { id }
-      });
-    }
+      refetch();
+      getUnassignedManagers();
+      setShowAlert(1);
+    },
+    onError: () => setShowAlert(-1)
   });
   const [updateRelation] = useMutation(UPDATE_ENGINEER_MANAGER_RELATION, {
-    refetchQueries: [
-      { query: GET_ENGINEER_MANAGERS_RELATION, variables: { id } }
-    ],
     onCompleted: () => {
-      noRelationManagers({
-        variables: { id }
-      });
-    }
+      refetch();
+      getUnassignedManagers();
+      setShowAlert(2);
+    },
+    onError: () => setShowAlert(-2)
   });
 
   useEffect(() => {
-    noRelationManagers({
-      variables: { id }
-    });
+    getUnassignedManagers();
   }, []);
 
-  const handleDelete = (manager) => {
-    deleteRelation({ variables: { engineer: id, manager } });
-  };
-  const handleEdit = ({ oldManager, newManager }) => {
-    updateRelation({ variables: { id, oldManager, newManager } });
-  };
-  const handleAdd = ({ manager }) => {
-    addRelation({ variables: { engineer: id, manager } });
-  };
-  const handleNameChange = (data) => {
-    updateEngineer({ variables: { id: id, name: data.name } });
-  };
-
-  const engineerRelations = relations?.data?.engineers_with_managers[0];
-  const notRelatedManagers = data?.get_managers_without_relation;
+  const engineerRelations = relations?.engineers_with_managers[0];
+  const unassignedManagers = data?.get_managers_without_relation;
 
   return (
     <Box
@@ -105,8 +90,20 @@ const EditEngineer = () => {
           flexWrap: "wrap"
         }}
       >
-        <UserForm name={engineerRelations?.name} onSubmit={handleNameChange} />
-        <EngineerManagers onAdd={handleAdd} managers={notRelatedManagers} />
+        {engineerRelations?.name && (
+          <UserForm
+            name={engineerRelations?.name}
+            onSubmit={(data) =>
+              updateEngineerName({ variables: { id, name: data.name } })
+            }
+          />
+        )}
+        <EngineerManagers
+          onAdd={({ manager }) =>
+            addRelation({ variables: { engineer: id, manager } })
+          }
+          managers={unassignedManagers}
+        />
       </div>
       <div
         style={{
@@ -116,9 +113,13 @@ const EditEngineer = () => {
       >
         <EngineerRelations
           name={engineerRelations?.name}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-          notRelatedManagers={notRelatedManagers}
+          onDelete={(manager) =>
+            deleteRelation({ variables: { engineer: id, manager } })
+          }
+          onEdit={({ oldManager, newManager }) =>
+            updateRelation({ variables: { id, oldManager, newManager } })
+          }
+          unassignedManagers={unassignedManagers}
           managers={engineerRelations?.managers}
         />
       </div>
@@ -128,8 +129,11 @@ const EditEngineer = () => {
         variant="outlined"
         onClick={() => navigate("/engineers")}
       >
-        Done
+        GO BACK
       </Button>
+      {showAlert !== 0 && (
+        <EditAlerts setShowAlert={setShowAlert} select={showAlert} />
+      )}
     </Box>
   );
 };

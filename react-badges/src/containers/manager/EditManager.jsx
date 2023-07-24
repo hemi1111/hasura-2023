@@ -111,11 +111,13 @@ const EditManager = () => {
             flexWrap: "wrap"
           }}
         >
-          <UserForm
-            name={data?.managers[0].name}
-            onSubmit={handleName}
-            manager={true}
-          />
+          {data?.managers[0].name && (
+            <UserForm
+              name={data?.managers[0].name}
+              onSubmit={handleName}
+              manager={true}
+            />
+          )}
           <EngineerManagers
             onAdd={createRelation}
             managers={engineers?.get_unassigned_engineers}

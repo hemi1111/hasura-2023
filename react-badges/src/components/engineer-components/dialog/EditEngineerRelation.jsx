@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogTitle } from "@mui/material";
+import { Dialog, DialogTitle } from "@mui/material";
 import EngineerManagers from "../form/EngineerManagers";
 
 const EditEngineerRelation = ({
@@ -7,7 +7,7 @@ const EditEngineerRelation = ({
   engineer,
   manager,
   onClose,
-  notRelatedManagers
+  unassignedManagers
 }) => {
   const oldManager = manager.id;
   const handleEdit = ({ manager }) => {
@@ -21,7 +21,7 @@ const EditEngineerRelation = ({
       <EngineerManagers
         onClose={onClose}
         edit={true}
-        managers={notRelatedManagers}
+        managers={unassignedManagers}
         onAdd={handleEdit}
       />
     </Dialog>

@@ -10,20 +10,33 @@ import {
   Button
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import { useMutation } from "@apollo/client";
 import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteBadge from "./DeleteBadge";
 import { useNavigate } from "react-router-dom";
-
+import DeleteDialog from "../../dialogs/DeleteDialog";
+import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
   const { data } = props;
   const [openStates, setOpenStates] = useState({});
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
+  const [deleteBadge] = useMutation(DELETE_BADGE, {
+    refetchQueries: [{ query: GET_BADGES }]
+  });
 
   const handleDeleteClick = () => {
     setOpen(true);
+  };
+
+  const handleDeleteBadge = (badge_id) => {
+    deleteBadge({
+      variables: {
+        badge_def_id: badge_id
+      }
+    });
+    setOpen(false);
   };
 
   const handleVersions = (version_badge_id, version_id) => {
@@ -41,9 +54,8 @@ function BadgeTable(props) {
     navigate(`/badges/edit/${edit_badge_id}`);
   };
 
-  console.log("table", data);
   return (
-    <React.Fragment>
+    <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
@@ -79,13 +91,20 @@ function BadgeTable(props) {
               <Table size="small" aria-label="requirements">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontSize: "1.1em" }}>
+                    <TableCell
+                      sx={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontSize: "1.1em",
+                        maxWidth: "60%"
+                      }}
+                    >
                       {data.description}
                     </TableCell>
                     <TableCell>
                       <Button
                         variant="outlined"
-                        sx={{ marginLeft: "20%" }}
+                        sx={{ position: "sticky", float: "right" }}
                         onClick={() => handleVersions(data.title, data.id)}
                       >
                         Show All Versions
@@ -116,8 +135,13 @@ function BadgeTable(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-      <DeleteBadge open={open} setOpen={setOpen} data={data} />
-    </React.Fragment>
+      <DeleteDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        name={data.title}
+        onClick={() => handleDeleteBadge(data.id)}
+      />
+    </>
   );
 }
 

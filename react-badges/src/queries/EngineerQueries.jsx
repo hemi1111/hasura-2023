@@ -103,7 +103,6 @@ export const UPDATE_ENGINEER_MANAGER_RELATION = gql`
   }
 `;
 
-
 export const DELETE_ENGINEER_MANAGER_RELATION = gql`
   mutation deleteEngineersRelations($engineer: Int!, $manager: Int!) {
     delete_users_relations(

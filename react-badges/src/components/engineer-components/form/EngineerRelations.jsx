@@ -11,7 +11,7 @@ import {
 import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import EditEngineerRelation from "../dialog/EditEngineerRelation";
-import DeleteDialog from "../dialog/DeleteDialog";
+import DeleteDialog from "../../dialogs/DeleteDialog";
 
 const EngineerRelations = ({
   manager,
@@ -19,7 +19,7 @@ const EngineerRelations = ({
   managers,
   onDelete,
   onEdit,
-  notRelatedManagers
+  unassignedManagers
 }) => {
   const [open, setOpen] = useState({ edit: -1, delete: -1 });
   const handleDelete = (id) => {
@@ -62,7 +62,7 @@ const EngineerRelations = ({
                 <EditEngineerRelation
                   engineer={name}
                   manager={relation}
-                  notRelatedManagers={notRelatedManagers}
+                  unassignedManagers={unassignedManagers}
                   open={index === open.edit}
                   onClose={() => setOpen((old) => ({ ...old, edit: -1 }))}
                   onEdit={handleEdit}

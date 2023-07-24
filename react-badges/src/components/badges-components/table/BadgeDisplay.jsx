@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { GET_BADGES } from "../../queries/BadgesQueries";
+import { Link } from "react-router-dom";
+import { GET_BADGES } from "../../../queries/BadgesQueries";
 import BadgeTable from "./BadgeTable";
 import {
   Table,
@@ -9,17 +10,24 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Container
+  Button,
+  Box
 } from "@mui/material";
 const BadgeDisplay = () => {
   const { data } = useQuery(GET_BADGES);
 
-  console.log("display", data);
   return (
     <div>
-      <Container sx={{ m: "auto" }} component={Paper}>
-        <TableContainer>
+      <Link to="/badges/create">
+        <Button
+          variant="outlined"
+          sx={{ marginTop: "20px", marginLeft: "40%" }}
+        >
+          CREATE NEW BADGE
+        </Button>
+      </Link>
+      <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
+        <TableContainer sx={{ m: 1 }}>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
               <TableRow>
@@ -30,14 +38,15 @@ const BadgeDisplay = () => {
               </TableRow>
             </TableHead>
             <TableBody>
+              
               {data &&
-                data.badges_versions_last.map((data) => (
-                  <BadgeTable key={data.id} data={data} />
+                data.badges_versions_last.map((data, index) => (
+                  <BadgeTable key={index} data={data} />
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
-      </Container>
+      </Box>
     </div>
   );
 };

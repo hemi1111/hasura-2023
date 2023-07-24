@@ -12,12 +12,12 @@ import ManagerEngineer from "./views/backoffice/ManagerEngineer";
 import { DrawerMenu } from "./layouts/BasicLayout";
 import EngingeerPage from "./views/engineer/EngineerPage";
 import BadgesPage from "./views/badges/BadgesPage";
+import CreateBadge from "../src/containers/badges/CreateBadge";
+import EditBadge from "../src/containers/badges/EditBadge";
 import EditManager from "./containers/manager/EditManager";
 import CreateManager from "./containers/manager/CreateManager";
-import CreateBadge from "./views/badges/CreateBadge";
-import EditBadge from "./views/badges/EditBadge";
 import CreateEngineer from "./containers/engineer/CreateEngineer";
-import BadgesVersions from "./views/badges/BadgesVersions";
+import BadgesVersions from "../src/components/badges-components/table/BadgesVersions";
 import EditEngineer from "./containers/engineer/EditEngineer";
 const menuItems = [
   {

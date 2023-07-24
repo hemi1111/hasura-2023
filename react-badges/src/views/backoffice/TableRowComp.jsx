@@ -6,7 +6,6 @@ import {
   Box,
   Typography,
   Table,
-  TableHead,
   TableBody,
   Button,
   TextField
@@ -19,10 +18,11 @@ import { useMutation } from "@apollo/client";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/ManagerQueries";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
-
+import DeleteDialog from "../../components/dialogs/DeleteDialog";
 function TableRowComp(props) {
   const { row, deleteManager } = props;
   const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [edit, setEdit] = useState(true);
   const [managerName, setManagerName] = useState(row.name);
   const { id } = row;
@@ -67,23 +67,24 @@ function TableRowComp(props) {
           </TableCell>
         )}
         <TableCell align="center">
-          <Button
-            size="small"
+          <Button component={Link} to={`/managers/edit/${id}`} size="small">
+            <Edit fontSize="small" />
+          </Button>
+        </TableCell>
+        <TableCell align="center">
+          <Button size="small" onClick={() => setOpenDialog(true )}>
+            <Delete fontSize="small" color="error" />
+          </Button>
+          <DeleteDialog
+            onClose={() => setOpenDialog(false)}
+            open={openDialog}
             onClick={() =>
               deleteManager({
                 variables: { id }
               })
             }
-          >
-            <Delete fontSize="inherit" />
-            Delete
-          </Button>
-        </TableCell>
-        <TableCell align="center">
-          <Button component={Link} to={`/managers/edit/${id}`} size="small">
-            <Edit fontSize="inherit" />
-            Edit
-          </Button>
+            name={managerName}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -101,8 +102,7 @@ function TableRowComp(props) {
                         <LoadingSpinner />
                       </td>
                     ) : (
-                      data &&
-                      arr.map((engineer) => (
+                      arr?.map((engineer) => (
                         <TableCell key={engineer.id}>{engineer.name}</TableCell>
                       ))
                     )}
