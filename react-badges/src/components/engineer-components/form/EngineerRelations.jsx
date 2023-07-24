@@ -11,7 +11,7 @@ import {
 import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import EditEngineerRelation from "../dialog/EditEngineerRelation";
-import DeleteDialog from "../dialog/DeleteDialog";
+import DeleteDialog from "../../dialogs/DeleteDialog";
 
 const EngineerRelations = ({
   manager,

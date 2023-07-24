@@ -15,7 +15,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useNavigate } from "react-router-dom";
-import DeleteDialog from "../../engineer-components/dialog/DeleteDialog";
+import DeleteDialog from "../../dialogs/DeleteDialog";
 import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();

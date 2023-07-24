@@ -5,7 +5,7 @@ import {
 } from "../../queries/EngineerQueries";
 import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
-import DeleteDialog from "../../components/engineer-components/dialog/DeleteDialog";
+import DeleteDialog from "../../components/dialogs/DeleteDialog";
 
 const DeleteEngineer = ({ open, id, name, onClose }) => {
   const [deleteEngineer] = useMutation(DELETE_ENGINEER, {
