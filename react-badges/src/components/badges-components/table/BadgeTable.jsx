@@ -20,11 +20,18 @@ import LoadingSpinner from "../../spinner/LoadingSpinner";
 import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
-  const { data, setShowAlert, loading, error } = props;
+  const { data, search, setShowAlert, loading, error } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState(false);
   const [deleteBadge] = useMutation(DELETE_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }],
+    refetchQueries: [
+      {
+        query: GET_BADGES,
+        variables: {
+          search: `%${search}%`
+        }
+      }
+    ],
     onCompleted: () => setShowAlert(1),
     onError: () => setShowAlert(-1)
   });

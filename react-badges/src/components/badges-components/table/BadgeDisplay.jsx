@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Link, useLocation } from "react-router-dom";
 import { GET_BADGES } from "../../../queries/BadgesQueries";
@@ -16,11 +16,19 @@ import {
   Paper
 } from "@mui/material";
 import BadgeAlerts from "../../engineer-components/alerts/BadgeAlerts";
-const BadgeDisplay = () => {
+const BadgeDisplay = ({ search }) => {
   const location = useLocation();
   window.history.replaceState({}, document.title);
   const [showAlert, setShowAlert] = useState(location.state?.showAlert || 0);
-  const { data, loading, error } = useQuery(GET_BADGES);
+  const { data, loading, error, refetch } = useQuery(GET_BADGES, {
+    variables: {
+      search: `%${search}%`
+    }
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (loading)
     return (
@@ -35,12 +43,19 @@ const BadgeDisplay = () => {
       <Link to="/badges/create">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "40%" }}
+          sx={{ marginLeft: "85%", marginTop: "-9%", padding: "10px" }}
         >
           CREATE NEW BADGE
         </Button>
       </Link>
-      <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
+      <Box
+        sx={{
+          m: 1,
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "-10px"
+        }}
+      >
         <TableContainer sx={{ m: 1 }} component={Paper}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
@@ -55,6 +70,7 @@ const BadgeDisplay = () => {
               {data &&
                 data.badges_versions_last.map((data, index) => (
                   <BadgeTable
+                    search={search}
                     setShowAlert={setShowAlert}
                     key={index}
                     data={data}

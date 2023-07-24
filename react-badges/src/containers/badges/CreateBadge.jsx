@@ -67,7 +67,7 @@ const CreateBadge = () => {
       <Link to="/badges">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "45%" }}
+          sx={{ marginTop: "20px", marginLeft: "45%", padding: "10px" }}
         >
           GO TO BADGES
         </Button>
@@ -140,7 +140,9 @@ const CreateBadge = () => {
               </div>
             ))}
           </div>
-          <Button type="submit">Create Badge</Button>
+          <Button type="submit" variant="outlined" sx={{ padding: "10px" }}>
+            Create Badge
+          </Button>
         </form>
       </div>
     </div>
