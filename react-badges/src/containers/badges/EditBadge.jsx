@@ -7,7 +7,6 @@ import {
   GET_SINGLE_INFO,
   EDIT_BADGE,
   GET_BADGES,
-  GET_BADGE_VERSIONS
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
 
