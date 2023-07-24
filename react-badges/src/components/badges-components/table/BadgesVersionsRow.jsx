@@ -51,7 +51,10 @@ function BadgesVersionsRow(props) {
             <Box sx={{ margin: 1 }}>
               <Table size="small" aria-label="requirements">
                 <TableHead>
-                  <TableCell colSpan={2}>{data.description}</TableCell>
+                  <TableRow>
+                    <TableCell colSpan={2}>{data.description}</TableCell>
+                    <TableCell />
+                  </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontSize: "1.2em" }}>
                       Requirements
