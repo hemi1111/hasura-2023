@@ -9,7 +9,7 @@ import {
   GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
-
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -77,13 +77,13 @@ const EditBadge = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <div>

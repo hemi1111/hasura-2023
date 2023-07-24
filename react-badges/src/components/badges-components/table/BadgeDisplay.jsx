@@ -58,6 +58,8 @@ const BadgeDisplay = () => {
                     setShowAlert={setShowAlert}
                     key={index}
                     data={data}
+                    loading={loading}
+                    error={error}
                   />
                 ))}
             </TableBody>

@@ -6,6 +6,7 @@ import {
   CREATE_BADGE_VERSION,
   GET_BADGES
 } from "../../queries/BadgesQueries";
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
@@ -54,14 +55,13 @@ const CreateBadge = () => {
       }
     });
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
   return (
     <div>
       <Link to="/badges">

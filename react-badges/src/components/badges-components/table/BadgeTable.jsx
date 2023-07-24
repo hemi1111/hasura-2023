@@ -16,10 +16,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../dialogs/DeleteDialog";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
 import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
-  const { data, setShowAlert } = props;
+  const { data, setShowAlert, loading, error } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState(false);
   const [deleteBadge] = useMutation(DELETE_BADGE, {
@@ -55,6 +56,14 @@ function BadgeTable(props) {
   const handleEditClick = (edit_badge_id) => {
     navigate(`/badges/edit/${edit_badge_id}`);
   };
+
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <>

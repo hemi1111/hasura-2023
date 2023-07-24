@@ -5,12 +5,12 @@ import {
   Table,
   TableHead,
   TableBody,
-  Container,
   Paper,
   Button,
   TableContainer,
   Box
 } from "@mui/material";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_BADGE_VERSIONS } from "../../../queries/BadgesQueries";
@@ -19,7 +19,7 @@ import { useParams } from "react-router-dom";
 
 const BadgesVersions = () => {
   const { id } = useParams();
-  const { data, refetch } = useQuery(GET_BADGE_VERSIONS, {
+  const { data, refetch, loading, error } = useQuery(GET_BADGE_VERSIONS, {
     variables: {
       id
     }
@@ -29,9 +29,13 @@ const BadgesVersions = () => {
     refetch();
   }, []);
 
-  if (!data) {
-    return <p>Loading...</p>;
-  }
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <div>
@@ -56,7 +60,13 @@ const BadgesVersions = () => {
             </TableHead>
             <TableBody>
               {data.badges_versions.map((data, index) => (
-                <BadgesVersionsRow key={index} data={data} index={index} />
+                <BadgesVersionsRow
+                  key={index}
+                  data={data}
+                  index={index}
+                  loading={loading}
+                  error={error}
+                />
               ))}
             </TableBody>
           </Table>

@@ -11,9 +11,10 @@ import {
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
 
 function BadgesVersionsRow(props) {
-  const { data, index } = props;
+  const { data, index, loading, error } = props;
   const [openStates, setOpenStates] = useState({});
 
   const handleOpenRequirements = (badgeId) => {
@@ -22,6 +23,14 @@ function BadgesVersionsRow(props) {
       [badgeId]: !prevOpenStates[badgeId]
     }));
   };
+
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <React.Fragment>
