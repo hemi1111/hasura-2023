@@ -16,6 +16,7 @@ import { useQuery } from "@apollo/client";
 import { GET_BADGE_VERSIONS } from "../../../queries/BadgesQueries";
 import BadgesVersionsRow from "./BadgesVersionsRow";
 import { useParams } from "react-router-dom";
+import { ArrowBackIos } from "@mui/icons-material";
 
 const BadgesVersions = () => {
   const { id } = useParams();
@@ -42,9 +43,9 @@ const BadgesVersions = () => {
       <Link to="/badges">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "40%" }}
+          sx={{ m: 2, marginLeft: "20px", padding: "10px" }}
         >
-          GO TO BADGES
+          <ArrowBackIos fontSize="small" /> BACK TO BADGES
         </Button>
       </Link>
       <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
