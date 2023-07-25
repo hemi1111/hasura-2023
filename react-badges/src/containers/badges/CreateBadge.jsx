@@ -103,7 +103,7 @@ const CreateBadge = () => {
         ) : null}
       </div>
       <Link to="/badges">
-        <Button variant="outlined" sx={{ marginLeft:'20px', padding: "10px" }}>
+        <Button variant="outlined" sx={{ marginLeft: "20px", padding: "10px" }}>
           <ArrowBackIos fontSize="small" />
           BACK TO BADGES
         </Button>
@@ -201,7 +201,11 @@ const CreateBadge = () => {
               ))}
             </div>
           </div>
-          <Button type="submit" variant="outlined" sx={{ padding: "10px" }}>
+          <Button
+            type="submit"
+            variant="outlined"
+            sx={{ marginTop: "10px", padding: "10px" }}
+          >
             Create Badge
           </Button>
         </form>

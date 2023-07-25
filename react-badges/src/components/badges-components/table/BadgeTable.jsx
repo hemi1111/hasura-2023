@@ -121,7 +121,7 @@ function BadgeTable(props) {
                         whiteSpace: "normal",
                         wordWrap: "break-word",
                         fontSize: "1.1em",
-                        maxWidth: "60%"
+                        maxWidth: "70%"
                       }}
                     >
                       {data.description}

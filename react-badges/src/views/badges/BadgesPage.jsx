@@ -10,7 +10,7 @@ const BadgesPage = () => {
     <div>
       <TextField
         sx={{ margin: "1em", width: "250px" }}
-        label="Search for Badge..."
+        label="Search for Badge"
         variant="outlined"
         value={searchBar}
         onChange={(e) => setSearchBar(e.target.value)}

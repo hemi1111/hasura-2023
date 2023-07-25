@@ -5,7 +5,7 @@ import {
   TextField,
   Button,
   InputLabel,
-  Typography,  
+  Typography,
   Alert
 } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
@@ -14,7 +14,13 @@ import {
   EDIT_BADGE,
   GET_BADGES
 } from "../../queries/BadgesQueries";
-import { RemoveCircle, AddBox,ArrowBackIos } from "@mui/icons-material";
+import {
+  RemoveCircle,
+  AddBox,
+  ArrowBackIos,
+  Menu,
+  Visibility
+} from "@mui/icons-material";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 const EditBadge = () => {
   const [showAlert, setShowAlert] = useState(false);
@@ -119,11 +125,8 @@ const EditBadge = () => {
         ) : null}
       </div>
       <Link to="/badges">
-        <Button
-          variant="outlined"
-          sx={{ marginLeft:'20px', padding: "10px" }}
-        >
-          <ArrowBackIos fontSize="small"/> BACK TO BADGES
+        <Button variant="outlined" sx={{ marginLeft: "20px", padding: "10px" }}>
+          <ArrowBackIos fontSize="small" /> BACK TO BADGES
         </Button>
       </Link>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -159,8 +162,8 @@ const EditBadge = () => {
           <br />
 
           {fields.length === 0 ? null : (
-            <InputLabel sx={{ fontSize: "1.2em", marginBottom: "10px" }}>
-              Requirements
+            <InputLabel sx={{ marginBottom: "10px" }}>
+              <Menu sx={{marginBottom:'-4px'}}fontSize="small"/> Requirements
             </InputLabel>
           )}
           <div
@@ -235,7 +238,8 @@ const EditBadge = () => {
                 remove(fields.length - 1);
               }}
             >
-              Show Requirements
+              Show Requirements &nbsp;
+              <Visibility sx={{ marginBottom: "-4px" }} fontSize="small" />
             </Typography>
           ) : (
             <Typography
