@@ -6,8 +6,9 @@ import {
   CREATE_BADGE_VERSION,
   GET_BADGES
 } from "../../queries/BadgesQueries";
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import { useNavigate, Link } from "react-router-dom";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
@@ -15,7 +16,9 @@ const CreateBadge = () => {
     { refetchQueries: [{ query: GET_BADGES }] }
   );
   const [create_badges_version] = useMutation(CREATE_BADGE_VERSION, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [{ query: GET_BADGES }],
+    onCompleted: () => navigate("/badges", { state: { showAlert: 2 } }),
+    onError: () => navigate("/badges", { state: { showAlert: -2 } })
   });
 
   const { register, handleSubmit, control } = useForm({
@@ -36,7 +39,6 @@ const CreateBadge = () => {
           id: data?.insert_badges_definitions?.returning[0]?.id
         }
       });
-      navigate("/badges");
     }
   }, [data]);
 
@@ -53,20 +55,19 @@ const CreateBadge = () => {
       }
     });
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
   return (
     <div>
       <Link to="/badges">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "45%" }}
+          sx={{ marginTop: "20px", marginLeft: "45%", padding: "10px" }}
         >
           GO TO BADGES
         </Button>
@@ -75,7 +76,8 @@ const CreateBadge = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <TextField
-              sx={{ marginBottom: "10px" }}
+              multiline={true}
+              sx={{ marginBottom: "10px", minWidth: "400px" }}
               label="Title"
               name="title"
               {...register("title", {
@@ -84,8 +86,8 @@ const CreateBadge = () => {
             />
             <br />
             <TextField
-              sx={{ marginBottom: "20px" }}
-              multiline
+              sx={{ marginBottom: "20px", minWidth: "400px" }}
+              multiline={true}
               label="Description"
               name="description"
               {...register("description", {
@@ -99,24 +101,32 @@ const CreateBadge = () => {
             />
             {fields.map((field, index) => (
               <div key={field.id}>
-                <TextField
-                  sx={{ marginBottom: "10px", minWidth: "400px" }}
-                  multiline
-                  label={`Requirement Title ${index + 1}`}
+                <Controller
                   name={`requirements.${index}.title`}
-                  {...register(`requirements.${index}.title`, {
-                    required: true
-                  })}
+                  control={control}
+                  defaultValue={field.title}
+                  render={({ field }) => (
+                    <TextField
+                      multiline={true}
+                      sx={{ marginBottom: "10px", minWidth: "400px" }}
+                      label={`Requirement Title ${index + 1}`}
+                      {...field}
+                    />
+                  )}
                 />
                 <br />
-                <TextField
-                  sx={{ marginBottom: "25px", minWidth: "400px" }}
-                  multiline
-                  label={`Requirement Description ${index + 1}`}
+                <Controller
                   name={`requirements.${index}.description`}
-                  {...register(`requirements.${index}.description`, {
-                    required: true
-                  })}
+                  control={control}
+                  defaultValue={field.description}
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ marginBottom: "25px", minWidth: "400px" }}
+                      multiline={true}
+                      label={`Requirement Description ${index + 1}`}
+                      {...field}
+                    />
+                  )}
                 />
                 <br />
                 <RemoveCircle
@@ -130,7 +140,9 @@ const CreateBadge = () => {
               </div>
             ))}
           </div>
-          <Button type="submit">Create Badge</Button>
+          <Button type="submit" variant="outlined" sx={{ padding: "10px" }}>
+            Create Badge
+          </Button>
         </form>
       </div>
     </div>

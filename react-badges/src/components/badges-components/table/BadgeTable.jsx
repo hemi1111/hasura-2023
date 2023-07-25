@@ -16,14 +16,24 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../dialogs/DeleteDialog";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
 import { DELETE_BADGE, GET_BADGES } from "../../../queries/BadgesQueries";
 function BadgeTable(props) {
   const navigate = useNavigate();
-  const { data } = props;
+  const { data, search, setShowAlert, loading, error } = props;
   const [openStates, setOpenStates] = useState({});
   const [open, setOpen] = useState(false);
   const [deleteBadge] = useMutation(DELETE_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [
+      {
+        query: GET_BADGES,
+        variables: {
+          search: `%${search}%`
+        }
+      }
+    ],
+    onCompleted: () => setShowAlert(1),
+    onError: () => setShowAlert(-1)
   });
 
   const handleDeleteClick = () => {
@@ -54,6 +64,14 @@ function BadgeTable(props) {
     navigate(`/badges/edit/${edit_badge_id}`);
   };
 
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
+
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -74,13 +92,13 @@ function BadgeTable(props) {
           {data.title}
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={handleDeleteClick}>
-            <Delete color="error" fontSize="medium" />
+          <Button size="small" onClick={() => handleEditClick(data.id)}>
+            <Edit />
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={() => handleEditClick(data.id)}>
-            <Edit fontSize="medium" />
+          <Button size="small" onClick={handleDeleteClick}>
+            <Delete color="error" />
           </Button>
         </TableCell>
       </TableRow>
