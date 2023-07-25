@@ -21,6 +21,7 @@ import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import DeleteDialog from "../../components/dialogs/DeleteDialog";
 function TableRowComp(props) {
   const { row, deleteManager } = props;
+
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [edit, setEdit] = useState(true);
@@ -72,7 +73,7 @@ function TableRowComp(props) {
           </Button>
         </TableCell>
         <TableCell align="center">
-          <Button size="small" onClick={() => setOpenDialog(true )}>
+          <Button size="small" onClick={() => setOpenDialog(true)}>
             <Delete fontSize="small" color="error" />
           </Button>
           <DeleteDialog
@@ -113,6 +114,7 @@ function TableRowComp(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+    
     </React.Fragment>
   );
 }

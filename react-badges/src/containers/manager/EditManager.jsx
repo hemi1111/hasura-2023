@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
-import ManagerNavbar from "../../components/ManagerNavbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { useForm } from "react-hook-form";
-
+import Notification from "../../views/backoffice/Notification";
 import {
   ADD_RELATION,
   DELETE_RELATION,
   GET_ENGINEERS_BY_MANAGER,
   GET_MANAGER,
-  GET_MANAGERS,
   GET_UNASSIGNED_ENGINEERS,
   UPDATE_MANAGER
 } from "../../queries/ManagerQueries";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import EngineerManagers from "../../components/engineer-components/form/EngineerManagers";
 import EngineerRelations from "../../components/engineer-components/form/EngineerRelations";
 import UserForm from "../../components/UserForm";
 const EditManager = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    type: "",
+    message: ""
+  });
   const { data, loading, error } = useQuery(GET_MANAGER, {
     variables: { id }
   });
@@ -34,7 +35,7 @@ const EditManager = () => {
     { data: dataEngr, loading: loadingEngr, error: errorEngr }
   ] = useMutation(GET_ENGINEERS_BY_MANAGER);
 
-  const [addRelation, r2] = useMutation(ADD_RELATION, {
+  const [addRelation, { error: relationError }] = useMutation(ADD_RELATION, {
     onCompleted: () => {
       getEngineerByMngr({
         variables: { id }
@@ -74,6 +75,7 @@ const EditManager = () => {
     deleteRelation({
       variables: { manager_id: id, engineer_id: engrId }
     });
+
   };
 
   const createRelation = ({ engineer }) => {
@@ -81,16 +83,33 @@ const EditManager = () => {
     addRelation({
       variables: { manager, engineer }
     });
+    if (!relationError) {
+      setNotify({
+        isOpen: true,
+        message: "Relation created successfuly",
+        type: "success"
+      });
+    } else {
+      setNotify({
+        isOpen: true,
+        message: "Relation not created",
+        type: "error"
+      });
+    }
   };
   const handleName = (e) => {
     const { name } = e;
     updateManager({
       variables: { id, name }
     });
+    setNotify({
+      isOpen: true,
+      message: "Updated successfuly",
+      type: "success"
+    });
   };
+  const managerName = data?.managers[0].name;
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) throw error;
   return (
     <>
       <Box
@@ -103,7 +122,7 @@ const EditManager = () => {
         }}
       >
         <Typography variant="h4" sx={{ m: 2 }}>
-          Edit Engineers for {data?.managers[0].name}:
+          Edit Engineers for {managerName}:
         </Typography>
         <div
           style={{
@@ -111,12 +130,8 @@ const EditManager = () => {
             flexWrap: "wrap"
           }}
         >
-          {data?.managers[0].name && (
-            <UserForm
-              name={data?.managers[0].name}
-              onSubmit={handleName}
-              manager={true}
-            />
+          {managerName && (
+            <UserForm name={managerName} onSubmit={handleName} manager={true} />
           )}
           <EngineerManagers
             onAdd={createRelation}
@@ -150,6 +165,7 @@ const EditManager = () => {
           Go Back
         </Button>
       </Box>
+      {notify.isOpen && <Notification notify={notify} setNotify={setNotify} />}
     </>
   );
 };

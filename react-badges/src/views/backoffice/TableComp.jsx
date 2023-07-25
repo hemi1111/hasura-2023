@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,44 +7,66 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Container
+  Box
 } from "@mui/material";
 import TableRowComp from "./TableRowComp";
 import { DELETE_MANAGER, GET_MANAGERS } from "../../queries/ManagerQueries";
 import { useMutation } from "@apollo/client";
-
+import Notification from "./Notification";
+import { useLocation } from "react-router-dom";
 const TableComp = ({ r1 }) => {
-  const [deleteManager] = useMutation(DELETE_MANAGER, {
+  const { state } = useLocation();
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    type: "",
+    message: ""
+  });
+  const [deleteManager, { data: deletedMngr }] = useMutation(DELETE_MANAGER, {
     refetchQueries: [
       {
         query: GET_MANAGERS
       }
     ]
   });
+
+  useEffect(() => {
+    if (deletedMngr?.update_valid_users?.affected_rows === 1) {
+      setNotify({
+        isOpen: true,
+        type: "error",
+        message: "Deleted successfully"
+      });
+    } else if (state) {
+      setNotify({ ...state.createNotify });
+    }
+  }, [deletedMngr]);
   return (
-    <Container maxWidth="md" sx={{ margin: "40px auto" }} component={Paper}>
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Managers</TableCell>
-              <TableCell align="center">Edit</TableCell>
-              <TableCell align="center">Delete</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {r1?.managers.map((row) => (
-              <TableRowComp
-                key={row.id}
-                row={row}
-                deleteManager={deleteManager}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+    <>
+      <Box sx={{ m: 1, display: "flex", justifyContent: "center" }}>
+        <TableContainer sx={{ m: 1 }} component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="medium">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Managers</TableCell>
+                <TableCell align="center">Edit</TableCell>
+                <TableCell align="center">Delete</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {r1?.managers.map((row) => (
+                <TableRowComp
+                  key={row.id}
+                  row={row}
+                  deleteManager={deleteManager}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      {notify.isOpen && <Notification notify={notify} setNotify={setNotify} />}
+    </>
   );
 };
 
