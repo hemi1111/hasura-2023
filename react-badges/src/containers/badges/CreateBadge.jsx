@@ -2,18 +2,17 @@ import { useState } from "react";
 import { TextField, Button, Alert } from "@mui/material";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import {
-  CREATE_BADGE,
-  CREATE_BADGE_VERSION,
-  GET_BADGES
-} from "../../queries/BadgesQueries";
+import { CREATE_BADGE, CREATE_BADGE_VERSION, GET_BADGES } from "../../queries/BadgesQueries";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
+
   const [showAlert, setShowAlert] = useState(false);
   const [requirementCount, setRequirementCount] = useState(1);
+  const navigate = useNavigate();
+
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
     CREATE_BADGE,
     { refetchQueries: [{ query: GET_BADGES }] }
@@ -34,11 +33,11 @@ const CreateBadge = () => {
       requirements: [{ title: "", description: "" }]
     }
   });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "requirements"
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -56,12 +55,10 @@ const CreateBadge = () => {
 
   const onSubmit = (formData) => {
     const { title, description, requirements } = formData;
-
     if (requirementCount < 3) {
       setShowAlert(true);
       return;
     }
-
     insert_badges_definitions({
       variables: {
         title: title,
@@ -139,7 +136,13 @@ const CreateBadge = () => {
               sx={{ cursor: "pointer", marginBottom: "10px" }}
               onClick={() => append({ title: "", description: "" })}
             />
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                flexWrap: "wrap"
+              }}
+            >
               {fields.map((field, index) => (
                 <div key={field.id}>
                   <Controller
@@ -192,7 +195,6 @@ const CreateBadge = () => {
               ))}
             </div>
           </div>
-
           <Button type="submit" variant="outlined" sx={{ padding: "10px" }}>
             Create Badge
           </Button>
@@ -201,5 +203,4 @@ const CreateBadge = () => {
     </div>
   );
 };
-
 export default CreateBadge;

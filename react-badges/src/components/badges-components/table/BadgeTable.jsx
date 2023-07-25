@@ -162,5 +162,4 @@ function BadgeTable(props) {
     </>
   );
 }
-
 export default BadgeTable;

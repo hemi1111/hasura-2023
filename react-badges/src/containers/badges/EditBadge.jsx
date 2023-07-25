@@ -132,57 +132,64 @@ const EditBadge = () => {
               Requirements
             </InputLabel>
           )}
-          {fields.map((field, index) => (
-            <div key={field.id}>
-              <Controller
-                name={`requirements.${index}.title`}
-                control={control}
-                defaultValue={field.title}
-                rules={{ required: "Requirement Title is required" }}
-                render={({ field }) => (
-                  <TextField
-                    multiline
-                    sx={{ minWidth: "600px", marginBottom: "10px" }}
-                    error={!!errors?.requirements?.[index]?.title}
-                    helperText={errors?.requirements?.[index]?.title?.message}
-                    {...field}
-                    label={`Requirement Title ${index + 1}`}
-                  />
-                )}
-              />
-              <br />
-              <Controller
-                name={`requirements.${index}.description`}
-                control={control}
-                defaultValue={field.description}
-                rules={{ required: "Requirement Description is required" }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    multiline
-                    sx={{ minWidth: "600px", marginBottom: "30px" }}
-                    minRows={2}
-                    error={!!errors?.requirements?.[index]?.description}
-                    helperText={
-                      errors?.requirements?.[index]?.description?.message
-                    }
-                    label={`Requirement Description ${index + 1}`}
-                  />
-                )}
-              />
-              <RemoveCircle
-                sx={{
-                  marginRight: "-35px",
-                  marginLeft: "10px",
-                  marginTop: "7px",
-                  cursor: "pointer"
-                }}
-                onClick={() => {
-                  remove(index);
-                }}
-              />
-            </div>
-          ))}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2,1fr)",
+              gap: "20px"
+            }}
+          >
+            {fields.map((field, index) => (
+              <div key={field.id}>
+                <Controller
+                  name={`requirements.${index}.title`}
+                  control={control}
+                  defaultValue={field.title}
+                  rules={{ required: "Requirement Title is required" }}
+                  render={({ field }) => (
+                    <TextField
+                      multiline
+                      sx={{ minWidth: "500px", marginBottom: "10px" }}
+                      error={!!errors?.requirements?.[index]?.title}
+                      helperText={errors?.requirements?.[index]?.title?.message}
+                      {...field}
+                      label={`Requirement Title ${index + 1}`}
+                    />
+                  )}
+                />
+                <br />
+                <Controller
+                  name={`requirements.${index}.description`}
+                  control={control}
+                  defaultValue={field.description}
+                  rules={{ required: "Requirement Description is required" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      multiline
+                      sx={{ minWidth: "500px", marginBottom: "30px" }}
+                      minRows={2}
+                      error={!!errors?.requirements?.[index]?.description}
+                      helperText={
+                        errors?.requirements?.[index]?.description?.message
+                      }
+                      label={`Requirement Description ${index + 1}`}
+                    />
+                  )}
+                />
+                <br />
+                <RemoveCircle
+                  sx={{
+                    cursor: "pointer",
+                    marginBottom: "15px"
+                  }}
+                  onClick={() => {
+                    remove(index);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
           {fields.length === 0 ? (
             <Typography
               sx={{
