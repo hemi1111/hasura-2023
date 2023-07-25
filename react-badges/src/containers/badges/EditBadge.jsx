@@ -90,7 +90,7 @@ const EditBadge = () => {
       <Link to="/badges">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "45%" }}
+          sx={{ marginTop: "20px", marginLeft: "45%", padding: "10px" }}
         >
           GO TO BADGES
         </Button>
@@ -138,10 +138,13 @@ const EditBadge = () => {
                 name={`requirements.${index}.title`}
                 control={control}
                 defaultValue={field.title}
+                rules={{ required: "Requirement Title is required" }}
                 render={({ field }) => (
                   <TextField
                     multiline
                     sx={{ minWidth: "600px", marginBottom: "10px" }}
+                    error={!!errors?.requirements?.[index]?.title}
+                    helperText={errors?.requirements?.[index]?.title?.message}
                     {...field}
                     label={`Requirement Title ${index + 1}`}
                   />
@@ -152,12 +155,17 @@ const EditBadge = () => {
                 name={`requirements.${index}.description`}
                 control={control}
                 defaultValue={field.description}
+                rules={{ required: "Requirement Description is required" }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     multiline
                     sx={{ minWidth: "600px", marginBottom: "30px" }}
                     minRows={2}
+                    error={!!errors?.requirements?.[index]?.description}
+                    helperText={
+                      errors?.requirements?.[index]?.description?.message
+                    }
                     label={`Requirement Description ${index + 1}`}
                   />
                 )}

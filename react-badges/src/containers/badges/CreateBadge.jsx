@@ -1,5 +1,7 @@
-import { TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { TextField, Button, Alert } from "@mui/material";
 import { useEffect } from "react";
+import RequirementAlert from "../../components/alerts/RequirementAlert";
 import { useMutation } from "@apollo/client";
 import {
   CREATE_BADGE,
@@ -11,6 +13,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
+  const [requirementCount, setRequirementCount] = useState(1);
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
     CREATE_BADGE,
     { refetchQueries: [{ query: GET_BADGES }] }
@@ -21,7 +24,12 @@ const CreateBadge = () => {
     onError: () => navigate("/badges", { state: { showAlert: -2 } })
   });
 
-  const { register, handleSubmit, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm({
     defaultValues: {
       requirements: [{ title: "", description: "" }]
     }
@@ -42,8 +50,18 @@ const CreateBadge = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setRequirementCount(fields.length);
+  }, [fields]);
+
   const onSubmit = (formData) => {
     const { title, description, requirements } = formData;
+
+    if (requirementCount < 3) {
+      alert("ave lali duhen 3 cop");
+      return;
+    }
+
     insert_badges_definitions({
       variables: {
         title: title,
@@ -81,8 +99,12 @@ const CreateBadge = () => {
               label="Title"
               name="title"
               {...register("title", {
-                required: true
+                required: "Badge must have a title",
+                minLength: { value: 3, message: "Min length is 3" },
+                maxLength: { value: 40, message: "Max length is 40" }
               })}
+              error={!!errors.title}
+              helperText={errors.title?.message}
             />
             <br />
             <TextField
@@ -91,8 +113,11 @@ const CreateBadge = () => {
               label="Description"
               name="description"
               {...register("description", {
-                required: true
+                required: "Badge must have a description",
+                minLength: { value: 3, message: "Min length is 3" }
               })}
+              error={!!errors.description}
+              helperText={errors.desccription?.message}
             />
             <p>Requirements</p>
             <AddBox
@@ -105,11 +130,14 @@ const CreateBadge = () => {
                   name={`requirements.${index}.title`}
                   control={control}
                   defaultValue={field.title}
+                  rules={{ required: "Requirement Title is required" }}
                   render={({ field }) => (
                     <TextField
                       multiline={true}
                       sx={{ marginBottom: "10px", minWidth: "400px" }}
                       label={`Requirement Title ${index + 1}`}
+                      error={!!errors?.requirements?.[index]?.title}
+                      helperText={errors?.requirements?.[index]?.title?.message}
                       {...field}
                     />
                   )}
@@ -119,11 +147,16 @@ const CreateBadge = () => {
                   name={`requirements.${index}.description`}
                   control={control}
                   defaultValue={field.description}
+                  rules={{ required: "Requirement Description is required" }}
                   render={({ field }) => (
                     <TextField
                       sx={{ marginBottom: "25px", minWidth: "400px" }}
                       multiline={true}
                       label={`Requirement Description ${index + 1}`}
+                      error={!!errors?.requirements?.[index]?.description}
+                      helperText={
+                        errors?.requirements?.[index]?.description?.message
+                      }
                       {...field}
                     />
                   )}

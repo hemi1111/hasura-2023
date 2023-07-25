@@ -40,14 +40,20 @@ const BadgeDisplay = ({ search }) => {
 
   return (
     <div>
-      <Link to="/badges/create">
-        <Button
-          variant="outlined"
-          sx={{ marginLeft: "85%", marginTop: "-9%", padding: "10px" }}
-        >
-          CREATE NEW BADGE
-        </Button>
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          float: "right",
+          marginTop: "-50px",
+          marginRight: "18px"
+        }}
+      >
+        <Link to="/badges/create">
+          <Button variant="outlined" sx={{ padding: "10px" }}>
+            CREATE NEW BADGE
+          </Button>
+        </Link>
+      </div>
       <Box
         sx={{
           m: 1,
