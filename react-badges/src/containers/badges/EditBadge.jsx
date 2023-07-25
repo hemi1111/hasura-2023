@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { TextField, Button, InputLabel, Typography } from "@mui/material";
+import {
+  TextField,
+  Button,
+  InputLabel,
+  Typography,
+  Alert
+} from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SINGLE_INFO,
@@ -11,6 +17,8 @@ import {
 import { RemoveCircle, AddBox } from "@mui/icons-material";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 const EditBadge = () => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [requirementCount, setRequirementCount] = useState(1);
   const navigate = useNavigate();
   const { id } = useParams();
   const [editBadge] = useMutation(EDIT_BADGE, {
@@ -55,8 +63,17 @@ const EditBadge = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setRequirementCount(fields.length);
+  }, [fields]);
+
   const onSubmit = (formData) => {
     const { title, description, requirements } = formData;
+
+    if (requirementCount < 3) {
+      setShowAlert(true);
+      return;
+    }
 
     try {
       editBadge({
@@ -70,6 +87,7 @@ const EditBadge = () => {
           }))
         }
       });
+      setShowAlert(false);
 
       console.log("Badge updated successfully", formData);
     } catch (error) {
@@ -87,6 +105,19 @@ const EditBadge = () => {
 
   return (
     <div>
+      <div
+        style={{
+          width: "70%",
+          margin: "auto",
+          marginTop: "20px"
+        }}
+      >
+        {showAlert ? (
+          <Alert severity="info">
+            A Badge must have at least 3 requirements
+          </Alert>
+        ) : null}
+      </div>
       <Link to="/badges">
         <Button
           variant="outlined"

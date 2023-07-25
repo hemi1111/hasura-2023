@@ -85,7 +85,6 @@ const CreateBadge = () => {
           width: "70%",
           margin: "auto",
           marginTop: "20px",
-          position: "sticky"
         }}
       >
         {showAlert ? (

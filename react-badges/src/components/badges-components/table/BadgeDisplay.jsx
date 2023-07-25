@@ -45,7 +45,7 @@ const BadgeDisplay = ({ search }) => {
           display: "flex",
           float: "right",
           marginTop: "-50px",
-          marginRight: "18px"
+          marginRight: "16px"
         }}
       >
         <Link to="/badges/create">
