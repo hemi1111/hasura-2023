@@ -28,7 +28,7 @@ const BadgeDisplay = ({ search }) => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [search]);
 
   if (loading)
     return (
