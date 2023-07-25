@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 
 export const GET_BADGES = gql`
-  query getBadges {
-    badges_versions_last(where: { is_deleted: { _eq: false } }) {
+  query getBadges($search: String!) {
+    badges_versions_last(
+      where: { is_deleted: { _eq: false }, title: { _ilike: $search } }
+    ) {
       description
       requirements
       title

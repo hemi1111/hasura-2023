@@ -6,15 +6,17 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_SINGLE_INFO,
   EDIT_BADGE,
-  GET_BADGES,
+  GET_BADGES
 } from "../../queries/BadgesQueries";
 import { RemoveCircle, AddBox } from "@mui/icons-material";
-
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 const EditBadge = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [editBadge] = useMutation(EDIT_BADGE, {
-    refetchQueries: [{ query: GET_BADGES }]
+    refetchQueries: [{ query: GET_BADGES }],
+    onCompleted: () => navigate("/badges", { state: { showAlert: 3 } }),
+    onError: () => navigate("/badges", { state: { showAlert: -3 } })
   });
 
   const { data, loading, error, refetch } = useQuery(GET_SINGLE_INFO, {
@@ -70,19 +72,18 @@ const EditBadge = () => {
       });
 
       console.log("Badge updated successfully", formData);
-      navigate("/badges");
     } catch (error) {
       console.log("Couldn't get updated", error);
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingSpinner />
+      </div>
+    );
+  if (error) return `Loading error! ${error.message}`;
 
   return (
     <div>
