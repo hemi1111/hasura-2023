@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TextField, Button, Alert } from "@mui/material";
 import { useEffect } from "react";
-import RequirementAlert from "../../components/alerts/RequirementAlert";
 import { useMutation } from "@apollo/client";
 import {
   CREATE_BADGE,
@@ -13,6 +12,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { AddBox, RemoveCircle } from "@mui/icons-material";
 const CreateBadge = () => {
+  const [showAlert, setShowAlert] = useState(false);
   const [requirementCount, setRequirementCount] = useState(1);
   const [insert_badges_definitions, { loading, error, data }] = useMutation(
     CREATE_BADGE,
@@ -58,7 +58,7 @@ const CreateBadge = () => {
     const { title, description, requirements } = formData;
 
     if (requirementCount < 3) {
-      alert("ave lali duhen 3 cop");
+      setShowAlert(true);
       return;
     }
 
@@ -72,6 +72,7 @@ const CreateBadge = () => {
         }))
       }
     });
+    setShowAlert(false);
   };
   if (loading)
     return (
@@ -82,6 +83,20 @@ const CreateBadge = () => {
   if (error) return `Loading error! ${error.message}`;
   return (
     <div>
+      <div
+        style={{
+          width: "70%",
+          margin: "auto",
+          marginTop: "20px",
+          position: "sticky"
+        }}
+      >
+        {showAlert ? (
+          <Alert severity="info">
+            A Badge must have at least 3 requirements
+          </Alert>
+        ) : null}
+      </div>
       <Link to="/badges">
         <Button
           variant="outlined"
@@ -124,55 +139,60 @@ const CreateBadge = () => {
               sx={{ cursor: "pointer", marginBottom: "10px" }}
               onClick={() => append({ title: "", description: "" })}
             />
-            {fields.map((field, index) => (
-              <div key={field.id}>
-                <Controller
-                  name={`requirements.${index}.title`}
-                  control={control}
-                  defaultValue={field.title}
-                  rules={{ required: "Requirement Title is required" }}
-                  render={({ field }) => (
-                    <TextField
-                      multiline={true}
-                      sx={{ marginBottom: "10px", minWidth: "400px" }}
-                      label={`Requirement Title ${index + 1}`}
-                      error={!!errors?.requirements?.[index]?.title}
-                      helperText={errors?.requirements?.[index]?.title?.message}
-                      {...field}
-                    />
-                  )}
-                />
-                <br />
-                <Controller
-                  name={`requirements.${index}.description`}
-                  control={control}
-                  defaultValue={field.description}
-                  rules={{ required: "Requirement Description is required" }}
-                  render={({ field }) => (
-                    <TextField
-                      sx={{ marginBottom: "25px", minWidth: "400px" }}
-                      multiline={true}
-                      label={`Requirement Description ${index + 1}`}
-                      error={!!errors?.requirements?.[index]?.description}
-                      helperText={
-                        errors?.requirements?.[index]?.description?.message
-                      }
-                      {...field}
-                    />
-                  )}
-                />
-                <br />
-                <RemoveCircle
-                  sx={{
-                    cursor: "pointer",
-                    marginTop: "-50px",
-                    marginLeft: "5px"
-                  }}
-                  onClick={() => remove(index)}
-                />
-              </div>
-            ))}
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              {fields.map((field, index) => (
+                <div key={field.id}>
+                  <Controller
+                    name={`requirements.${index}.title`}
+                    control={control}
+                    defaultValue={field.title}
+                    rules={{ required: "Requirement Title is required" }}
+                    render={({ field }) => (
+                      <TextField
+                        multiline={true}
+                        sx={{ marginBottom: "10px", minWidth: "400px" }}
+                        label={`Requirement Title ${index + 1}`}
+                        error={!!errors?.requirements?.[index]?.title}
+                        helperText={
+                          errors?.requirements?.[index]?.title?.message
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                  <br />
+                  <Controller
+                    name={`requirements.${index}.description`}
+                    control={control}
+                    defaultValue={field.description}
+                    rules={{ required: "Requirement Description is required" }}
+                    render={({ field }) => (
+                      <TextField
+                        sx={{ marginBottom: "25px", minWidth: "400px" }}
+                        multiline={true}
+                        label={`Requirement Description ${index + 1}`}
+                        error={!!errors?.requirements?.[index]?.description}
+                        helperText={
+                          errors?.requirements?.[index]?.description?.message
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                  <br />
+                  <RemoveCircle
+                    sx={{
+                      cursor: "pointer",
+                      marginTop: "-50px",
+                      marginLeft: "5px"
+                    }}
+                    onClick={() => remove(index)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+
           <Button type="submit" variant="outlined" sx={{ padding: "10px" }}>
             Create Badge
           </Button>
