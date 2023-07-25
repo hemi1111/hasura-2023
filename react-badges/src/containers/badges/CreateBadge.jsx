@@ -2,13 +2,16 @@ import { useState } from "react";
 import { TextField, Button, Alert } from "@mui/material";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_BADGE, CREATE_BADGE_VERSION, GET_BADGES } from "../../queries/BadgesQueries";
+import {
+  CREATE_BADGE,
+  CREATE_BADGE_VERSION,
+  GET_BADGES
+} from "../../queries/BadgesQueries";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { AddBox, RemoveCircle } from "@mui/icons-material";
+import { AddBox, RemoveCircle, ArrowBackIos } from "@mui/icons-material";
 const CreateBadge = () => {
-
   const [showAlert, setShowAlert] = useState(false);
   const [requirementCount, setRequirementCount] = useState(1);
   const navigate = useNavigate();
@@ -59,17 +62,23 @@ const CreateBadge = () => {
       setShowAlert(true);
       return;
     }
-    insert_badges_definitions({
-      variables: {
-        title: title,
-        description: description,
-        requirements: requirements.map((requirement) => ({
-          title: requirement.title,
-          description: requirement.description
-        }))
-      }
-    });
-    setShowAlert(false);
+
+    try {
+      insert_badges_definitions({
+        variables: {
+          title: title,
+          description: description,
+          requirements: requirements.map((requirement) => ({
+            title: requirement.title,
+            description: requirement.description
+          }))
+        }
+      });
+      console.log("Badge created succesfully");
+      setShowAlert(false);
+    } catch (error) {
+      console.log("Error creating badge", error);
+    }
   };
   if (loading)
     return (
@@ -84,7 +93,7 @@ const CreateBadge = () => {
         style={{
           width: "70%",
           margin: "auto",
-          marginTop: "20px",
+          marginTop: "20px"
         }}
       >
         {showAlert ? (
@@ -94,11 +103,9 @@ const CreateBadge = () => {
         ) : null}
       </div>
       <Link to="/badges">
-        <Button
-          variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "45%", padding: "10px" }}
-        >
-          GO TO BADGES
+        <Button variant="outlined" sx={{ marginLeft:'20px', padding: "10px" }}>
+          <ArrowBackIos fontSize="small" />
+          BACK TO BADGES
         </Button>
       </Link>
       <div style={{ marginTop: "50px", textAlign: "center" }}>

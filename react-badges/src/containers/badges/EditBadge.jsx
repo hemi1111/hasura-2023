@@ -5,7 +5,7 @@ import {
   TextField,
   Button,
   InputLabel,
-  Typography,
+  Typography,  
   Alert
 } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
@@ -14,7 +14,7 @@ import {
   EDIT_BADGE,
   GET_BADGES
 } from "../../queries/BadgesQueries";
-import { RemoveCircle, AddBox } from "@mui/icons-material";
+import { RemoveCircle, AddBox,ArrowBackIos } from "@mui/icons-material";
 import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 const EditBadge = () => {
   const [showAlert, setShowAlert] = useState(false);
@@ -121,9 +121,9 @@ const EditBadge = () => {
       <Link to="/badges">
         <Button
           variant="outlined"
-          sx={{ marginTop: "20px", marginLeft: "45%", padding: "10px" }}
+          sx={{ marginLeft:'20px', padding: "10px" }}
         >
-          GO TO BADGES
+          <ArrowBackIos fontSize="small"/> BACK TO BADGES
         </Button>
       </Link>
       <form onSubmit={handleSubmit(onSubmit)}>

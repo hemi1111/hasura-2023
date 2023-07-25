@@ -44,7 +44,7 @@ const BadgeDisplay = ({ search }) => {
         style={{
           display: "flex",
           float: "right",
-          marginTop: "-50px",
+          marginTop: "-60px",
           marginRight: "16px"
         }}
       >

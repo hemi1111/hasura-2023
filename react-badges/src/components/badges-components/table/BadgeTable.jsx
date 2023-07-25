@@ -41,12 +41,19 @@ function BadgeTable(props) {
   };
 
   const handleDeleteBadge = (badge_id) => {
-    deleteBadge({
-      variables: {
-        badge_def_id: badge_id
-      }
-    });
-    setOpen(false);
+    try {
+      deleteBadge({
+        variables: {
+          badge_def_id: badge_id
+        }
+      });
+      console.log(
+        `Badge '${data.title}' with id ${data.id} deleted succesfully`
+      );
+      setOpen(false);
+    } catch (error) {
+      console.log("Error deleting badge", error);
+    }
   };
 
   const handleVersions = (version_badge_id, version_id) => {
@@ -122,7 +129,11 @@ function BadgeTable(props) {
                     <TableCell>
                       <Button
                         variant="outlined"
-                        sx={{ position: "sticky", float: "right" }}
+                        sx={{
+                          position: "sticky",
+                          float: "right",
+                          padding: "10px"
+                        }}
                         onClick={() => handleVersions(data.title, data.id)}
                       >
                         Show All Versions
