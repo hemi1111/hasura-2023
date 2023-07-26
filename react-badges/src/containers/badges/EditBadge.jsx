@@ -118,7 +118,7 @@ const EditBadge = () => {
           marginTop: "20px"
         }}
       >
-        {showAlert && requirementCount == 0 ? (
+        {showAlert && requirementCount == 0 ? ( 
           <Alert severity="info">
             Please click on Show Requirements and then proceed
           </Alert>
