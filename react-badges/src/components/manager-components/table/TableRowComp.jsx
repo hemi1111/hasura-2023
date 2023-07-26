@@ -87,11 +87,12 @@ function TableRowComp(props) {
             open={openDialog}
             manager={true}
             list={engineersByManager}
-            onClick={() =>
+            onClick={() => {
               deleteManager({
                 variables: { id }
-              })
-            }
+              });
+              setOpenDialog(false);
+            }}
             name={managerName}
           />
         </TableCell>
