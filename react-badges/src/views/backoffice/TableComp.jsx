@@ -26,14 +26,21 @@ const TableComp = ({ r1 }) => {
       {
         query: GET_MANAGERS
       }
-    ]
+    ],
+    onError: () => {
+      setNotify({
+        isOpen: true,
+        message: "Manager not deleted",
+        type: "error"
+      });
+    }
   });
 
   useEffect(() => {
     if (deletedMngr?.update_valid_users?.affected_rows === 1) {
       setNotify({
         isOpen: true,
-        type: "error",
+        type: "success",
         message: "Deleted successfully"
       });
     } else if (state) {

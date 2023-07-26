@@ -43,11 +43,25 @@ const EditManager = () => {
       getUnassignedEngr({
         variables: { manager: id }
       });
+    },
+    onError: () => {
+      setNotify({
+        isOpen: true,
+        message: "Relation not created",
+        type: "error"
+      });
     }
   });
 
   const [updateManager] = useMutation(UPDATE_MANAGER, {
-    refetchQueries: [{ query: GET_MANAGER, variables: { id } }]
+    refetchQueries: [{ query: GET_MANAGER, variables: { id } }],
+    onError: () => {
+      setNotify({
+        isOpen: true,
+        message: "Menager not updated",
+        type: "error"
+      });
+    }
   });
 
   const [deleteRelation] = useMutation(DELETE_RELATION, {
@@ -57,6 +71,13 @@ const EditManager = () => {
       });
       getUnassignedEngr({
         variables: { manager: id }
+      });
+    },
+    onError: () => {
+      setNotify({
+        isOpen: true,
+        message: "Relation not deleted",
+        type: "error"
       });
     }
   });
@@ -75,7 +96,11 @@ const EditManager = () => {
     deleteRelation({
       variables: { manager_id: id, engineer_id: engrId }
     });
-
+    setNotify({
+      isOpen: true,
+      type: "success",
+      message: "Relation deleted"
+    });
   };
 
   const createRelation = ({ engineer }) => {
@@ -83,19 +108,12 @@ const EditManager = () => {
     addRelation({
       variables: { manager, engineer }
     });
-    if (!relationError) {
-      setNotify({
-        isOpen: true,
-        message: "Relation created successfuly",
-        type: "success"
-      });
-    } else {
-      setNotify({
-        isOpen: true,
-        message: "Relation not created",
-        type: "error"
-      });
-    }
+
+    setNotify({
+      isOpen: true,
+      message: "Relation created successfuly",
+      type: "success"
+    });
   };
   const handleName = (e) => {
     const { name } = e;
