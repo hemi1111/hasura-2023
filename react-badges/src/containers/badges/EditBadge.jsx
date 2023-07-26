@@ -113,14 +113,14 @@ const EditBadge = () => {
     <div>
       <div
         style={{
-          width: "70%",
+          width: "50%",
           margin: "auto",
           marginTop: "20px"
         }}
       >
         {showAlert && requirementCount == 0 ? (
           <Alert severity="info">
-            Please click on Requirements and then proceed
+            Please click on Show Requirements and then proceed
           </Alert>
         ) : showAlert && requirementCount < 3 ? (
           <Alert severity="info">
