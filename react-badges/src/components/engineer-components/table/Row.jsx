@@ -6,7 +6,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import DeleteEngineer from "../../../containers/engineer/DeleteEngineer";
 
 const Row = (props) => {
-  const { index, row, navigate, setShowAlert, showAlert } = props;
+  const { index, row, navigate, setShowAlert, filter } = props;
   const [open, setOpen] = useState(false);
   const { id, name, managers } = row;
   const managersList = managers?.map((manager) => manager.name).join(", ");
@@ -31,6 +31,7 @@ const Row = (props) => {
         <TableCell>
           {open && (
             <DeleteEngineer
+              filter={filter}
               name={name}
               id={id}
               onClose={(e) => {
