@@ -31,11 +31,7 @@ const CreateBadge = () => {
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm({
-    defaultValues: {
-      requirements: [{ title: "", description: "" }]
-    }
-  });
+  } = useForm();
 
   const { fields, append, remove } = useFieldArray({
     control,

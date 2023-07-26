@@ -142,10 +142,10 @@ function BadgeTable(props) {
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontSize: "1.2em" }}>
-                      Requirements
+                      Requirement
                     </TableCell>
                     <TableCell sx={{ fontSize: "1.2em" }}>
-                      Description
+                      Requirement Description
                     </TableCell>
                   </TableRow>
                 </TableHead>
