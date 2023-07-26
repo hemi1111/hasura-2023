@@ -10,9 +10,9 @@ import {
   Box
 } from "@mui/material";
 import TableRowComp from "./TableRowComp";
-import { DELETE_MANAGER, GET_MANAGERS } from "../../queries/ManagerQueries";
+import { DELETE_MANAGER, GET_MANAGERS } from "../../../queries/ManagerQueries";
 import { useMutation } from "@apollo/client";
-import Notification from "./Notification";
+import Notification from "../alerts/Notification";
 import { useLocation } from "react-router-dom";
 const TableComp = ({ r1 }) => {
   const { state } = useLocation();

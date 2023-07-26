@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import Notification from "../../views/backoffice/Notification";
+import Notification from "../../components/manager-components/alerts/Notification";
 import {
   ADD_RELATION,
   DELETE_RELATION,
