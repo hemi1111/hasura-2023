@@ -91,14 +91,14 @@ const CreateBadge = () => {
     <div>
       <div
         style={{
-          width: "70%",
+          width: "60%",
           margin: "auto",
           marginTop: "20px"
         }}
       >
-        {showAlert ? (
+        {showAlert && requirementCount < 3 ? (
           <Alert severity="info">
-            A Badge must have at least 3 requirements
+            A Badge must have at least 3 requirements !
           </Alert>
         ) : null}
       </div>

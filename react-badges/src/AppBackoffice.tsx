@@ -17,7 +17,7 @@ import EditBadge from "../src/containers/badges/EditBadge";
 import EditManager from "./containers/manager/EditManager";
 import CreateManager from "./containers/manager/CreateManager";
 import CreateEngineer from "./containers/engineer/CreateEngineer";
-import BadgesVersions from "../src/components/badges-components/table/BadgesVersions";
+import BadgesVersions from "../src/components/badges-components/versions table/BadgesVersions";
 import EditEngineer from "./containers/engineer/EditEngineer";
 const menuItems = [
   {

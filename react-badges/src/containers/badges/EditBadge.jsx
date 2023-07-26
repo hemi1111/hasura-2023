@@ -113,14 +113,18 @@ const EditBadge = () => {
     <div>
       <div
         style={{
-          width: "70%",
+          width: "50%",
           margin: "auto",
           marginTop: "20px"
         }}
       >
-        {showAlert ? (
+        {showAlert && requirementCount == 0 ? ( 
           <Alert severity="info">
-            A Badge must have at least 3 requirements
+            Please click on Show Requirements and then proceed !
+          </Alert>
+        ) : showAlert && requirementCount < 3 ? (
+          <Alert severity="info">
+            A Badge must have at least 3 requirements !
           </Alert>
         ) : null}
       </div>
@@ -163,7 +167,8 @@ const EditBadge = () => {
 
           {fields.length === 0 ? null : (
             <InputLabel sx={{ marginBottom: "10px" }}>
-              <Menu sx={{marginBottom:'-4px'}}fontSize="small"/> Requirements
+              <Menu sx={{ marginBottom: "-4px" }} fontSize="small" />{" "}
+              Requirements
             </InputLabel>
           )}
           <div

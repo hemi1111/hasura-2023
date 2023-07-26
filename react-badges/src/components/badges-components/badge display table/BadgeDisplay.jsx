@@ -15,7 +15,7 @@ import {
   Box,
   Paper
 } from "@mui/material";
-import BadgeAlerts from "../../engineer-components/alerts/BadgeAlerts";
+import BadgeAlerts from "../BadgeAlerts";
 const BadgeDisplay = ({ search }) => {
   const location = useLocation();
   window.history.replaceState({}, document.title);

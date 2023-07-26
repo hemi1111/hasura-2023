@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CustomAlert from "../../alerts/CustomAlert";
+import CustomAlert from "../alerts/CustomAlert";
 
 const BadgeAlerts = ({ select, setShowAlert }) => {
   const [alert, setAlert] = useState({ m: "Unknown alert!", s: "info" });
