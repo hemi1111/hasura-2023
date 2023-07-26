@@ -4,6 +4,7 @@ export const GET_BADGES = gql`
   query getBadges($search: String!) {
     badges_versions_last(
       where: { is_deleted: { _eq: false }, title: { _ilike: $search } }
+      order_by: { created_at: desc }
     ) {
       description
       requirements

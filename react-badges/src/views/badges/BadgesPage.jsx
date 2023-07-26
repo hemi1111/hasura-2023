@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import BadgeDisplay from "../../components/badges-components/table/BadgeDisplay";
-import { TextField } from "@mui/material";
+import BadgeDisplay from "../../components/badges-components/badge display table/BadgeDisplay";
+import BadgeSearchBar from "../../components/badges-components/search bar/BadgeSearchBar";
+
 const BadgesPage = () => {
   const [searchBar, setSearchBar] = useState("");
 
   return (
     <div>
-      <TextField
-        sx={{ margin: "1em" }}
-        label="Search..."
-        variant="outlined"
-        value={searchBar}
-        onChange={(e) => setSearchBar(e.target.value)}
-      />
+      <BadgeSearchBar search={searchBar} setSearchBar={setSearchBar} />
       <BadgeDisplay search={searchBar} />
     </div>
   );

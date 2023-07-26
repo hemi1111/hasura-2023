@@ -15,7 +15,7 @@ import {
   Box,
   Paper
 } from "@mui/material";
-import BadgeAlerts from "../../engineer-components/alerts/BadgeAlerts";
+import BadgeAlerts from "../../alerts/BadgeAlerts";
 const BadgeDisplay = ({ search }) => {
   const location = useLocation();
   window.history.replaceState({}, document.title);
@@ -40,14 +40,20 @@ const BadgeDisplay = ({ search }) => {
 
   return (
     <div>
-      <Link to="/badges/create">
-        <Button
-          variant="outlined"
-          sx={{ marginLeft: "85%", marginTop: "-9%", padding: "10px" }}
-        >
-          CREATE NEW BADGE
-        </Button>
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          float: "right",
+          marginTop: "-60px",
+          marginRight: "16px"
+        }}
+      >
+        <Link to="/badges/create">
+          <Button variant="outlined" sx={{ padding: "10px" }}>
+            CREATE NEW BADGE
+          </Button>
+        </Link>
+      </div>
       <Box
         sx={{
           m: 1,

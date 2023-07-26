@@ -1,8 +1,11 @@
 import { gql } from "@apollo/client";
 
 export const GET_ENGINEERS = gql`
-  query getEngineers {
-    engineers_with_managers(order_by: { name: asc }) {
+  query getEngineers($_ilike: String!) {
+    engineers_with_managers(
+      order_by: { name: asc }
+      where: { name: { _ilike: $_ilike } }
+    ) {
       id
       name
       managers

@@ -12,7 +12,7 @@ import Row from "./Row";
 import CustomAlert from "../../alerts/CustomAlert";
 import { useState } from "react";
 
-const EngineersTable = ({ navigate, data }) => {
+const EngineersTable = ({ navigate, data, filter }) => {
   const [showAlert, setShowAlert] = useState(0);
   return (
     <>
@@ -31,6 +31,7 @@ const EngineersTable = ({ navigate, data }) => {
             <TableBody>
               {data?.engineers_with_managers?.map((row, index) => (
                 <Row
+                  filter={filter}
                   key={index}
                   navigate={navigate}
                   index={index}
