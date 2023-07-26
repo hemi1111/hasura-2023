@@ -15,7 +15,8 @@ const CreateManager = () => {
     {
       refetchQueries: [
         {
-          query: GET_MANAGERS
+          query: GET_MANAGERS,
+          variables: { name: "%%" }
         }
       ]
     }

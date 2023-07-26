@@ -14,7 +14,7 @@ import { DELETE_MANAGER, GET_MANAGERS } from "../../../queries/ManagerQueries";
 import { useMutation } from "@apollo/client";
 import Notification from "../alerts/Notification";
 import { useLocation } from "react-router-dom";
-const TableComp = ({ r1 }) => {
+const TableComp = ({ r1, search }) => {
   const { state } = useLocation();
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -24,7 +24,10 @@ const TableComp = ({ r1 }) => {
   const [deleteManager, { data: deletedMngr }] = useMutation(DELETE_MANAGER, {
     refetchQueries: [
       {
-        query: GET_MANAGERS
+        query: GET_MANAGERS,
+        variables: {
+          name: `%${search}%`
+        }
       }
     ],
     onError: () => {
