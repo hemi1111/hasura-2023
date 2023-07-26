@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   TableRow,
   TableCell,
@@ -15,10 +15,10 @@ import { Delete, Edit } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useMutation } from "@apollo/client";
-import { GET_ENGINEERS_BY_MANAGER } from "../../queries/ManagerQueries";
+import { GET_ENGINEERS_BY_MANAGER } from "../../../queries/ManagerQueries";
 import { Link } from "react-router-dom";
-import LoadingSpinner from "../../components/spinner/LoadingSpinner";
-import DeleteDialog from "../../components/dialogs/DeleteDialog";
+import LoadingSpinner from "../../spinner/LoadingSpinner";
+import DeleteDialog from "../../dialogs/DeleteDialog";
 function TableRowComp(props) {
   const { row, deleteManager } = props;
 
@@ -36,9 +36,15 @@ function TableRowComp(props) {
     });
     setOpen(!open);
   };
+
+  useEffect(() => {
+    getEngineerByMngr({
+      variables: { id: id }
+    });
+  }, []);
   // if (loading) return;
   if (error) return;
-
+  const engineersByManager = data?.get_engineers_by_manager;
   const arr = data ? [...data.get_engineers_by_manager] : null;
   return (
     <React.Fragment>
@@ -79,6 +85,8 @@ function TableRowComp(props) {
           <DeleteDialog
             onClose={() => setOpenDialog(false)}
             open={openDialog}
+            manager={true}
+            list={engineersByManager}
             onClick={() =>
               deleteManager({
                 variables: { id }
@@ -114,7 +122,6 @@ function TableRowComp(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-    
     </React.Fragment>
   );
 }
