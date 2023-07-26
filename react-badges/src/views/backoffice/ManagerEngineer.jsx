@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@apollo/client";
 
 import { GET_MANAGERS } from "../../queries/ManagerQueries";
-import TableComp from "./TableComp";
+import TableComp from "../../components/manager-components/table/TableComp";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
@@ -19,7 +19,7 @@ const ManagerEngineer = () => {
         style={{
           width: "100%",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
           margin: "20px 0"
         }}
       >
