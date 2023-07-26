@@ -98,7 +98,7 @@ const CreateBadge = () => {
       >
         {showAlert && requirementCount < 3 ? (
           <Alert severity="info">
-            A Badge must have at least 3 requirements
+            A Badge must have at least 3 requirements !
           </Alert>
         ) : null}
       </div>

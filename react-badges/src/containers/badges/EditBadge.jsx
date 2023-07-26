@@ -120,11 +120,11 @@ const EditBadge = () => {
       >
         {showAlert && requirementCount == 0 ? ( 
           <Alert severity="info">
-            Please click on Show Requirements and then proceed
+            Please click on Show Requirements and then proceed !
           </Alert>
         ) : showAlert && requirementCount < 3 ? (
           <Alert severity="info">
-            A Badge must have at least 3 requirements
+            A Badge must have at least 3 requirements !
           </Alert>
         ) : null}
       </div>
