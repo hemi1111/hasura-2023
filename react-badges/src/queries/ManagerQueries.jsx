@@ -37,14 +37,10 @@ export const ADD_RELATION = gql`
   }
 `;
 export const GET_MANAGERS = gql`
-  query getManagersAndEngineers {
-    managers {
-      id
+  query getManagers($name: String!) {
+    managers(where: { name: { _ilike: $name } }) {
       name
-    }
-    engineers {
       id
-      name
     }
   }
 `;

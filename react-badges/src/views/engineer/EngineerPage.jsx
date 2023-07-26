@@ -6,13 +6,13 @@ import { Search } from "@mui/icons-material";
 
 const EngineerPage = () => {
   const [filter, setFilter] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
+  // const [searchTimeout, setSearchTimeout] = useState(null);
 
-  const handleSearch = (value) => {
-    setFilter(value);
-    searchTimeout && clearTimeout(searchTimeout);
-    setSearchTimeout(setTimeout(() => {}, 1000));
-  };
+  // const handleSearch = (value) => {
+  //   setFilter(value);
+  //   searchTimeout && clearTimeout(searchTimeout);
+  //   setSearchTimeout(setTimeout(() => {}, 1000));
+  // };
   return (
     <>
       <div
@@ -25,7 +25,7 @@ const EngineerPage = () => {
         <TextField
           value={filter}
           label="Search Engineer"
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setFilter(e.target.value)}
           sx={{ display: "flex", maxWidth: "40ch", m: 2, marginBottom: 0 }}
           InputProps={{
             startAdornment: <Search />
