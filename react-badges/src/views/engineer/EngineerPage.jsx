@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import EngineersList from "../../containers/engineer/EngineersList";
+import { Search } from "@mui/icons-material";
 
 const EngineerPage = () => {
   const [filter, setFilter] = useState("");
@@ -23,9 +24,12 @@ const EngineerPage = () => {
       >
         <TextField
           value={filter}
-          label="Search..."
+          label="Search Engineer"
           onChange={(e) => handleSearch(e.target.value)}
           sx={{ display: "flex", maxWidth: "40ch", m: 2, marginBottom: 0 }}
+          InputProps={{
+            startAdornment: <Search />
+          }}
         />
         <Link to="/engineer/create">
           <Button
