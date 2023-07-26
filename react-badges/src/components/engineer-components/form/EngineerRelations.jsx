@@ -36,7 +36,7 @@ const EngineerRelations = ({
       <Table sx={{ minWidth: "40ch" }} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>{manager ? "Engineer" : "Manager"}</TableCell>
+            <TableCell>{manager ? "Engineers" : "Managers"}</TableCell>
             {!manager && <TableCell align="center">Update</TableCell>}
             <TableCell align="center">Delete</TableCell>
           </TableRow>
