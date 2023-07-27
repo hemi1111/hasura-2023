@@ -38,7 +38,7 @@ export const ADD_RELATION = gql`
 `;
 export const GET_MANAGERS = gql`
   query getManagers($name: String!) {
-    managers(where: { name: { _ilike: $name } }) {
+    managers(where: { name: { _ilike: $name } }, order_by: { name: asc }) {
       name
       id
     }
